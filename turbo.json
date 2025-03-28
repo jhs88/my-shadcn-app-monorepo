@@ -16,7 +16,7 @@
       "persistent": true
     },
     "lint": {
-      "dependsOn": ["^build"]
+      "dependsOn": []
     },
     "test": {
       "dependsOn": [],
