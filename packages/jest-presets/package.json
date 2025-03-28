@@ -2,9 +2,8 @@
   "name": "@repo/jest-presets",
   "version": "0.0.0",
   "private": true,
-  "license": "MIT",
   "files": [
-    "node.ts"
+    "node/*"
   ],
   "dependencies": {
     "jest": "^29.7.0",
