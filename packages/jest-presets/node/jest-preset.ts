@@ -1,17 +1,8 @@
 import type { Config } from "jest";
+import baseConfig from "./jest-preset.js";
 
-export const config = {
-  roots: ["<rootDir>"],
-  transform: {
-    "^.+\\.tsx?$": "ts-jest",
-  },
-  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
-  modulePathIgnorePatterns: [
-    "<rootDir>/test/__fixtures__",
-    "<rootDir>/node_modules",
-    "<rootDir>/dist",
-  ],
-  preset: "ts-jest",
-} as const satisfies Config;
+const config: Config = {
+  ...baseConfig,
+};
 
 export default config;

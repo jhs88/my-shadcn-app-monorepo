@@ -89,3 +89,8 @@ To use the components in your app, import them from the `ui` package.
 ```tsx
 import { Button } from "@repo/ui/components/button";
 ```
+
+### TODOs
+
+- [ ] Improve `packages` READMEs
+- [ ] Create a CI/CD pipeline for your app
