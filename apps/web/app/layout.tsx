@@ -1,7 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 
-import "@repo/ui/globals.css";
 import { Providers } from "@/components/providers";
+import "@repo/ui/globals.css";
 
 const fontSans = Geist({
   subsets: ["latin"],
@@ -20,6 +20,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Shadcn UI</title>
+        <link rel="icon" href="/favicon.ico" />
+      </head>
       <body
         className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased `}
       >
