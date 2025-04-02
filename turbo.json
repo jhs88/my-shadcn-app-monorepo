@@ -21,6 +21,9 @@
     "test": {
       "dependsOn": [],
       "outputs": ["coverage/**"]
+    },
+    "scanner": {
+      "dependsOn": []
     }
   }
 }
