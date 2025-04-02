@@ -8,7 +8,8 @@
     "dev": "turbo dev",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
-    "test": "turbo test"
+    "test": "turbo test",
+    "scanner": "turbo scanner"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
