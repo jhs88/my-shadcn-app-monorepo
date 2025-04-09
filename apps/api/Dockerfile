@@ -1,27 +1,24 @@
 FROM node:20-alpine AS base
-
-# The web Dockerfile is copy-pasted into our main docs at /docs/handbook/deploying-with-docker.
-# Make sure you update this Dockerfile, the Dockerfile in the web workspace and copy that over to Dockerfile in the docs.
-
-FROM base AS builder
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
-RUN apk update
-RUN apk add --no-cache libc6-compat
+RUN apk update \
+    && apk add --no-cache libc6-compat \
+    && corepack enable
 # Set working directory
 WORKDIR /app
+
+
+FROM base AS builder
 RUN npm i -g turbo
 COPY . .
 RUN turbo prune api --docker
 
+
 # Add lockfile and package.json's of isolated subworkspace
 FROM base AS installer
-RUN apk update
-RUN apk add --no-cache libc6-compat
-WORKDIR /app
 
 # First install dependencies (as they change less often)
 COPY --from=builder /app/out/json/ .
-RUN corepack enable && pnpm i
+RUN pnpm i
 
 # Build the project and its dependencies
 COPY --from=builder /app/out/full/ .
@@ -35,13 +32,24 @@ COPY --from=builder /app/out/full/ .
 
 RUN pnpm build
 
+
 FROM base AS runner
-WORKDIR /app
-
 # Don't run production as root
-RUN addgroup --system --gid 1001 expressjs
-RUN adduser --system --uid 1001 expressjs
+RUN addgroup --system --gid 1001 nodejs \
+    && adduser --system --uid 1001 expressjs
 USER expressjs
-COPY --from=installer /app .
 
-CMD node apps/api/dist/index.js
+# Be more explicit with what is copied over
+# COPY --from=installer /app .
+
+# Allows pnpm to find its packages
+COPY --from=installer --chown=expressjs:nodejs /app/pnpm*.yaml /app/*.json /app/
+COPY --from=installer --chown=expressjs:nodejs /app/node_modules /app/node_modules
+COPY --from=installer --chown=expressjs:nodejs /app/packages /app/packages
+
+ARG SOURCE_PATH="/app/apps/api"
+COPY --from=installer --chown=expressjs:nodejs ${SOURCE_PATH}/dist ${SOURCE_PATH}/dist
+COPY --from=installer --chown=expressjs:nodejs ${SOURCE_PATH}/package.json ${SOURCE_PATH}/
+COPY --from=installer --chown=expressjs:nodejs ${SOURCE_PATH}/node_modules ${SOURCE_PATH}/node_modules
+
+CMD ["node", "./apps/api/dist/index.js"]

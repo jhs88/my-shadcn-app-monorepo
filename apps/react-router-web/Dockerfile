@@ -35,7 +35,7 @@ RUN pnpm build
 
 FROM base AS runner
 # Don't run production as root
-RUN addgroup --system --gid 1001 reactrouter \
+RUN addgroup --system --gid 1001 nodejs \
     && adduser --system --uid 1001 reactrouter
 USER reactrouter
 
