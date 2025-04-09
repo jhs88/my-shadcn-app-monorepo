@@ -1,0 +1,11 @@
+.git
+.github
+.react-router
+.*ignore
+.eslint*
+.prettierrc
+.env*
+README.md
+compose.yml
+node_modules
+build
