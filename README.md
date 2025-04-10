@@ -9,6 +9,7 @@ This Turborepo includes the following:
 ### Apps and Packages
 
 - `web`: a [Next.js](https://nextjs.org/) app
+- `react-router-web`: a [React Router v7](https://reactrouter.com/) app
 - `api`: an [Express](https://expressjs.com/) server
 - `@repo/ui`: a React component library made from `shadcn/ui`.
 - `@repo/logger`: Isomorphic logger (a small wrapper around console.log)
@@ -94,3 +95,4 @@ import { Button } from "@repo/ui/components/button";
 
 - [ ] Improve `packages` READMEs
 - [ ] Create a CI/CD pipeline for your app
+- [ ] Create Next.js "standalone mode" equivalent for react router
