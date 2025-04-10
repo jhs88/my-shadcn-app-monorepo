@@ -34,6 +34,11 @@ RUN pnpm build
 
 
 FROM base AS runner
+
+# First install prod dependencies
+COPY --from=builder /app/out/json/ .
+RUN pnpm i --prod
+
 # Don't run production as root
 RUN addgroup --system --gid 1001 nodejs \
     && adduser --system --uid 1001 expressjs
@@ -42,14 +47,14 @@ USER expressjs
 # Be more explicit with what is copied over
 # COPY --from=installer /app .
 
-# Allows pnpm to find its packages
-COPY --from=installer --chown=expressjs:nodejs /app/pnpm*.yaml /app/*.json /app/
-COPY --from=installer --chown=expressjs:nodejs /app/node_modules /app/node_modules
-COPY --from=installer --chown=expressjs:nodejs /app/packages /app/packages
+# Copy required prod internal packages
+# TODO: Copying internal deps should not be manual process
+COPY --from=installer --chown=expressjs:nodejs /app/packages/logger/dist ./packages/logger/dist
+COPY --from=installer --chown=expressjs:nodejs /app/packages/logger/package.json ./packages/logger/
 
-ARG SOURCE_PATH="/app/apps/api"
-COPY --from=installer --chown=expressjs:nodejs ${SOURCE_PATH}/dist ${SOURCE_PATH}/dist
-COPY --from=installer --chown=expressjs:nodejs ${SOURCE_PATH}/package.json ${SOURCE_PATH}/
-COPY --from=installer --chown=expressjs:nodejs ${SOURCE_PATH}/node_modules ${SOURCE_PATH}/node_modules
+# Copy only the source code for the app, not the entire project
+ARG APP_PATH="/app/apps/api"
+COPY --from=installer --chown=expressjs:nodejs ${APP_PATH}/package.json ${APP_PATH}/package.json
+COPY --from=installer --chown=expressjs:nodejs ${APP_PATH}/dist ${APP_PATH}/dist
 
 CMD ["node", "./apps/api/dist/index.js"]
