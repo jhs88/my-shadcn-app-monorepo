@@ -96,3 +96,4 @@ import { Button } from "@repo/ui/components/button";
 - [ ] Improve `packages` READMEs
 - [ ] Create a CI/CD pipeline for your app
 - [ ] Create Next.js "standalone mode" equivalent for react router
+- [ ] Bugfix `api` fails to start in dev mode because of logger needing to be built first
