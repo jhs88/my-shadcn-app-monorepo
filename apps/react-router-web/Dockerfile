@@ -34,22 +34,21 @@ RUN pnpm build
 
 
 FROM base AS runner
+
+# First install prod dependencies
+COPY --from=builder /app/out/json/ .
+RUN pnpm i --prod
+
 # Don't run production as root
 RUN addgroup --system --gid 1001 nodejs \
     && adduser --system --uid 1001 reactrouter
 USER reactrouter
 
-# Allows pnpm to find its packages
-COPY --from=installer --chown=reactrouter:nodejs /app/pnpm*.yaml /app/*.json /app/
-COPY --from=installer --chown=reactrouter:nodejs /app/node_modules /app/node_modules
-# COPY --from=installer --chown=expressjs:nodejs /app/packages /app/packages
-
 # Copy only the source code for the app, not the entire project
-ARG SOURCE_PATH="/app/apps/react-router-web"
-COPY --from=installer --chown=reactrouter:nodejs ${SOURCE_PATH}/public ${SOURCE_PATH}/public
-COPY --from=installer --chown=reactrouter:nodejs ${SOURCE_PATH}/package.json ${SOURCE_PATH}/
-COPY --from=installer --chown=reactrouter:nodejs ${SOURCE_PATH}/node_modules ${SOURCE_PATH}/node_modules
-COPY --from=installer --chown=reactrouter:nodejs ${SOURCE_PATH}/build ${SOURCE_PATH}/build
+ARG APP_PATH="/app/apps/react-router-web"
+COPY --from=installer --chown=reactrouter:nodejs ${APP_PATH}/public ${APP_PATH}/public
+COPY --from=installer --chown=reactrouter:nodejs ${APP_PATH}/package.json ${APP_PATH}/
+COPY --from=installer --chown=reactrouter:nodejs ${APP_PATH}/build ${APP_PATH}/build
 
-WORKDIR ${SOURCE_PATH}
+WORKDIR ${APP_PATH}
 CMD ["npx", "react-router-serve", "./build/server/index.js"]
