@@ -27,13 +27,16 @@ RUN corepack enable && pnpm i
 COPY --from=builder /app/out/full/ .
 
 # Uncomment and use build args to enable remote caching
-# ARG TURBO_TEAM
-# ENV TURBO_TEAM=$TURBO_TEAM
+ARG TURBO_TEAM
+ENV TURBO_TEAM=$TURBO_TEAM
 
-# ARG TURBO_TOKEN
-# ENV TURBO_TOKEN=$TURBO_TOKEN
+ARG TURBO_TOKEN
+ENV TURBO_TOKEN=$TURBO_TOKEN
 
-RUN pnpm build 
+RUN --mount=type=bind,source=.git,target=.git \
+    # --mount=type=secret,id=TURBO_TOKEN \
+    # TURBO_TOKEN=$(cat /run/secrets/TURBO_TOKEN) pnpm build 
+    pnpm build
 
 FROM base AS runner
 WORKDIR /app

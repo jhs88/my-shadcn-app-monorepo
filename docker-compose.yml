@@ -4,6 +4,10 @@ services:
     build:
       context: .
       dockerfile: ./apps/web/Dockerfile
+      args: 
+        - TURBO_API=${TURBO_API}
+        - TURBO_TEAM=${TURBO_TEAM}
+        - TURBO_TOKEN=${TURBO_TOKEN}
     restart: always
     ports: [3000:3000]
     networks: [app_network]
@@ -12,6 +16,10 @@ services:
     build:
       context: .
       dockerfile: ./apps/api/Dockerfile
+      args: 
+        - TURBO_API=${TURBO_API}
+        - TURBO_TEAM=${TURBO_TEAM}
+        - TURBO_TOKEN=${TURBO_TOKEN}
     restart: always
     ports: [3001:3001]
     networks: [app_network]
@@ -20,6 +28,10 @@ services:
     build:
       context: .
       dockerfile: ./apps/react-router-web/Dockerfile
+      args:
+        - TURBO_API=${TURBO_API}
+        - TURBO_TEAM=${TURBO_TEAM}
+        - TURBO_TOKEN=${TURBO_TOKEN}
     restart: always
     ports: [3002:3000]
     networks: [app_network]

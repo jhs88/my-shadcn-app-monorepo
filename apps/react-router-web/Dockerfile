@@ -1,4 +1,6 @@
 FROM node:20-alpine AS base
+ENV PNPM_HOME="/pnpm" 
+ENV PATH="$PNPM_HOME:$PATH"
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk update \
     && apk add --no-cache libc6-compat \
@@ -18,26 +20,32 @@ FROM base AS installer
 
 # First install dependencies (as they change less often)
 COPY --from=builder /app/out/json/ .
-RUN pnpm i
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm i
 
 # Build the project and its dependencies
 COPY --from=builder /app/out/full/ .
 
 # Uncomment and use build args to enable remote caching
-# ARG TURBO_TEAM
-# ENV TURBO_TEAM=$TURBO_TEAM
+ARG TURBO_API
+ENV TURBO_API=$TURBO_API
 
-# ARG TURBO_TOKEN
-# ENV TURBO_TOKEN=$TURBO_TOKEN
+ARG TURBO_TEAM
+ENV TURBO_TEAM=$TURBO_TEAM
 
-RUN pnpm build
+ARG TURBO_TOKEN
+ENV TURBO_TOKEN=$TURBO_TOKEN
+
+RUN --mount=type=bind,source=.git,target=.git \
+    # --mount=type=secret,id=TURBO_TOKEN \
+    # TURBO_TOKEN=$(cat /run/secrets/TURBO_TOKEN) pnpm build 
+    pnpm build
 
 
 FROM base AS runner
 
 # First install prod dependencies
 COPY --from=builder /app/out/json/ .
-RUN pnpm i --prod
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm i --prod
 
 # Don't run production as root
 RUN addgroup --system --gid 1001 nodejs \

@@ -6,7 +6,6 @@
   "scripts": {
     "build": "react-router build",
     "dev": "react-router dev",
-    "lint": "eslint . --ext .ts,.tsx",
     "preview": "vite preview",
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",
