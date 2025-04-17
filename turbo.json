@@ -11,7 +11,8 @@
         "build/**",
         ".next/**",
         "!.next/cache/**",
-        "public/dist/**"
+        "public/dist/**",
+        "target/**"
       ]
     },
     "clean": {
