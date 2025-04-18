@@ -1,0 +1,11 @@
+{
+  "name": "java-api",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "./mvnw clean package -B -Dmaven.test.skip",
+    "clean": "rm -rf target",
+    "dev": "mvn spring-boot:run",
+    "start": "java -jar target/demo*.jar"
+  }
+}
