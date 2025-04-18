@@ -7,7 +7,8 @@ services:
       args: 
         - TURBO_API=${TURBO_API}
         - TURBO_TEAM=${TURBO_TEAM}
-        - TURBO_TOKEN=${TURBO_TOKEN}
+      secrets:
+        - turbo_token
     restart: always
     ports: [3000:3000]
     networks: [app_network]
@@ -19,7 +20,8 @@ services:
       args: 
         - TURBO_API=${TURBO_API}
         - TURBO_TEAM=${TURBO_TEAM}
-        - TURBO_TOKEN=${TURBO_TOKEN}
+      secrets:
+        - turbo_token
     restart: always
     ports: [3001:3001]
     networks: [app_network]
@@ -31,10 +33,30 @@ services:
       args:
         - TURBO_API=${TURBO_API}
         - TURBO_TEAM=${TURBO_TEAM}
-        - TURBO_TOKEN=${TURBO_TOKEN}
+      secrets:
+        - turbo_token
+      target: installer
     restart: always
     ports: [3002:3000]
+    networks: [app_network]
+    command: tail -f /dev/null
+  java-api:
+    container_name: java-api 
+    build:
+      context: .
+      dockerfile: ./apps/java-api/Dockerfile
+      args:
+        - TURBO_API=${TURBO_API}
+        - TURBO_TEAM=${TURBO_TEAM}
+      secrets:
+        - turbo_token
+    restart: always
+    ports: [8080:8080]
     networks: [app_network]
 
 networks:
   app_network:
+
+secrets:
+  turbo_token:
+    environment: TURBO_TOKEN

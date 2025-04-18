@@ -9,7 +9,17 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 permissions:
   contents: write
-  
+  pull-requests: write
+  packages: write
+  attestations: write
+  id-token: write
+ 
+env:    # To use Turborepo Remote Caching, set the following environment variables for the job.
+  TURBO_TELEMETRY_DISABLED: ${{ vars.TURBO_TELEMETRY_DISABLED }}
+  TURBO_API: ${{ vars.TURBO_API }}
+  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+
 jobs:
   release:
     name: 🦋 Changesets Release
@@ -17,6 +27,21 @@ jobs:
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v4
+
+      - name: 📚 Cache turbo build setup
+        uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-
+
+      - name: Set up JDK 
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
 
       - name: 📦 Setup pnpm
         uses: pnpm/action-setup@v4

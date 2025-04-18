@@ -13,6 +13,7 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm i -g turbo
 COPY . .
 RUN turbo prune web --docker
 
+
 # Add lockfile and package.json's of isolated subworkspace
 FROM base AS installer
 RUN apk update && apk add --no-cache libc6-compat
@@ -31,12 +32,11 @@ ENV TURBO_API=$TURBO_API
 ARG TURBO_TEAM
 ENV TURBO_TEAM=$TURBO_TEAM
 
-ARG TURBO_TOKEN
-ENV TURBO_TOKEN=$TURBO_TOKEN
+# ARG TURBO_TOKEN
+# ENV TURBO_TOKEN=$TURBO_TOKEN
 
 RUN --mount=type=bind,source=.git,target=.git \
-    # --mount=type=secret,id=TURBO_TOKEN \
-    # TURBO_TOKEN=$(cat /run/secrets/TURBO_TOKEN) pnpm build 
+    --mount=type=secret,id=turbo_token,env=TURBO_TOKEN \
     pnpm build
 
 
