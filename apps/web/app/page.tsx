@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState, ChangeEvent, FormEvent } from "react";
 import { Button } from "@repo/ui/components/button";
+import { Typography } from "@repo/ui/components/typography";
+import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 
 const API_HOST = process.env.NEXT_PUBLIC_API_HOST || "http://localhost:3001";
 
@@ -36,9 +37,9 @@ export default function Web() {
   };
 
   return (
-    <div>
-      <h1>Web</h1>
-      <form onSubmit={onSubmit}>
+    <main className="container mx-auto w-full overflow-hidden bg-background text-foreground px-4 py-8">
+      <Typography variant="h1">Web</Typography>
+      <form onSubmit={onSubmit} className="center w-full max-w-2xl py-4">
         <label htmlFor="name">Name </label>
         <input
           type="text"
@@ -47,21 +48,23 @@ export default function Web() {
           value={name}
           onChange={onChange}
         ></input>
-        <Button type="submit">Submit</Button>
+        <Button type="submit" className="mt-4">
+          Submit
+        </Button>
       </form>
       {error && (
-        <div>
-          <h3>Error</h3>
+        <div className="flex flex-col gap-y-2 max-w-min">
+          <Typography variant="h3">Error</Typography>
           <p>{error}</p>
         </div>
       )}
       {response && (
-        <div>
-          <h3>Greeting</h3>
+        <div className="flex flex-col gap-y-2 max-w-min">
+          <Typography variant="h3">Greeting</Typography>
           <p>{response.message}</p>
           <Button onClick={onReset}>Reset</Button>
         </div>
       )}
-    </div>
+    </main>
   );
 }
