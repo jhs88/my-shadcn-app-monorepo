@@ -88,7 +88,7 @@ export default function UpdateItem({ loaderData }: Route.ComponentProps) {
             )}
           />
           <Button type="submit" className="mt-4">
-            Submit
+            {form.formState.isSubmitting ? "Updating..." : "Update Item"}
           </Button>
         </Form>
       </FormProvider>
