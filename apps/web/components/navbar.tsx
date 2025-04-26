@@ -1,5 +1,4 @@
 import { Menu } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { ReactNode } from "react";
 
@@ -40,12 +39,12 @@ interface NavbarProps {
 
 export default function Navbar({
   logo = (
-    <Image
-      src={"/images/logo.png"}
+    <img
+      src={
+        "https://assets.vercel.com/image/upload/v1662130559/nextjs/Icon_dark_background.png"
+      }
       alt="Logo"
-      width={250}
-      height={100}
-      className="max-h-[100px] block rounded-md leading-none no-underline transition-colors hover:bg-accent hover:text-accent-foreground"
+      className="max-h-[75px] block rounded-md leading-none no-underline transition-colors hover:bg-accent hover:text-accent-foreground"
     />
   ),
   name = "Company Name",

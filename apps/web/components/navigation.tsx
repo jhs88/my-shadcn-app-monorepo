@@ -46,17 +46,17 @@ interface NavigationProps {
 export default function Navigation({
   menuItems = [
     {
-      title: "Documentation",
-      isLink: true,
-      href: "/documentation",
-    },
-    {
       title: "Getting started",
       content: "default",
     },
     {
       title: "Components",
       content: "components",
+    },
+    {
+      title: "Documentation",
+      isLink: true,
+      href: "/documentation",
     },
   ],
   components = [
@@ -96,9 +96,11 @@ export default function Navigation({
         "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
     },
   ],
-  logo = <Image src={"/images/logo.png"} alt="Logo" width={250} height={100} />,
-  logoTitle = "Logo Title",
-  logoDescription = "Logo Description.",
+  logo = (
+    <Image src={"/images/vercel.svg"} width={200} height={200} alt="Logo" />
+  ),
+  logoTitle = "Vercel",
+  logoDescription = "Description.",
   logoHref = "/",
   introItems = [
     {
