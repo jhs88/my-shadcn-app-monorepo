@@ -9,13 +9,13 @@
     "start": "next start",
     "lint": "next lint",
     "clean": "rm -rf .next/standalone",
-    "scanner": "next dev --turbopack & react-scan localhost:3000"
+    "react-scan": "react-scan localhost:3000"
   },
   "dependencies": {
     "@repo/ui": "workspace:*",
     "lucide-react": "^0.475.0",
     "next": "^15.2.4",
-    "next-themes": "^0.4.4",
+    "next-themes": "^0.4.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

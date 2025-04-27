@@ -38,7 +38,7 @@ services:
     environment:
       - JAVA_API_HOST=${JAVA_API_HOST}
     restart: always
-    ports: [3002:3000]
+    ports: [8080:3000]
     networks: [app_network]
   java-api:
     container_name: java-api 
@@ -51,7 +51,7 @@ services:
       secrets:
         - turbo_token
     restart: always
-    ports: [8080:8080]
+    ports: [8081:8080]
     networks: [app_network]
 
 networks:
