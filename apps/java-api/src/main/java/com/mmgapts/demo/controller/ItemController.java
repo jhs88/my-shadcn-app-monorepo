@@ -1,4 +1,4 @@
-package com.mmgapts.demo.controller;
+package com.example.demo.controller;
 
 import java.util.List;
 
@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mmgapts.demo.exception.ItemNotFoundException;
-import com.mmgapts.demo.model.Item;
-import com.mmgapts.demo.repo.ItemRepository;
+import com.example.demo.exception.ItemNotFoundException;
+import com.example.demo.model.Item;
+import com.example.demo.repo.ItemRepository;
 
 @RestController
 public class ItemController {

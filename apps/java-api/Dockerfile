@@ -1,18 +1,4 @@
-FROM maven:3-eclipse-temurin-21-alpine AS java
-
 FROM node:20-alpine AS base
-
-ENV JAVA_HOME="/opt/java/openjdk"
-ENV PATH="$JAVA_HOME/bin:$PATH"
-COPY --from=java ${JAVA_HOME} ${JAVA_HOME} 
-
-ENV MAVEN_HOME="/usr/share/maven"
-ENV MAVEN_CONFIG="/root/.m2"
-COPY --from=java ${MAVEN_HOME} ${MAVEN_HOME}
-COPY --from=java /usr/local/bin/mvn-entrypoint.sh /usr/local/bin/mvn-entrypoint.sh
-COPY --from=java ${MAVEN_HOME}/ref/settings-docker.xml ${MAVEN_HOME}/ref/settings-docker.xml
-RUN ln -s ${MAVEN_HOME}/bin/mvn /usr/bin/mvn
-
 ENV PNPM_HOME="/pnpm" 
 ENV PATH="$PNPM_HOME:$PATH"
 RUN apk update && apk add --no-cache libc6-compat
@@ -33,6 +19,10 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm i
 
 COPY --from=builder /app/out/full/ .
 
+ENV JAVA_HOME="/opt/java/openjdk"
+ENV PATH="$JAVA_HOME/bin:$PATH"
+COPY --from=eclipse-temurin:21-alpine ${JAVA_HOME} ${JAVA_HOME} 
+
 ARG TURBO_API
 ENV TURBO_API=$TURBO_API
 
@@ -43,18 +33,18 @@ ENV TURBO_TEAM=$TURBO_TEAM
 # ENV TURBO_TOKEN=$TURBO_TOKEN
 
 RUN --mount=type=bind,source=.git,target=.git \
-    --mount=type=cache,target=/root/.m2 \
+    --mount=type=cache,id=maven,target=/root/.m2 \
     --mount=type=secret,id=turbo_token,env=TURBO_TOKEN \
-    mvn-entrypoint.sh pnpm build
+    pnpm build
 
 
 FROM eclipse-temurin:21-jre-alpine AS runner
 WORKDIR /app
 
-RUN addgroup --system --gid 1001 nodejs \
+RUN addgroup --system --gid 1001 java \
     && adduser --system --uid 1001 java
 
-USER java
+USER java 
 
-COPY --from=installer --chmod=755 --chown=java:nodejs /app/apps/java-api/target/*.jar .
+COPY --from=installer --chown=java:java /app/apps/java-api/target/*.jar .
 CMD java -jar demo*.jar

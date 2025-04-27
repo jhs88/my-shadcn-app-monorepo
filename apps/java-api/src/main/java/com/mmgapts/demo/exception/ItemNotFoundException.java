@@ -1,4 +1,4 @@
-package com.mmgapts.demo.exception;
+package com.example.demo.exception;
 
 public class ItemNotFoundException extends RuntimeException {
     private Long id;

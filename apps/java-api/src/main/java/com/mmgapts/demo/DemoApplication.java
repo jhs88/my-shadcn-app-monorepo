@@ -1,12 +1,12 @@
-package com.mmgapts.demo;
+package com.example.demo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.mmgapts.demo.model.Item;
-import com.mmgapts.demo.repo.ItemRepository;
+import com.example.demo.model.Item;
+import com.example.demo.repo.ItemRepository;
 
 @SpringBootApplication
 public class DemoApplication implements CommandLineRunner {
@@ -20,8 +20,9 @@ public class DemoApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		itemRepository.save(new Item(null, "Item 1"));
-		itemRepository.save(new Item(null, "Item 2"));
+		for (int i = 1; i <= 30; i++) {
+			itemRepository.save(new Item(null, "Item " + i));
+		}
 	}
 
 }
