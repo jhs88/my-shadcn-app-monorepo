@@ -31,6 +31,7 @@
     "plugins": [
       "prettier-plugin-jsdoc"
     ],
-    "jsdocPrintWidth": 120
+    "jsdocPrintWidth": 120,
+    "tsdoc": true
   }
 }
