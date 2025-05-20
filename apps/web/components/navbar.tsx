@@ -45,7 +45,7 @@ export default function Navbar({
       alt="Logo"
       width={75}
       height={75}
-      className="max-h-[75px] block rounded-md leading-none no-underline transition-colors hover:bg-accent hover:text-accent-foreground"
+      className="hover:bg-accent hover:text-accent-foreground block max-h-[75px] rounded-md leading-none no-underline transition-colors"
     />
   ),
   name = "Company Name",

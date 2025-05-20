@@ -11,7 +11,7 @@ export async function loader(_: Route.LoaderArgs) {
 
 export default function Items({ loaderData }: Route.ComponentProps) {
   return (
-    <div className="container mx-auto flex flex-col gap-4 m-4">
+    <div className="container m-4 mx-auto flex flex-col gap-4">
       <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
         List of Items
       </h1>

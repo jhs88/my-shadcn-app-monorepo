@@ -37,7 +37,7 @@ export default function Web() {
   };
 
   return (
-    <main className="container mx-auto w-full overflow-hidden bg-background text-foreground px-4 py-8">
+    <main className="bg-background text-foreground container mx-auto w-full overflow-hidden px-4 py-8">
       <Typography variant="h1">Web</Typography>
       <form onSubmit={onSubmit} className="center w-full max-w-2xl py-4">
         <label htmlFor="name">Name </label>
@@ -53,13 +53,13 @@ export default function Web() {
         </Button>
       </form>
       {error && (
-        <div className="flex flex-col gap-y-2 max-w-min">
+        <div className="flex max-w-min flex-col gap-y-2">
           <Typography variant="h3">Error</Typography>
           <p>{error}</p>
         </div>
       )}
       {response && (
-        <div className="flex flex-col gap-y-2 max-w-min">
+        <div className="flex max-w-min flex-col gap-y-2">
           <Typography variant="h3">Greeting</Typography>
           <p>{response.message}</p>
           <Button onClick={onReset}>Reset</Button>
