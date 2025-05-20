@@ -37,7 +37,7 @@ export default function Web() {
   };
 
   return (
-    <main className="bg-background text-foreground container mx-auto w-full overflow-hidden px-4 py-8">
+    <main className="container mx-auto w-full overflow-hidden px-4 py-8">
       <Typography variant="h1">Web</Typography>
       <form onSubmit={onSubmit} className="center w-full max-w-2xl py-4">
         <label htmlFor="name">Name </label>

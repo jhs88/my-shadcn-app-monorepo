@@ -74,7 +74,7 @@ export default function Navbar({
       <div className="max-w-container relative mx-auto">
         <NavbarComponent>
           <NavbarLeft>
-            <Link href={homeUrl} legacyBehavior passHref className="flex">
+            <Link href={homeUrl} passHref className="flex">
               {logo}
             </Link>
             {showNavigation && (customNavigation ?? <Navigation />)}
