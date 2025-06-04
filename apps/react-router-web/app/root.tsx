@@ -1,17 +1,20 @@
+import "@repo/ui/globals.css";
 import type { LinksFunction } from "react-router";
 import {
-  isRouteErrorResponse,
+  data,
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
 } from "react-router";
+import { GeneralErrorBoundary } from "~/components/error-boundary";
+// import { getEnv } from "~/utils/env.server";
+import { pipeHeaders } from "~/utils/headers.server";
+import { combineHeaders, getDomainUrl } from "~/utils/misc";
+import { useNonce } from "~/utils/nonce-provider";
+import { makeTimings } from "~/utils/timing.server";
 import type { Route } from "./+types/root";
-
-import { Providers } from "~/components/providers";
-
-import "@repo/ui/globals.css";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -26,19 +29,57 @@ export const links: LinksFunction = () => [
   },
 ];
 
+export const meta: Route.MetaFunction = ({ data }) => {
+  return [
+    { title: data ? "React Router" : "Error | React Router" },
+    { name: "description", content: `Basic React Router Example` },
+  ];
+};
+
+export const headers: Route.HeadersFunction = pipeHeaders;
+
+export async function loader({ request }: Route.LoaderArgs) {
+  const timings = makeTimings("root loader");
+  return data(
+    {
+      requestInfo: {
+        origin: getDomainUrl(request),
+        path: new URL(request.url).pathname,
+      },
+      // ENV: getEnv(),
+    },
+    {
+      headers: combineHeaders({ "Server-Timing": timings.toString() }),
+    },
+  );
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
+  // if there was an error running the loader, data could be missing
+  // const data = useLoaderData<typeof loader | null>();
+  const nonce = useNonce();
+
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        {/* {allowIndexing ? null : (
+          <meta name="robots" content="noindex, nofollow" />
+        )} */}
         <Meta />
         <Links />
       </head>
       <body className="font-sans antialiased">
-        <Providers>{children}</Providers>
-        <ScrollRestoration />
-        <Scripts />
+        {children}
+        {/* <script
+          nonce={nonce}
+          dangerouslySetInnerHTML={{
+            __html: `window.ENV = ${JSON.stringify(data?.ENV)}`,
+          }}
+        /> */}
+        <ScrollRestoration nonce={nonce} />
+        <Scripts nonce={nonce} />
       </body>
     </html>
   );
@@ -49,33 +90,6 @@ export default function App(_: Route.ComponentProps) {
   return <Outlet />;
 }
 
-export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
-  let message = "Oops!";
-  let details = "An unexpected error occurred.";
-  let stack: string | undefined;
-  console.log(error);
-  if (isRouteErrorResponse(error)) {
-    message = error.status === 404 ? "404" : "Error";
-    details =
-      error.status === 404
-        ? "The requested page could not be found."
-        : error.statusText || details;
-  } else if (import.meta.env.DEV && error && error instanceof Error) {
-    details = error.message;
-    stack = error.stack;
-  }
-
-  return (
-    <main className="container mx-auto">
-      <div className="flex h-screen flex-col items-center justify-center gap-4">
-        <h1 className="text-5xl font-bold">{message}</h1>
-        <p>{details}</p>
-        {stack && (
-          <pre className="w-full overflow-x-auto p-4">
-            <code>{stack}</code>
-          </pre>
-        )}
-      </div>
-    </main>
-  );
-}
+// this is a last resort error boundary. There's not much useful information we
+// can offer at this level.
+export const ErrorBoundary = GeneralErrorBoundary;

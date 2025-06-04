@@ -1,20 +1,32 @@
-/* eslint-disable prefer-const */
-/**
- * By default, React Router will handle generating the HTTP Response for you. You are free to delete this file if you'd
- * like to, but if you ever want it revealed again, you can run `npx react-router reveal` ✨ For more information, see
- * https://reactrouter.com/explanation/special-files#entryservertsx
- */
-
+import crypto from "node:crypto";
 import { PassThrough } from "node:stream";
+import { styleText } from "node:util";
 
-import type { AppLoadContext, EntryContext } from "react-router";
 import { createReadableStreamFromReadable } from "@react-router/node";
-import { ServerRouter } from "react-router";
+import * as Sentry from "@sentry/react-router";
 import { isbot } from "isbot";
-import type { RenderToPipeableStreamOptions } from "react-dom/server";
-import { renderToPipeableStream } from "react-dom/server";
+import {
+  renderToPipeableStream,
+  type RenderToPipeableStreamOptions,
+} from "react-dom/server";
+import {
+  type ActionFunctionArgs,
+  type AppLoadContext,
+  type EntryContext,
+  type HandleDocumentRequestFunction,
+  type LoaderFunctionArgs,
+  ServerRouter,
+} from "react-router";
+import { getEnv, init } from "./utils/env.server";
+import { NonceProvider } from "./utils/nonce-provider";
+import { makeTimings } from "./utils/timing.server";
 
 export const streamTimeout = 5000;
+
+// init();
+// global.ENV = getEnv();
+
+type DocRequestArgs = Parameters<HandleDocumentRequestFunction>;
 
 export default function handleRequest(
   request: Request,
@@ -26,9 +38,18 @@ export default function handleRequest(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   loadContext: AppLoadContext,
 ) {
+  if (process.env.NODE_ENV === "production" && process.env.SENTRY_DSN)
+    responseHeaders.append("Document-Policy", "js-profiling");
+
+  const nonce = crypto.randomBytes(16).toString("hex");
+
   return new Promise((resolve, reject) => {
     let shellRendered = false;
     let userAgent = request.headers.get("user-agent");
+
+    // NOTE: this timing will only include things that are rendered in the shell
+    // and will not include suspended components and deferred loaders
+    const timings = makeTimings("render", "renderToPipeableStream");
 
     // Ensure requests from bots and SPA Mode renders wait for all content to load before responding
     // https://react.dev/reference/react-dom/server/renderToPipeableStream#waiting-for-all-content-to-load-for-crawlers-and-static-generation
@@ -38,22 +59,23 @@ export default function handleRequest(
         : "onShellReady";
 
     const { pipe, abort } = renderToPipeableStream(
-      <ServerRouter context={routerContext} url={request.url} />,
+      <NonceProvider value={nonce}>
+        <ServerRouter nonce={nonce} context={routerContext} url={request.url} />
+      </NonceProvider>,
       {
         [readyOption]() {
           shellRendered = true;
           const body = new PassThrough();
-          const stream = createReadableStreamFromReadable(body);
 
           responseHeaders.set("Content-Type", "text/html");
+          responseHeaders.append("Server-Timing", timings.toString());
 
           resolve(
-            new Response(stream, {
+            new Response(createReadableStreamFromReadable(body), {
               headers: responseHeaders,
               status: responseStatusCode,
             }),
           );
-
           pipe(body);
         },
         onShellError(error: unknown) {
@@ -68,6 +90,7 @@ export default function handleRequest(
             console.error(error);
           }
         },
+        nonce,
       },
     );
 
@@ -75,4 +98,21 @@ export default function handleRequest(
     // flush down the rejected boundaries
     setTimeout(abort, streamTimeout + 1000);
   });
+}
+
+export function handleError(
+  error: unknown,
+  { request }: LoaderFunctionArgs | ActionFunctionArgs,
+): void {
+  // Skip capturing if the request is aborted as Remix docs suggest
+  // Ref: https://remix.run/docs/en/main/file-conventions/entry.server#handleerror
+  if (request.signal.aborted) return;
+
+  if (error instanceof Error) {
+    console.error(styleText("red", String(error.stack)));
+  } else {
+    console.error(error);
+  }
+
+  Sentry.captureException(error);
 }

@@ -1,0 +1,12 @@
+node_modules
+.turbo
+.env
+
+build
+.react-router
+
+.next
+
+*-lock*
+
+java-api
