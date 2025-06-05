@@ -1,4 +1,3 @@
-import "@repo/ui/globals.css";
 import type { LinksFunction } from "react-router";
 import {
   data,
@@ -15,6 +14,8 @@ import { combineHeaders, getDomainUrl } from "~/utils/misc";
 import { useNonce } from "~/utils/nonce-provider";
 import { makeTimings } from "~/utils/timing.server";
 import type { Route } from "./+types/root";
+
+import "@repo/ui/globals.css";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
