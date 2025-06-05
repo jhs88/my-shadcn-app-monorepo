@@ -1,16 +1,15 @@
 import * as React from "react";
-import { ThemeProvider as NextThemesProvider } from "next-themes";
+import { type Theme, ThemeProvider } from "remix-themes";
 
-export function Providers({ children }: { children: React.ReactNode }) {
+export function Providers({
+  theme,
+  children,
+}: React.PropsWithChildren<{
+  theme: Theme;
+}>) {
   return (
-    <NextThemesProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange
-      enableColorScheme
-    >
+    <ThemeProvider specifiedTheme={theme} themeAction="/action/set-theme">
       {children}
-    </NextThemesProvider>
+    </ThemeProvider>
   );
 }
