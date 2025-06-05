@@ -1,0 +1,14 @@
+{
+    "recommendations": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "ms-vscode.vscode-docker",
+        "mxsdev.typescript-explorer",
+        "IronGeek.vscode-env",
+        "vscjava.vscode-java-pack",
+        "vmware.vscode-boot-dev-pack",
+        "YoavBls.pretty-ts-errors",
+        "bradlc.vscode-tailwindcss",
+        "Vercel.turbo-vsc"
+    ]
+}
