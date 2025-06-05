@@ -3,7 +3,7 @@ import tailwindcss from "@tailwindcss/vite";
 import { reactRouterDevTools } from "react-router-devtools";
 import { defineConfig } from "vite";
 import { envOnlyMacros } from "vite-env-only";
-// import tsconfigPaths from "vite-tsconfig-paths";
+import tsconfigPaths from "vite-tsconfig-paths";
 import {
   type SentryReactRouterBuildOptions,
   sentryReactRouter,
@@ -28,7 +28,7 @@ export default defineConfig((config) => ({
     MODE === "production" && process.env.SENTRY_AUTH_TOKEN
       ? sentryReactRouter(sentryConfig, config)
       : null,
-    // tsconfigPaths(),
+    tsconfigPaths(),
   ],
 }));
 
