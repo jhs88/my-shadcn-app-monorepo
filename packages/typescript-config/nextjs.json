@@ -4,18 +4,14 @@
   "extends": "./base.json",
   "compilerOptions": {
     "allowJs": true,
-    "forceConsistentCasingInFileNames": true,
-    "incremental": true,
     "jsx": "preserve",
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "inlineSourceMap": true,
     "noEmit": true,
     "plugins": [
       {
         "name": "next"
       }
     ],
-    "target": "ES2017"
   }
 }

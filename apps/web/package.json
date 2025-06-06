@@ -9,6 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "clean": "rm -rf .next/standalone",
+    "check-types": "tsc --noEmit",
     "react-scan": "react-scan localhost:3000"
   },
   "dependencies": {

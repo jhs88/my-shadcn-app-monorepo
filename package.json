@@ -9,6 +9,7 @@
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
     "test": "turbo test",
+    "check-types": "turbo check-types",
     "scanner": "turbo scanner",
     "changeset": "changeset",
     "version-packages": "changeset version",

@@ -3,7 +3,7 @@ import { sentryOnBuildEnd } from "@sentry/react-router";
 
 const MODE = process.env.NODE_ENV;
 
-export default {
+const config: Config = {
   // Defaults to true. Set to false to enable SPA for all routes.
   ssr: true,
 
@@ -21,4 +21,6 @@ export default {
     }
   },
   prerender: ["/"],
-} satisfies Config;
+};
+
+export default config;

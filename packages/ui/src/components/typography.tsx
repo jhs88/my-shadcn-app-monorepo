@@ -70,7 +70,7 @@ export function Typography({
   const { TagName, classes } = config;
 
   return (
-    // @ts-expect-error
+    // @ts-expect-error unknown
     <TagName {...props} className={cn(classes, className)}>
       {children}
     </TagName>
