@@ -4,8 +4,9 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "build": "tsc",
     "lint": "eslint . --max-warnings 0",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --emitDeclarationOnly"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
@@ -78,6 +79,7 @@
     "react": "^19",
     "react-dom": "^19"
   },
+  "types": "./dist/*.d.ts",
   "exports": {
     "./globals.css": "./src/styles/globals.css",
     "./postcss.config": "./postcss.config.mjs",

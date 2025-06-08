@@ -9,6 +9,7 @@
     "types": ["node", "vite/client"],
     "verbatimModuleSyntax": true,
     "noEmit": true,
+    "baseUrl": ".",
     "paths": {
       "~/*": ["./app/*"],
       "@repo/ui/*": ["../../packages/ui/src/*"]
