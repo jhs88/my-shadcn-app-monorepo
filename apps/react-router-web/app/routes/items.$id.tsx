@@ -8,7 +8,7 @@ import {
   FormMessage,
 } from "@repo/ui/components/form";
 import { Input } from "@repo/ui/components/input";
-import { zodResolver } from "@repo/ui/resolvers";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "react-router";
 import {
   RemixFormProvider as FormProvider,
