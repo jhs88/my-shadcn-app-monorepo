@@ -5,6 +5,7 @@
 		}
 	],
 	"tailwindCSS.experimental.configFile": "./packages/ui/src/styles/globals.css",
+	"typescript.enablePromptUseWorkspaceTsdk": true,
 	"typescript.preferences.autoImportFileExcludePatterns": [
 		"@radix-ui/**"
 	],

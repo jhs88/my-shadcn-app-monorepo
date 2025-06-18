@@ -70,8 +70,8 @@
     "typescript": "5.7.3"
   },
   "peerDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4"
+    "@hookform/resolvers": "^5.0.1",
+    "react-hook-form": "^7.55.0"
   },
   "overrides": {
     "@types/react": "^19",
@@ -79,13 +79,11 @@
     "react": "^19",
     "react-dom": "^19"
   },
-  "types": "./dist/*.d.ts",
   "exports": {
     "./globals.css": "./src/styles/globals.css",
     "./postcss.config": "./postcss.config.mjs",
     "./lib/*": "./src/lib/*.ts",
     "./components/*": "./src/components/*.tsx",
-    "./hooks/*": "./src/hooks/*.ts",
-    "./resolvers": "./src/lib/resolvers.ts"
+    "./hooks/*": "./src/hooks/*.ts"
   }
 }
