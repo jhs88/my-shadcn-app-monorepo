@@ -1,15 +1,15 @@
-import { useLoaderData, type LoaderFunctionArgs } from "react-router";
-import { createClient } from "~/utils/supabase.server";
+import { createClient } from "~/lib/supabase/server";
+import type { Route } from "./+types/instruments._index";
 
-export async function loader({ request }: LoaderFunctionArgs) {
-  const supabase = createClient(request);
+export async function loader({ request }: Route.LoaderArgs) {
+  const { supabase } = createClient(request);
   const { data: instruments } = await supabase.from("instruments").select();
 
   return { instruments };
 }
 
-export default function Index() {
-  const { instruments } = useLoaderData<typeof loader>();
+export default function Instruments({ loaderData }: Route.ComponentProps) {
+  const { instruments } = loaderData;
   return (
     <ul>
       {instruments?.map((instrument) => (
