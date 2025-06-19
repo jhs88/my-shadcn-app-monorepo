@@ -71,7 +71,7 @@ export default function UpdateItem({ loaderData }: Route.ComponentProps) {
         <Form
           onSubmit={form.handleSubmit}
           method="post"
-          className="center w-full max-w-2xl py-4"
+          className="center w-full max-w-2xl space-x-3 py-4"
         >
           <FormField
             control={form.control}
@@ -87,7 +87,7 @@ export default function UpdateItem({ loaderData }: Route.ComponentProps) {
               </FormItem>
             )}
           />
-          <Button type="submit" className="mt-4">
+          <Button size="sm" type="submit" className="mt-4 hover:cursor-pointer">
             {form.formState.isSubmitting ? "Updating..." : "Update Item"}
           </Button>
         </Form>

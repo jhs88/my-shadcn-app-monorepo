@@ -122,14 +122,12 @@ export default function Navigation({
         {menuItems.map((item, index) => (
           <NavigationMenuItem key={index}>
             {item.isLink ? (
-              <NavLink to={item.href ?? ""}>
-                <NavigationMenuLink
-                  asChild
-                  className={navigationMenuTriggerStyle()}
-                >
-                  {item.title}
-                </NavigationMenuLink>
-              </NavLink>
+              <NavigationMenuLink
+                asChild
+                className={navigationMenuTriggerStyle()}
+              >
+                <NavLink to={item.href ?? ""}>{item.title}</NavLink>
+              </NavigationMenuLink>
             ) : (
               <>
                 <NavigationMenuTrigger>{item.title}</NavigationMenuTrigger>

@@ -10,10 +10,10 @@ import Navbar from "~/components/navbar";
 export default function Index() {
   return (
     <>
-    <Navbar/> 
+      <Navbar />
       <main className="container mx-auto min-h-screen w-full overflow-hidden">
         <Dialog>
-          <DialogTrigger asChild>
+          <DialogTrigger asChild className="hover:cursor-pointer">
             <Button>Dialog Button</Button>
           </DialogTrigger>
           <DialogContent>
