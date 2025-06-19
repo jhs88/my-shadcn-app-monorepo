@@ -70,7 +70,10 @@ export function pipeHeaders({
   return headers;
 }
 
-/** Given multiple Cache-Control headers, merge them and get the most conservative one. */
+/**
+ * Given multiple Cache-Control headers, merge them and get the most
+ * conservative one.
+ */
 export function getConservativeCacheControl(
   ...cacheControlHeaders: Array<string | null>
 ): string {

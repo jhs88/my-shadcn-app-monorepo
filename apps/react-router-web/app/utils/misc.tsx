@@ -54,7 +54,10 @@ export function mergeHeaders(
   return merged;
 }
 
-/** Combine multiple header objects into one (uses append so headers are not overridden) */
+/**
+ * Combine multiple header objects into one (uses append so headers are not
+ * overridden)
+ */
 export function combineHeaders(
   ...headers: Array<ResponseInit["headers"] | null | undefined>
 ) {
@@ -83,13 +86,14 @@ export function combineResponseInits(
 }
 
 /**
- * Returns true if the current navigation is submitting the current route's form. Defaults to the current route's form
- * action and method POST.
+ * Returns true if the current navigation is submitting the current route's
+ * form. Defaults to the current route's form action and method POST.
  *
  * Defaults state to 'non-idle'
  *
- * NOTE: the default formAction will include query params, but the navigation.formAction will not, so don't use the
- * default formAction if you want to know if a form is submitting without specific query params.
+ * NOTE: the default formAction will include query params, but the
+ * navigation.formAction will not, so don't use the default formAction if you
+ * want to know if a form is submitting without specific query params.
  */
 export function useIsPending({
   formAction,
@@ -114,10 +118,12 @@ export function useIsPending({
 }
 
 /**
- * This combines useSpinDelay (from https://npm.im/spin-delay) and useIsPending from our own utilities to give you a
- * nice way to show a loading spinner for a minimum amount of time, even if the request finishes right after the delay.
+ * This combines useSpinDelay (from https://npm.im/spin-delay) and useIsPending
+ * from our own utilities to give you a nice way to show a loading spinner for a
+ * minimum amount of time, even if the request finishes right after the delay.
  *
- * This avoids a flash of loading state regardless of how fast or slow the request is.
+ * This avoids a flash of loading state regardless of how fast or slow the
+ * request is.
  */
 export function useDelayedIsPending({
   formAction,
@@ -141,9 +147,10 @@ function callAll<Args extends Array<unknown>>(
 }
 
 /**
- * Use this hook with a button and it will make it so the first click sets a `doubleCheck` state to true, and the second
- * click will actually trigger the `onClick` handler. This allows you to have a button that can be like a "are you
- * sure?" experience for the user before doing destructive operations.
+ * Use this hook with a button and it will make it so the first click sets a
+ * `doubleCheck` state to true, and the second click will actually trigger the
+ * `onClick` handler. This allows you to have a button that can be like a "are
+ * you sure?" experience for the user before doing destructive operations.
  */
 export function useDoubleCheck() {
   const [doubleCheck, setDoubleCheck] = useState(false);
