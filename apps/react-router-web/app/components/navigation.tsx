@@ -10,7 +10,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@repo/ui/components/navigation-menu";
 import { cn } from "@repo/ui/lib/utils";
-import { NavLink } from "react-router";
+import { NavLink, type NavLinkProps } from "react-router";
 import type { ReactNode } from "react";
 
 interface ComponentItem {
@@ -123,10 +123,10 @@ export default function Navigation({
           <NavigationMenuItem key={index}>
             {item.isLink ? (
               <NavigationMenuLink
-                asChild
+                href={item.href ?? ""}
                 className={navigationMenuTriggerStyle()}
               >
-                <NavLink to={item.href ?? ""}>{item.title}</NavLink>
+                {item.title}
               </NavigationMenuLink>
             ) : (
               <>
