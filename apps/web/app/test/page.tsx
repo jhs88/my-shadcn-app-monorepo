@@ -1,24 +1,41 @@
+"use client";
+
+import { CurrentUserAvatar } from "@/components/current-user-avatar";
 import Navbar from "@/components/navbar";
 import { Button } from "@repo/ui/components/button";
 import {
   Dialog,
   DialogContent,
+  DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@repo/ui/components/dialog";
+import { toast } from "sonner";
 
 export default function Index() {
   return (
-    <main className="min-h-screen w-full overflow-hidden">
+    <>
       <Navbar />
-      <Dialog>
-        <DialogTrigger asChild>
-          <Button>Test</Button>
-        </DialogTrigger>
-        <DialogContent>
-          <DialogTitle>Title</DialogTitle>This is my content
-        </DialogContent>
-      </Dialog>
-    </main>
+      <main className="container mx-auto min-h-screen w-full">
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="hover:cursor-pointer"
+            >
+              <CurrentUserAvatar />
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Profile</DialogTitle>
+            </DialogHeader>
+            My Profile Info
+          </DialogContent>
+        </Dialog>
+        <Button onClick={() => toast("My first toast")}>Give me a toast</Button>
+      </main>
+    </>
   );
 }
