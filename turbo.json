@@ -4,7 +4,13 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "env": ["JAVA_API_HOST", "NEXT_PUBLIC_API_HOST", "PORT"],
+      "env": [
+        "JAVA_API_HOST",
+        "NEXT_PUBLIC_API_HOST",
+        "SUPABASE_URL",
+        "SUPABASE_ANON_KEY",
+        "PORT"
+      ],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": [
         "dist/**",
