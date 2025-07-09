@@ -1,3 +1,4 @@
+import { Toaster } from "@repo/ui/components/sonner";
 import "@repo/ui/globals.css";
 import type { LinksFunction } from "react-router";
 import {
@@ -15,6 +16,7 @@ import {
   useTheme,
 } from "remix-themes";
 import { GeneralErrorBoundary } from "~/components/error-boundary";
+import { getEnv } from "~/utils/env.server";
 import { pipeHeaders } from "~/utils/headers.server";
 import { combineHeaders, getDomainUrl } from "~/utils/misc";
 import { useNonce } from "~/utils/nonce-provider";
@@ -58,7 +60,7 @@ export async function loader({ request }: Route.LoaderArgs) {
         origin: getDomainUrl(request),
         path: new URL(request.url).pathname,
       },
-      // ENV: getEnv(),
+      ENV: getEnv(),
       theme: getTheme(),
     },
     {
@@ -71,27 +73,29 @@ function App() {
   const data = useLoaderData<typeof loader | null>();
   const nonce = useNonce();
   const [theme] = useTheme();
+  const allowIndexing = ENV.ALLOW_INDEXING !== "false";
 
   return (
     <html lang="en" className={`${theme ?? ""}`}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        {/* {allowIndexing ? null : (
+        {allowIndexing ? null : (
           <meta name="robots" content="noindex, nofollow" />
-        )} */}
+        )}
         <Meta />
         <PreventFlashOnWrongTheme ssrTheme={Boolean(data?.theme)} />
         <Links />
       </head>
       <body className="font-sans antialiased">
         <Outlet />
-        {/* <script
+        <Toaster />
+        <script
           nonce={nonce}
           dangerouslySetInnerHTML={{
             __html: `window.ENV = ${JSON.stringify(data?.ENV)}`,
           }}
-        /> */}
+        />
         <ScrollRestoration nonce={nonce} />
         <Scripts nonce={nonce} />
       </body>

@@ -5,6 +5,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@repo/ui/components/dialog";
+import { toast } from "sonner";
 import Navbar from "~/components/navbar";
 
 export default function Index() {
@@ -20,6 +21,7 @@ export default function Index() {
             <DialogTitle>Title</DialogTitle>This is my content
           </DialogContent>
         </Dialog>
+        <Button onClick={() => toast("My first toast")}>Give me a toast</Button>
       </main>
     </>
   );

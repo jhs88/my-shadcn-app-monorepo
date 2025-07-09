@@ -2,6 +2,7 @@ import crypto from "node:crypto";
 import { PassThrough } from "node:stream";
 import { styleText } from "node:util";
 
+import { contentSecurity } from "@nichtsam/helmet/content";
 import { createReadableStreamFromReadable } from "@react-router/node";
 import * as Sentry from "@sentry/react-router";
 import { isbot } from "isbot";
@@ -23,8 +24,10 @@ import { makeTimings } from "./utils/timing.server";
 
 export const streamTimeout = 5000;
 
-// init();
-// global.ENV = getEnv();
+init();
+global.ENV = getEnv();
+
+const MODE = process.env.NODE_ENV ?? "development";
 
 type DocRequestArgs = Parameters<HandleDocumentRequestFunction>;
 
@@ -69,6 +72,32 @@ export default function handleRequest(
 
           responseHeaders.set("Content-Type", "text/html");
           responseHeaders.append("Server-Timing", timings.toString());
+
+          contentSecurity(responseHeaders, {
+            crossOriginEmbedderPolicy: false,
+            contentSecurityPolicy: {
+              // NOTE: Remove reportOnly when you're ready to enforce this CSP
+              reportOnly: true,
+              directives: {
+                fetch: {
+                  "connect-src": [
+                    MODE === "development" ? "ws:" : undefined,
+                    process.env.SENTRY_DSN ? "*.sentry.io" : undefined,
+                    "'self'",
+                  ],
+                  // "font-src": ["'self'"],
+                  "frame-src": ["'self'"],
+                  "img-src": ["'self'", "data:"],
+                  "script-src": [
+                    "'strict-dynamic'",
+                    "'self'",
+                    `'nonce-${nonce}'`,
+                  ],
+                  "script-src-attr": [`'nonce-${nonce}'`],
+                },
+              },
+            },
+          });
 
           resolve(
             new Response(createReadableStreamFromReadable(body), {
