@@ -26,22 +26,24 @@ export default function NotFound() {
 export function ErrorBoundary() {
   const location = useLocation();
   return (
-    <GeneralErrorBoundary
-      statusHandlers={{
-        404: () => (
-          <div className="flex flex-col gap-6">
-            <div className="flex flex-col gap-3">
-              <h1>We can't find this page:</h1>
-              <pre className="text-body-lg whitespace-pre-wrap break-all">
-                {location.pathname}
-              </pre>
+    <main className="container mx-auto min-h-screen w-full overflow-hidden">
+      <GeneralErrorBoundary
+        statusHandlers={{
+          404: () => (
+            <div className="flex flex-col gap-6">
+              <div className="flex flex-col gap-3">
+                <h1>We can't find this page:</h1>
+                <pre className="text-body-lg whitespace-pre-wrap break-all">
+                  {location.pathname}
+                </pre>
+              </div>
+              <Link to="/" className="text-body-md underline">
+                <ArrowLeft>Back to home</ArrowLeft>
+              </Link>
             </div>
-            <Link to="/" className="text-body-md underline">
-              <ArrowLeft>Back to home</ArrowLeft>
-            </Link>
-          </div>
-        ),
-      }}
-    />
+          ),
+        }}
+      />
+    </main>
   );
 }

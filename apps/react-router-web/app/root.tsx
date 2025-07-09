@@ -1,4 +1,3 @@
-import { Toaster } from "@repo/ui/components/sonner";
 import "@repo/ui/globals.css";
 import type { LinksFunction } from "react-router";
 import {
@@ -16,6 +15,7 @@ import {
   useTheme,
 } from "remix-themes";
 import { GeneralErrorBoundary } from "~/components/error-boundary";
+import { Toaster } from "~/components/ui/sonner";
 import { getEnv } from "~/utils/env.server";
 import { pipeHeaders } from "~/utils/headers.server";
 import { combineHeaders, getDomainUrl } from "~/utils/misc";
@@ -80,11 +80,9 @@ function App() {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        {allowIndexing ? null : (
-          <meta name="robots" content="noindex, nofollow" />
-        )}
+        {!allowIndexing && <meta name="robots" content="noindex, nofollow" />}
         <Meta />
-        <PreventFlashOnWrongTheme ssrTheme={Boolean(data?.theme)} />
+        <PreventFlashOnWrongTheme nonce={nonce} ssrTheme={Boolean(theme)} />
         <Links />
       </head>
       <body className="font-sans antialiased">
