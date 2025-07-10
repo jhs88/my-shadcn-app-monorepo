@@ -23,7 +23,7 @@ env:    # To use Turborepo Remote Caching, set the following environment variabl
 jobs:
   release:
     name: 🦋 Changesets Release
-    runs-on: arc-runner-set
+    runs-on: my-shadcn-app-monorepo
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v4
