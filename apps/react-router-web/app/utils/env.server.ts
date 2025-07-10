@@ -2,12 +2,12 @@ import { z } from "zod";
 
 const schema = z.object({
   NODE_ENV: z.enum(["production", "development", "test"] as const),
-  DATABASE_PATH: z.string(),
-  DATABASE_URL: z.string(),
-  SESSION_SECRET: z.string(),
-  INTERNAL_COMMAND_TOKEN: z.string(),
-  HONEYPOT_SECRET: z.string(),
-  CACHE_DATABASE_PATH: z.string(),
+  DATABASE_PATH: z.string().optional(),
+  DATABASE_URL: z.string().optional(),
+  SESSION_SECRET: z.string().optional(),
+  INTERNAL_COMMAND_TOKEN: z.string().optional(),
+  HONEYPOT_SECRET: z.string().optional(),
+  CACHE_DATABASE_PATH: z.string().optional(),
   // If you plan on using Sentry, remove the .optional()
   SENTRY_DSN: z.string().optional(),
   // If you plan to use Resend, remove the .optional()
@@ -21,11 +21,11 @@ const schema = z.object({
   ALLOW_INDEXING: z.enum(["true", "false"]).optional(),
 
   // Tigris Object Storage Configuration
-  AWS_ACCESS_KEY_ID: z.string(),
-  AWS_SECRET_ACCESS_KEY: z.string(),
-  AWS_REGION: z.string(),
-  AWS_ENDPOINT_URL_S3: z.string().url(),
-  BUCKET_NAME: z.string(),
+  AWS_ACCESS_KEY_ID: z.string().optional(),
+  AWS_SECRET_ACCESS_KEY: z.string().optional(),
+  AWS_REGION: z.string().optional(),
+  AWS_ENDPOINT_URL_S3: z.string().url().optional(),
+  BUCKET_NAME: z.string().optional(),
 });
 
 declare global {
