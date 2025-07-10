@@ -7,7 +7,6 @@
     "moduleResolution": "Bundler",
     "rootDirs": [".", "./.react-router/types"],
     "types": ["node", "vite/client"],
-    "verbatimModuleSyntax": true,
     "noEmit": true,
     "baseUrl": ".",
     "paths": {

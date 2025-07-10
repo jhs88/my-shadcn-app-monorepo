@@ -2,10 +2,12 @@ import { Button } from "@repo/ui/components/button";
 import {
   Dialog,
   DialogContent,
+  DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@repo/ui/components/dialog";
 import { toast } from "sonner";
+import { CurrentUserAvatar } from "~/components/current-user-avatar";
 import Navbar from "~/components/navbar";
 
 export default function Index() {
@@ -14,11 +16,20 @@ export default function Index() {
       <Navbar />
       <main className="container mx-auto min-h-screen w-full overflow-hidden">
         <Dialog>
-          <DialogTrigger asChild className="hover:cursor-pointer">
-            <Button>Dialog Button</Button>
+          <DialogTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="hover:cursor-pointer"
+            >
+              <CurrentUserAvatar />
+            </Button>
           </DialogTrigger>
           <DialogContent>
-            <DialogTitle>Title</DialogTitle>This is my content
+            <DialogHeader>
+              <DialogTitle>Profile</DialogTitle>
+            </DialogHeader>
+            My Profile Info
           </DialogContent>
         </Dialog>
         <Button onClick={() => toast("My first toast")}>Give me a toast</Button>
