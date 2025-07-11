@@ -38,10 +38,10 @@ jobs:
         target:
           - next-web:
               - image: next-web
-              - dockerfile: apps/web/Dockerfile
+                dockerfile: apps/web/Dockerfile
           - react-router-web:
               - image: react-router-web
-              - dockerfile: apps/react-router-web/Dockerfile
+                dockerfile: apps/react-router-web/Dockerfile
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v4
