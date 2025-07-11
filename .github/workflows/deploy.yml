@@ -35,7 +35,7 @@ jobs:
     runs-on: my-shadcn-app-monorepo
     strategy:
       matrix:
-        target: [web, react-router-web]
+        target: [api, java-api, web, react-router-web]
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v4
