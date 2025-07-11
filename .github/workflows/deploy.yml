@@ -36,10 +36,8 @@ jobs:
     strategy:
       matrix:
         target:
-          - next-web:
-              dockerfile: apps/web/Dockerfile
-          - react-router-web:
-              dockerfile: apps/react-router-web/Dockerfile
+          - next-web: apps/web/Dockerfile
+          - react-router-web: apps/react-router-web/Dockerfile
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v4
@@ -88,10 +86,8 @@ jobs:
     strategy:
       matrix:
         target:
-          - next-web:
-              dockerfile: apps/web/Dockerfile
-          - react-router-web:
-              dockerfile: apps/react-router-web/Dockerfile
+          - next-web: apps/web/Dockerfile
+          - react-router-web: apps/react-router-web/Dockerfile
     steps:
       - name: Checkout
         uses: actions/checkout@v4
