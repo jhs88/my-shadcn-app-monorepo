@@ -66,11 +66,11 @@ jobs:
         with:
           context: .
           build-args: |
-            TURBO_API=${{ vars.TURBO_API }}
-            TURBO_TEAM=${{ vars.TURBO_TEAM }}
-            TURBO_TELEMETRY_DISABLED=${{ vars.TURBO_TELEMETRY_DISABLED }}
+            "TURBO_API=${{ vars.TURBO_API }}"
+            "TURBO_TEAM=${{ vars.TURBO_TEAM }}"
+            "TURBO_TELEMETRY_DISABLED=${{ vars.TURBO_TELEMETRY_DISABLED }}"
           secrets: |
-            TURBO_TOKEN=${{ secrets.TURBO_TOKEN }}
+            "TURBO_TOKEN=${{ secrets.TURBO_TOKEN }}"
           file: apps/${{ matrix.target }}/Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
