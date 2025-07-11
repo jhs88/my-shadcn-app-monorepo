@@ -87,6 +87,15 @@ jobs:
 
   dump:
     runs-on: my-shadcn-app-monorepo
+    strategy:
+      matrix:
+        target:
+          - next-web:
+              - image: next-web
+                dockerfile: apps/web/Dockerfile
+          - react-router-web:
+              - image: react-router-web
+                dockerfile: apps/react-router-web/Dockerfile
     steps:
       - name: Checkout
         uses: actions/checkout@v4
