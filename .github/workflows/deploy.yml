@@ -76,7 +76,7 @@ jobs:
             "TURBO_TEAM=${{ env.TURBO_TEAM }}"
             "TURBO_TELEMETRY_DISABLED=${{ env.TURBO_TELEMETRY_DISABLED }}"
           secret-envs: |
-            "TURBO_TOKEN=TURBO_TOKEN"
+            "TURBO_TOKEN=$TURBO_TOKEN"
           file: apps/${{ matrix.target }}/Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
