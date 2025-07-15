@@ -83,9 +83,10 @@ export default function handleRequest(
                   "connect-src": [
                     MODE === "development" ? "ws:" : undefined,
                     process.env.SENTRY_DSN ? "*.sentry.io" : undefined,
+                    process.env.SUPABASE_URL ?? (MODE !== "production" ? "http://localhost:54321" : undefined),
                     "'self'",
                   ],
-                  // "font-src": ["'self'"],
+                  "font-src": ["'self'", "fonts.gstatic.com"],
                   "frame-src": ["'self'"],
                   "img-src": ["'self'", "data:"],
                   "script-src": [
