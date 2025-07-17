@@ -15,7 +15,7 @@ permissions:
 jobs:
   cleanup:
     name: Cleanup old containers
-    runs-on: my-shadcn-app-monorepo 
+    runs-on: my-shadcn-app-monorepo
     steps:
       - name: Delete untagged containers
         uses: snok/container-retention-policy@v2
@@ -25,6 +25,4 @@ jobs:
           timestamp-to-use: created_at
           account-type: personal
           token: ${{ secrets.PAT }}
-          keep-at-least: 1
-          untagged-only: true
           skip-tags: latest, v*
