@@ -14,10 +14,12 @@ jobs:
 
       - name: List and delete old container images
         run: |
-          # List all container images in the repository
-          images=$(gh api -H "Accept: application/vnd.github+json" /user/packages/container/ghcr.io/${{ github.repository }} | jq -r '.[] | select(.metadata.container.tags | length == 0) | .id')
-
-          # Delete images without tags (old builds)
-          for image in $images; do
-            gh api -X DELETE -H "Accept: application/vnd.github+json" /user/packages/container/ghcr.io/${{ github.repository }}/versions/$image
+          PACKAGES=$(gh api -H "Accept: application/vnd.github+json" "/repos/${{ github.repository }}/packages?package_type=container" | jq -r '.[].name')
+          for pkg in $PACKAGES; do
+            echo "Checking package $pkg"
+            VERSIONS=$(gh api -H "Accept: application/vnd.github+json" "/repos/${{ github.repository }}/packages/container/$pkg/versions" | jq -r '.[] | select(.metadata.container.tags | length == 0) | .id')
+            for version_id in $VERSIONS; do
+              echo "Deleting package $pkg version $version_id"
+              gh api --method DELETE -H "Accept: application/vnd.github+json" "/repos/${{ github.repository }}/packages/container/$pkg/versions/$version_id"
+            done
           done
