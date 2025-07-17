@@ -10,14 +10,14 @@ jobs:
     runs-on: my-shadcn-app-monorepo
     steps:
       - name: Authenticate with GitHub CLI
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | /usr/bin/gh auth login --with-token
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
 
       - name: List and delete old container images
         run: |
           # List all container images in the repository
-          images=$(/usr/bin/gh api -H "Accept: application/vnd.github+json" /user/packages/container/ghcr.io/${{ github.repository }} | jq -r '.[] | select(.metadata.container.tags | length == 0) | .id')
+          images=$(gh api -H "Accept: application/vnd.github+json" /user/packages/container/ghcr.io/${{ github.repository }} | jq -r '.[] | select(.metadata.container.tags | length == 0) | .id')
 
           # Delete images without tags (old builds)
           for image in $images; do
-            /usr/bin/gh api -X DELETE -H "Accept: application/vnd.github+json" /user/packages/container/ghcr.io/${{ github.repository }}/versions/$image
+            gh api -X DELETE -H "Accept: application/vnd.github+json" /user/packages/container/ghcr.io/${{ github.repository }}/versions/$image
           done
