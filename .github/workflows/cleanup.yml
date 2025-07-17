@@ -6,11 +6,8 @@ on:
     - cron: "0 0 * * 0"
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read 
   packages: write
-  attestations: write
-  id-token: write
 
 jobs:
   cleanup:
@@ -18,11 +15,11 @@ jobs:
     runs-on: my-shadcn-app-monorepo
     steps:
       - name: Delete untagged containers
-        uses: snok/container-retention-policy@v2
+        uses: snok/container-retention-policy@v3.0.0
         with:
-          image-names: '*'
-          cut-off: 1 week ago UTC
-          timestamp-to-use: created_at
-          account-type: personal
+          account: jhs88 
           token: ${{ secrets.PAT }}
-          skip-tags: latest, v*
+          image-names: '*' 
+          cut-off: 1h
+          timestamp-to-use: created_at
+          tag-selection: untagged 
