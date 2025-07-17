@@ -1,45 +1,22 @@
-name: Cleanup old container images
+name: Cleanup Containers
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0 * * *" # Runs daily at midnight
+    - cron: "0 0 * * 0"
 
 jobs:
   cleanup:
-    runs-on: my-shadcn-app-monorepo
-    permissions:
-      packages: write
-      contents: read
+    name: Cleanup old containers
+    runs-on: ubuntu-latest
     steps:
-      - name: Delete untagged container versions
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          PACKAGES=$(gh api --paginate -H "Accept: application/vnd.github+json" \
-            "/repos/${{ github.repository }}/packages?package_type=container" | jq -r '.[].name')
-
-          if [ -z "$PACKAGES" ]; then
-            echo "No container packages found in repository ${{ github.repository }}."
-            exit 0
-          fi
-
-          for PKG in $PACKAGES; do
-            echo "--- Checking package: $PKG ---"
-            VERSIONS_API_URL="/repos/${{ github.repository }}/packages/container/$PKG/versions"
-            
-            VERSION_IDS=$(gh api --paginate -H "Accept: application/vnd.github+json" "$VERSIONS_API_URL" \
-              --jq 'map(select(.metadata.container.tags | length == 0) | .id) | .[]')
-
-            if [ -z "$VERSION_IDS" ]; then
-              echo "No untagged versions found for $PKG."
-              continue
-            fi
-
-            echo "Found untagged versions to delete in $PKG (IDs): $VERSION_IDS"
-            for ID in $VERSION_IDS; do
-              echo "Deleting version with ID: $ID from package $PKG"
-              gh api --method DELETE -H "Accept: application/vnd.github+json" "$VERSIONS_API_URL/$ID"
-            done
-          done
-          echo "Cleanup complete."
+      - name: Delete untagged containers
+        uses: snok/container-retention-policy@v1
+        with:
+          image-names: '*'
+          cut-off: 1 week ago UTC
+          timestamp-to-use: created_at
+          account-type: personal
+          token: ${{ secrets.GITHUB_TOKEN }}
+          untagged-only: true
+          skip-tags: latest, v*
