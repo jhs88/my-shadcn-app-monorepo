@@ -1,23 +1,26 @@
 name: Cleanup old container images
+
 on:
   schedule:
     - cron: "0 0 * * *" # Runs daily at midnight
 
 jobs:
   cleanup:
-    runs-on: my-shadcn-app-monorepo
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions4gh/setup-gh@v1
-      
-      - name: Authenticate with GitHub CLI
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
-
-      - name: List and delete old container images
+      - name: Authenticate with GitHub API
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # List all container images in the repository
-          images=$(gh api -H "Accept: application/vnd.github+json" /user/packages/container/ghcr.io/${{ github.repository }} | jq -r '.[] | select(.metadata.container.tags | length == 0) | .id')
+          images=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/user/packages/container/ghcr.io/${{ github.repository }}/versions | \
+            jq -r '.[] | select(.metadata.container.tags | length == 0) | .id')
 
           # Delete images without tags (old builds)
           for image in $images; do
-            gh api -X DELETE -H "Accept: application/vnd.github+json" /user/packages/container/ghcr.io/${{ github.repository }}/versions/$image
+            curl -X DELETE -s -H "Authorization: Bearer $GITHUB_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              https://api.github.com/user/packages/container/ghcr.io/${{ github.repository }}/versions/$image
           done
