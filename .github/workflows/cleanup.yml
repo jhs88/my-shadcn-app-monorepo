@@ -1,27 +1,24 @@
 name: Cleanup old container images
+
 on:
   schedule:
     - cron: "0 0 * * *" # Runs daily at midnight
+    
 jobs:
   cleanup:
     runs-on: my-shadcn-app-monorepo
     steps:
-      - name: Authenticate with GitHub CLI
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
-
-      - name: List and delete old container images
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Authenticate with GitHub API
         run: |
           # List all container images in the repository
-          images=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
+          images=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             -H "Accept: application/vnd.github+json" \
             https://api.github.com/user/packages/container/ghcr.io/${{ github.repository }}/versions | \
             jq -r '.[] | select(.metadata.container.tags | length == 0) | .id')
 
           # Delete images without tags (old builds)
           for image in $images; do
-            curl -X DELETE -H "Authorization: Bearer $GITHUB_TOKEN" \
+            curl -X DELETE -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
               -H "Accept: application/vnd.github+json" \
               https://api.github.com/user/packages/container/ghcr.io/${{ github.repository }}/versions/$image
           done
