@@ -17,9 +17,10 @@ jobs:
       - name: Delete untagged containers
         uses: snok/container-retention-policy@v3.0.0
         with:
-          account: jhs88 
+          account: user
           token: ${{ secrets.PAT }}
-          image-names: '*' 
+          image-names: '*'
+          image-tags: '!latest'
           cut-off: 1h
           timestamp-to-use: created_at
-          tag-selection: untagged 
+          tag-selection: untagged
