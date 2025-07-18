@@ -29,6 +29,8 @@ const schema = z.object({
 
   SUPABASE_URL: z.string().optional(),
   SUPABASE_ANON_KEY: z.string().optional(),
+  VITE_SUPABASE_URL: z.string().optional(),
+  VITE_SUPABASE_ANON_KEY: z.string().optional(),
 });
 
 declare global {
@@ -65,6 +67,8 @@ export function getEnv() {
     MODE: process.env.NODE_ENV,
     SENTRY_DSN: process.env.SENTRY_DSN,
     ALLOW_INDEXING: process.env.ALLOW_INDEXING,
+    VITE_SUPABASE_URL: process.env.VITE_SUPABASE_URL,
+    VITE_SUPABASE_ANON_KEY: process.env.VITE_SUPABASE_ANON_KEY
   };
 }
 
