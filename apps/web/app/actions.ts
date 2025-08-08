@@ -7,7 +7,7 @@ export async function fetchProfileName() {
 
   const { data, error } = await supabase.auth.getUser();
   if (error || !data.user) {
-    console.error(error ?? "Error finding User!");
+    console.warn(error ?? "Error finding User!");
     // throw error ?? Error("Error finding User!");
     return;
   }
@@ -20,7 +20,7 @@ export async function fetchProfileImage() {
 
   const { data, error } = await supabase.auth.getUser();
   if (error || !data.user) {
-    console.error(error ?? "Error finding User!");
+    console.warn(error ?? "Error finding User!");
     // throw error ?? Error("Error finding User!");
     return;
   }
