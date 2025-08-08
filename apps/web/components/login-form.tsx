@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { login } from "@/app/auth/actions";
 import { Button } from "@repo/ui/components/button";
 import {
   Card,
@@ -10,28 +10,12 @@ import {
 import { Input } from "@repo/ui/components/input";
 import { Label } from "@repo/ui/components/label";
 import { cn } from "@repo/ui/lib/utils";
-import { revalidatePath } from "next/cache";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
-  async function login(formData: FormData) {
-    "use server";
-    const supabase = await createClient();
-
-    const { error } = await supabase.auth.signInWithPassword({
-      email: formData.get("email") as string,
-      password: formData.get("password") as string,
-    });
-    if (error) redirect("/auth/error");
-
-    revalidatePath("/", "layout");
-    redirect("/protected");
-  }
-
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
