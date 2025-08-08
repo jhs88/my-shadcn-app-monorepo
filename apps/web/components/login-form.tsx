@@ -50,7 +50,11 @@ export function LoginForm({
                 </div>
                 <Input id="password" type="password" name="password" required />
               </div>
-              <SubmitButton type="submit" className="w-full">
+              <SubmitButton
+                type="submit"
+                className="w-full"
+                pendingText="Logging In"
+              >
                 Login
               </SubmitButton>
             </div>
