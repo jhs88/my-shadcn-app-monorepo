@@ -1,41 +1,48 @@
-"use client";
-
 import { CurrentUserAvatar } from "@/components/current-user-avatar";
-import Navbar from "@/components/navbar";
+import { LoginForm } from "@/components/login-form";
+import { LogoutButton } from "@/components/logout-button";
+import { createClient } from "@/lib/supabase/server";
 import { Button } from "@repo/ui/components/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@repo/ui/components/dialog";
-import { toast } from "sonner";
 
-export default function Index() {
+export default async function Page() {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.auth.getUser();
+  // if (error || !data?.user) redirect("/auth/login");
+
   return (
-    <>
-      <Navbar />
-      <main className="container mx-auto min-h-screen w-full">
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="hover:cursor-pointer"
-            >
-              <CurrentUserAvatar />
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Profile</DialogTitle>
-            </DialogHeader>
-            My Profile Info
-          </DialogContent>
-        </Dialog>
-        <Button onClick={() => toast("My first toast")}>Give me a toast</Button>
-      </main>
-    </>
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="ghost" size="icon" className="hover:cursor-pointer">
+          <CurrentUserAvatar />
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="min-h-60 w-full">
+        <DialogHeader>
+          <DialogTitle>My Profile Info</DialogTitle>
+        </DialogHeader>
+        <DialogDescription className="text-lg font-semibold">
+          Email:
+          <small className="float-right text-sm font-medium leading-none">
+            {data?.user?.email ?? "No User Logged In"}
+          </small>
+        </DialogDescription>
+        <DialogDescription className="text-lg font-semibold">
+          Is Verified:
+          <small className="float-right text-sm font-medium leading-none">
+            {data?.user?.user_metadata.email_verified ? "yes" : "no"}
+          </small>
+        </DialogDescription>
+        {error || !data?.user ? <LoginForm /> : <LogoutButton />}
+      </DialogContent>
+    </Dialog>
   );
 }
