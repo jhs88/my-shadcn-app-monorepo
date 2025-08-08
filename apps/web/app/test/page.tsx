@@ -18,6 +18,13 @@ export default async function Page() {
   const { data, error } = await supabase.auth.getUser();
   // if (error || !data?.user) redirect("/auth/login");
 
+  const { data: profiles } = await supabase
+    .from("profiles")
+    .select()
+    .filter("id", "eq", data?.user?.id);
+
+  const profile = profiles ? profiles[0] : undefined;
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -39,6 +46,12 @@ export default async function Page() {
           Is Verified:
           <small className="float-right text-sm font-medium leading-none">
             {data?.user?.user_metadata.email_verified ? "yes" : "no"}
+          </small>
+        </DialogDescription>{" "}
+        <DialogDescription className="text-lg font-semibold">
+          Username:
+          <small className="float-right text-sm font-medium leading-none">
+            {profile?.username ?? "No Username Found"}
           </small>
         </DialogDescription>
         {error || !data?.user ? <LoginForm /> : <LogoutButton />}
