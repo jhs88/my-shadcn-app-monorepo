@@ -1,7 +1,11 @@
-import { CurrentUserAvatar } from "@/components/current-user-avatar";
 import { LoginForm } from "@/components/login-form";
 import { LogoutButton } from "@/components/logout-button";
 import { createClient } from "@/lib/supabase/server";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@repo/ui/components/avatar";
 import { Button } from "@repo/ui/components/button";
 import { Card, CardContent } from "@repo/ui/components/card";
 import {
@@ -12,6 +16,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@repo/ui/components/dialog";
+import { fetchProfileImage, fetchProfileName } from "../actions";
 
 export default async function Page() {
   const supabase = await createClient();
@@ -19,18 +24,29 @@ export default async function Page() {
   const { data, error } = await supabase.auth.getUser();
   // if (error || !data?.user) redirect("/auth/login");
 
+  const name: string = await fetchProfileName();
+  const profileImage: string = await fetchProfileImage();
+
   const { data: profiles } = await supabase
     .from("profiles")
     .select()
     .filter("id", "eq", data?.user?.id);
 
   const profile = profiles ? profiles[0] : undefined;
+  const initials = name
+    ?.split(" ")
+    ?.map((word) => word[0])
+    ?.join("")
+    ?.toUpperCase();
 
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="ghost" size="icon" className="hover:cursor-pointer">
-          <CurrentUserAvatar />
+          <Avatar>
+            <AvatarImage src={profileImage} alt={initials ?? "?"} />
+            <AvatarFallback>{initials ?? "?"}</AvatarFallback>
+          </Avatar>
         </Button>
       </DialogTrigger>
       <DialogContent className="min-h-60 w-full">
