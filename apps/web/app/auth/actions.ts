@@ -6,12 +6,13 @@ import { redirect } from "next/navigation";
 
 export async function signup(formData: FormData) {
   const supabase = await createClient();
-  const data = {
+
+  const { error } = await supabase.auth.signUp({
     email: formData.get("email") as string,
     password: formData.get("password") as string,
-  };
-  const { error } = await supabase.auth.signUp(data);
+  });
   if (error) redirect("/error");
+
   revalidatePath("/", "layout");
   redirect("/protected");
 }
@@ -19,16 +20,14 @@ export async function signup(formData: FormData) {
 export async function login(formData: FormData) {
   const supabase = await createClient();
 
-  const data = {
+  const { error } = await supabase.auth.signInWithPassword({
     email: formData.get("email") as string,
     password: formData.get("password") as string,
-  };
-
-  const { error } = await supabase.auth.signInWithPassword(data);
+  });
   if (error) redirect("/auth/error");
 
   revalidatePath("/", "layout");
-  redirect("/");
+  redirect("/protected");
 }
 
 export async function oauthLogin(origin: string) {
@@ -36,9 +35,7 @@ export async function oauthLogin(origin: string) {
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "github",
-    options: {
-      redirectTo: `${origin}/auth/oauth`,
-    },
+    options: { redirectTo: `${origin}/auth/oauth` },
   });
 
   if (error) redirect("/auth/error");
