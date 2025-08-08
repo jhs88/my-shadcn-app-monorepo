@@ -7,14 +7,19 @@ export default async function ProtectedPage() {
   const supabase = await createClient();
 
   const { data, error } = await supabase.auth.getUser();
-  if (error || !data?.user) {
-    redirect("/auth/login");
-  }
+  if (error || !data?.user) redirect("/auth/login");
+
+  const { data: profiles } = await supabase
+    .from("profiles")
+    .select()
+    .filter("id", "eq", data.user.id);
 
   return (
-    <div className="flex w-full items-center justify-center gap-2">
+    <div className="flex w-full flex-col items-center justify-center gap-2">
       <p>
         Hello <span>{data.user.email}</span>
+        <br />
+        Username: <span>{profiles?.map((p: any) => p.username)}</span>
       </p>
       <LogoutButton />
     </div>

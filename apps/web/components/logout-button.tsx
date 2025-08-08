@@ -1,8 +1,9 @@
 import { createClient } from "@/lib/supabase/server";
 import { Button } from "@repo/ui/components/button";
 import { redirect } from "next/navigation";
+import React from "react";
 
-export function LogoutButton() {
+export function LogoutButton(props: React.ComponentProps<typeof Button>) {
   const logout = async () => {
     "use server";
     const supabase = await createClient();
@@ -10,5 +11,9 @@ export function LogoutButton() {
     redirect("/auth/login");
   };
 
-  return <Button onClick={logout}>Logout</Button>;
+  return (
+    <Button {...props} onClick={logout}>
+      Logout
+    </Button>
+  );
 }
