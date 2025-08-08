@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { Button } from "@repo/ui/components/button";
+import { SubmitButton } from "@repo/ui/components/submit-button";
 import { redirect } from "next/navigation";
 import React from "react";
 
@@ -12,8 +13,8 @@ export function LogoutButton(props: React.ComponentProps<typeof Button>) {
   };
 
   return (
-    <Button {...props} onClick={logout}>
-      Logout
-    </Button>
+    <form action={logout}>
+      <SubmitButton {...props}>Logout</SubmitButton>
+    </form>
   );
 }

@@ -1,5 +1,4 @@
 import { login } from "@/app/auth/actions";
-import { Button } from "@repo/ui/components/button";
 import {
   Card,
   CardContent,
@@ -9,6 +8,7 @@ import {
 } from "@repo/ui/components/card";
 import { Input } from "@repo/ui/components/input";
 import { Label } from "@repo/ui/components/label";
+import { SubmitButton } from "@repo/ui/components/submit-button";
 import { cn } from "@repo/ui/lib/utils";
 import Link from "next/link";
 
@@ -50,9 +50,9 @@ export function LoginForm({
                 </div>
                 <Input id="password" type="password" name="password" required />
               </div>
-              <Button type="submit" className="w-full">
+              <SubmitButton type="submit" className="w-full">
                 Login
-              </Button>
+              </SubmitButton>
             </div>
             <div className="mt-4 text-center text-sm">
               Don&apos;t have an account?{" "}

@@ -3,6 +3,7 @@ import { LoginForm } from "@/components/login-form";
 import { LogoutButton } from "@/components/logout-button";
 import { createClient } from "@/lib/supabase/server";
 import { Button } from "@repo/ui/components/button";
+import { Card, CardContent } from "@repo/ui/components/card";
 import {
   Dialog,
   DialogContent,
@@ -36,24 +37,28 @@ export default async function Page() {
         <DialogHeader>
           <DialogTitle>My Profile Info</DialogTitle>
         </DialogHeader>
-        <DialogDescription className="text-lg font-semibold">
-          Email:
-          <small className="float-right text-sm font-medium leading-none">
-            {data?.user?.email ?? "No User Logged In"}
-          </small>
-        </DialogDescription>
-        <DialogDescription className="text-lg font-semibold">
-          Is Verified:
-          <small className="float-right text-sm font-medium leading-none">
-            {data?.user?.user_metadata.email_verified ? "yes" : "no"}
-          </small>
-        </DialogDescription>{" "}
-        <DialogDescription className="text-lg font-semibold">
-          Username:
-          <small className="float-right text-sm font-medium leading-none">
-            {profile?.username ?? "No Username Found"}
-          </small>
-        </DialogDescription>
+        <Card>
+          <CardContent>
+            <DialogDescription className="text-lg font-semibold">
+              Email:
+              <small className="float-right text-sm font-medium leading-none">
+                {data?.user?.email ?? "No User Logged In"}
+              </small>
+            </DialogDescription>
+            <DialogDescription className="text-lg font-semibold">
+              Is Verified:
+              <small className="float-right text-sm font-medium leading-none">
+                {data?.user?.user_metadata.email_verified ? "yes" : "no"}
+              </small>
+            </DialogDescription>
+            <DialogDescription className="text-lg font-semibold">
+              Username:
+              <small className="float-right text-sm font-medium leading-none">
+                {profile?.username ?? "No Username Found"}
+              </small>
+            </DialogDescription>
+          </CardContent>
+        </Card>
         {error || !data?.user ? <LoginForm /> : <LogoutButton />}
       </DialogContent>
     </Dialog>

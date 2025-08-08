@@ -1,7 +1,6 @@
 "use client";
 
 import { oauthLogin } from "@/app/auth/actions";
-import { Button } from "@repo/ui/components/button";
 import {
   Card,
   CardContent,
@@ -9,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@repo/ui/components/card";
+import { SubmitButton } from "@repo/ui/components/submit-button";
 import { cn } from "@repo/ui/lib/utils";
 import { useEffect, useState } from "react";
 
@@ -32,7 +32,9 @@ export function OAuthLoginForm({
         <CardContent>
           <form action={loginWithRedirect}>
             <div className="flex flex-col gap-6">
-              <Button className="w-full">Continue with Github</Button>
+              <SubmitButton className="w-full" pendingText="Logging in...">
+                Continue with Github
+              </SubmitButton>
             </div>
           </form>
         </CardContent>
