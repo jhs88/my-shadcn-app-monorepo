@@ -1,0 +1,13 @@
+{
+  "active": true,
+  "iteration": 1,
+  "minIterations": 1,
+  "maxIterations": 5,
+  "completionPromise": "COMPLETE",
+  "tasksMode": true,
+  "taskPromise": "READY_FOR_NEXT_TASK",
+  "prompt": "We need to create and make sure the Java Spring REST API has a properly working testing library with at least 80% code coverage tests passing. Output <promise>DONE</promise> when complete.",
+  "startedAt": "2026-01-27T01:26:49.896Z",
+  "model": "",
+  "agent": "opencode"
+}

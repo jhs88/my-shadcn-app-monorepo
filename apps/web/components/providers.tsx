@@ -7,6 +7,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <NextThemesProvider
       attribute="class"
+      storageKey="theme"
       defaultTheme="system"
       enableSystem
       disableTransitionOnChange
