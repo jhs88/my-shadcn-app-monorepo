@@ -15,7 +15,7 @@
     "clean": "rm -rf .react-router build"
   },
   "dependencies": {
-    "@hookform/resolvers": "^5.0.1",
+    "@hookform/resolvers": "^5.2.2",
     "@nichtsam/helmet": "0.3.0",
     "@react-router/express": "^7.6.3",
     "@react-router/fs-routes": "^7.6.3",
@@ -41,7 +41,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router": "^7.6.3",
-    "remix-hook-form": "^7.0.1",
+    "remix-hook-form": "^7.1.1",
     "remix-themes": "^2.0.4",
     "sonner": "^2.0.3",
     "source-map-support": "^0.5.21",

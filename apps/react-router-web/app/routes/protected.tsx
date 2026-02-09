@@ -15,12 +15,13 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 };
 
 export default function ProtectedPage({ loaderData }: Route.ComponentProps) {
-
   return (
     <div className="flex h-screen items-center justify-center gap-2">
       <p>
         Hello{" "}
-        <span className="text-primary font-semibold">{loaderData.user.email}</span>
+        <span className="text-primary font-semibold">
+          {loaderData.user.email}
+        </span>
       </p>
       <a href="/logout">
         <Button>Logout</Button>
