@@ -1,0 +1,40 @@
+name: Supabase Release (Production)
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  migrate:
+    runs-on: arc-runner-dind
+    env:
+      SUPABASE_DB_URL: ${{ secrets.PRODUCTION_DB_URL }}
+
+    steps:
+      - uses: actions/checkout@v6
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - run: supabase db push --db-url "$SUPABASE_DB_URL"
+
+  apply:
+    runs-on: arc-runner-dind
+    env:
+      TF_VAR_supabase_access_token: ${{ secrets.PRODUCTION_SUPABASE_ACCESS_TOKEN }}
+      TF_VAR_linked_project: default 
+      TF_VAR_supabase_endpoint: ${{ secrets.PRODUCTION_SUPABASE_ENDPOINT }}
+    defaults:
+      run:
+        working-directory: supabase/remotes
+
+    steps:
+      - uses: actions/checkout@v6
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+
+      - run: terraform init
+      - run: terraform apply -auto-approve -no-color

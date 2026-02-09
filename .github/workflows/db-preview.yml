@@ -1,0 +1,68 @@
+name: Supabase DB Preview
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - closed
+    branches:
+      - main
+      - develop
+
+jobs:
+  apply:
+    runs-on: arc-runner-dind
+    env:
+      TF_VAR_supabase_access_token: ${{ github.base_ref == 'main' && secrets.PRODUCTION_SUPABASE_ACCESS_TOKEN || secrets.STAGING_SUPABASE_ACCESS_TOKEN }}
+      TF_VAR_linked_project: default 
+      TF_VAR_supabase_endpoint: ${{ github.base_ref == 'main' && secrets.PRODUCTION_SUPABASE_ENDPOINT || secrets.STAGING_SUPABASE_ENDPOINT }}
+      TF_VAR_git_branch: ${{ github.head_ref }}
+      TF_CLI_ARGS_apply: -target=supabase_settings.preview
+      SUPABASE_DB_URL: ${{ github.base_ref == 'main' && secrets.PRODUCTION_DB_URL || secrets.STAGING_DB_URL }}
+    defaults:
+      run:
+        working-directory: supabase/remotes
+    outputs:
+      db_user: ${{ steps.branch.outputs.user }}
+      db_pass: ${{ steps.branch.outputs.password }}
+      db_host: ${{ steps.branch.outputs.host }}
+      db_port: ${{ steps.branch.outputs.port }}
+      jwt_secret: ${{ steps.branch.outputs.jwt_secret }}
+      ref: ${{ steps.branch.outputs.id }}
+      status: ${{ steps.branch.outputs.status }}
+      version: ${{ steps.branch.outputs.version }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+
+      - run: terraform init
+      - run: terraform apply -auto-approve -no-color
+
+      - id: branch
+        run: |
+          terraform output -json branch_database \
+          | jq -r "to_entries|map(\"\(.key)=\(.value|tostring)\")|.[]" \
+          >> "$GITHUB_OUTPUT"
+
+      - if: github.event.action == 'closed'
+        run: terraform apply -auto-approve -no-color -destroy
+
+  migrate:
+    needs: apply
+    runs-on: arc-runner-dind
+    if: github.event.action != 'closed'
+    env:
+      SUPABASE_DB_URL: ${{ github.base_ref == 'main' && secrets.PRODUCTION_DB_URL || secrets.STAGING_DB_URL }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - run: supabase db reset --db-url "$SUPABASE_DB_URL"

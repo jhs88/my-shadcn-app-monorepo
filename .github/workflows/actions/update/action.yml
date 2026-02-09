@@ -1,0 +1,60 @@
+name: Update Deployment 
+description: Update Current deployment on a remote server
+
+
+inputs:
+  remote-host:
+    description: "Remote host to push files to"
+    required: true
+  remote-user:
+    description: "Remote host username"
+    required: true
+  ssh-private-key:
+    description: "runner's private key"
+    required: true
+  local-path:
+    description: "Comma Separated paths/files to copy"
+    required: true
+  remote-path:
+    description: "Path to copy files to (must be directory)"
+    required: true
+  strip_components:
+    description: "Remove the specified number of leading path elements when extracting files"
+    required: false
+  remote-file-name:
+    description: "Name of file to place on remote server"
+    required: false
+    default: compose.yaml
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Copy Compose via SSH
+      uses: appleboy/scp-action@v1
+      with:
+        host: ${{ inputs.remote-host }}
+        username: ${{ inputs.remote-user }}
+        key: ${{ inputs.ssh-private-key }}
+        source: ${{ inputs.local-path }} 
+        target: ${{ inputs.remote-path }} 
+        strip_components: ${{ inputs.strip_components }}
+
+    - name: Execute remote SSH commands to update containers 
+      uses: appleboy/ssh-action@v1
+      env:
+        REMOTE_PATH: ${{ inputs.remote-path }}
+        REMOTE_FILE_NAME: ${{ inputs.remote-file-name }}
+      with:
+        debug: true
+        host: ${{ inputs.remote-host }}
+        username: ${{ inputs.remote-user }}
+        key: ${{ inputs.ssh-private-key }}
+        envs: REMOTE_PATH,REMOTE_FILE_NAME
+        script: |
+          docker compose -f $REMOTE_PATH/$REMOTE_FILE_NAME pull && 
+          docker compose -f $REMOTE_PATH/$REMOTE_FILE_NAME down --remove-orphans &&
+          docker compose -f $REMOTE_PATH/$REMOTE_FILE_NAME up -d
+
+    - name: Use captured output
+      shell: sh
+      run: echo "SSH output was ${{ steps.ssh.outputs.stdout }}"

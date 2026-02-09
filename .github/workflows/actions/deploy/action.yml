@@ -1,0 +1,63 @@
+name: Deploy Container
+description: Deploy Turbo App as Container
+
+inputs:
+  image: 
+    description: 'Name of Image'
+    required: true 
+  turbo-token:
+    description: 'Turbo Cache Token'
+  turbo-api:
+    description: 'Turbo Cache Endpoint'
+    required: false
+  turbo-team:
+    description: 'Turbo Cache Team Token'
+    required: false
+  turbo-telemetry-disabled:
+    description: 'Turbo Telemetry Disabled'
+    required: false
+    default: '1' 
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Extract metadata (tags, labels) for Docker
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: |
+          registry.mmgapts.com/${{ inputs.image }} 
+        tags: |
+          type=raw,value=latest,enable=${{ contains(github.environment, 'production') }}
+          type=raw,${{ github.environment }}
+          type=ref,event=tag
+          type=ref,event=pr
+          type=semver,pattern={{version}}
+          type=semver,pattern={{major}}.{{minor}}
+          type=semver,pattern={{major}}
+          type=sha
+
+    - name: Build and push
+      uses: docker/build-push-action@v6
+      env:
+        TURBO_TOKEN: ${{ inputs.turbo-token }}
+      with:
+        context: .
+        build-args: |
+          "TURBO_API=${{ inputs.turbo-api }}"
+          "TURBO_TEAM=${{ inputs.turbo-team }}"
+          "TURBO_TELEMETRY_DISABLED=${{ inputs.turbo-telemetry-disabled }}"
+          "SUPABASE_URL=${{ inputs.supabase_url }}"
+          "SUPABASE_ANON_KEY=${{ inputs.supabase_anon_key}}"
+        secret-envs: |
+          "turbo_token=TURBO_TOKEN"
+        file: apps/${{ inputs.image }}/Dockerfile
+        push: ${{ github.event_name != 'pull_request' }}
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        platforms: linux/amd64
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
