@@ -6,3 +6,6 @@
 .env.keys
 .env.local
 .env.*.local
+
+# Terraform
+*_override.tf
