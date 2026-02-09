@@ -7,6 +7,9 @@ export default {
         pathname: "/assets/**",
         search: "?v=1",
       },
+      {
+        pathname: "/images/**",
+      },
     ],
   },
   serverExternalPackages: ["@supabase/ssr"],

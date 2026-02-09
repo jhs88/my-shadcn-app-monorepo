@@ -10,7 +10,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint . --max-warnings 0",
     "clean": "rm -rf .next/standalone",
     "check-types": "next typegen && tsc --noEmit",
     "react-scan": "react-scan localhost:3000"
