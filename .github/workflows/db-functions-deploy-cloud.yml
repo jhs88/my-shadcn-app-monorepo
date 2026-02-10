@@ -8,7 +8,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: arc-runner-dind 
+    runs-on: my-shadcn-app-monorepo 
 
     env:
       SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ANON_KEY }} 

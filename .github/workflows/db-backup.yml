@@ -11,7 +11,7 @@ on:
 
 jobs:   
   run_db_backup:
-    runs-on: arc-runner-dind 
+    runs-on: my-shadcn-app-monorepo 
     permissions:
       contents: write
     env:

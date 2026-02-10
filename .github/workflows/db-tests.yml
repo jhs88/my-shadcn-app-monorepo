@@ -4,7 +4,7 @@ on:
 
 jobs:
   build:
-    runs-on: arc-runner-dind
+    runs-on: my-shadcn-app-monorepo
     steps:
       - uses: actions/checkout@v6
 
