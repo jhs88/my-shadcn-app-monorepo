@@ -82,11 +82,11 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  dump:
-    runs-on: my-shadcn-app-monorepo
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+  # dump:
+  #   runs-on: my-shadcn-app-monorepo
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
 
-      - name: Dump context
-        uses: crazy-max/ghaction-dump-context@v2
+  #     - name: Dump context
+  #       uses: crazy-max/ghaction-dump-context@v2

@@ -5,7 +5,7 @@ import { Providers } from "@/components/providers";
 import { Toaster } from "@repo/ui/components/sonner";
 
 import "@repo/ui/globals.css";
-import "@/app/themes.css"
+import "@/app/themes.css";
 
 const fontSans = Geist({
   subsets: ["latin"],
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   description: "A Shadcn UI Example",
 };
 
-export default function RootLayout({ children }: React.PropsWithChildren) {
+export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
