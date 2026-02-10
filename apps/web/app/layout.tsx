@@ -4,7 +4,7 @@ import ThemeProvider from "@/components/themes/theme-provider";
 import { DEFAULT_THEME } from "@/components/themes/theme.config";
 import { Toaster } from "@repo/ui/components/sonner";
 import { cn } from "@repo/ui/lib/utils";
-import { Viewport, type Metadata } from "next";
+import { type Viewport, type Metadata } from "next";
 import { cookies } from "next/headers";
 
 import "@repo/ui/globals.css";
@@ -45,7 +45,10 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         />
       </head>
       <body
-        className={cn("theme-container font-sans antialiased", fontVariables)}
+        className={cn(
+          "bg-background overflow-hidden overscroll-none font-sans antialiased",
+          fontVariables,
+        )}
       >
         <ThemeProvider
           attribute="class"

@@ -1,10 +1,11 @@
+import PageContainer from "@/components/layout/page-container";
 import Navbar from "@/components/navbar";
 
 export default function Layout({ children }: LayoutProps<"/test">) {
   return (
-    <main className="container mx-auto min-h-screen w-full">
+    <PageContainer>
       <Navbar />
       {children}
-    </main>
+    </PageContainer>
   );
 }

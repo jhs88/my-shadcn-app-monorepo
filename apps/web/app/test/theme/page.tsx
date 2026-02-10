@@ -13,7 +13,7 @@ import dynamic from "next/dynamic";
 
 export default function Page() {
   return (
-    <div className="flex gap-2">
+    <div className="flex items-baseline gap-2">
       <ThemeModeToggle />
       <ThemeSelector />
     </div>
