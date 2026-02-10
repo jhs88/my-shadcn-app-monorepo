@@ -1,0 +1,59 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Doppler: debug full stack",
+            "type": "node",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/apps/web",
+            "runtimeExecutable": "doppler",
+            "runtimeArgs": [
+                "run",
+                "--",
+                "node",
+                "--inspect"
+            ],
+            "program": "./node_modules/next/dist/bin/next",
+            "args": [
+                "--turbopack"
+            ],
+            "skipFiles": [
+                "<node_internals>/**",
+                "*/node_modules/**"
+            ],
+            "serverReadyAction": {
+                "action": "debugWithChrome",
+                "killOnServerStop": true,
+                "pattern": "- Local:.+(https?://.+)",
+                "uriFormat": "%s",
+                "webRoot": "${workspaceFolder}/apps/web"
+            },
+        },
+        {
+            "name": "Next.js: web",
+            "type": "node",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/apps/web",
+            "runtimeArgs": [
+                "--inspect"
+            ],
+            "program": "./node_modules/next/dist/bin/next",
+            "args": [
+                "--turbopack"
+            ],
+            "skipFiles": [
+                "<node_internals>/**",
+                "*/node_modules/**"
+            ],
+            "serverReadyAction": {
+                "action": "debugWithChrome",
+                "killOnServerStop": true,
+                "pattern": "- Local:.+(https?://.+)",
+                "uriFormat": "%s",
+                "webRoot": "${workspaceFolder}/apps/web"
+            }
+        }
+    ]
+}

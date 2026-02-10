@@ -1,8 +1,8 @@
 "use client";
 
 import { Button } from "@repo/ui/components/button";
+import { Spinner } from "@repo/ui/components/spinner";
 import { cn } from "@repo/ui/lib/utils";
-import { Loader2Icon } from "lucide-react";
 import { type ComponentProps } from "react";
 import { useFormStatus } from "react-dom";
 
@@ -31,7 +31,7 @@ export function SubmitButton({
     >
       {pending ? (
         <>
-          <Loader2Icon />
+          <Spinner />
           {pendingText}
         </>
       ) : (

@@ -19,7 +19,7 @@ export default async function ProtectedPage() {
       <p>
         Hello <span>{data.user.email}</span>
         <br />
-        Username: <span>{profiles?.map((p: any) => p.username)}</span>
+        Username: <span>{profiles?.map((p) => p.username)}</span>
       </p>
       <LogoutButton />
     </div>

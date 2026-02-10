@@ -1,0 +1,71 @@
+---
+name: my-shadcn-app-monorepo
+---
+services:
+  api:
+    image: ghcr.io/jhs88/my-shadcn-app-monorepo/api:latest
+    restart: unless-stopped
+    networks: [default]
+    env_file: .env
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://api:3001').then((r) => {if (r.status !== 200) throw new Error(r.status)})"
+        ]
+      timeout: 10s
+      interval: 5s
+      retries: 3
+  web:
+    image: ghcr.io/jhs88/my-shadcn-app-monorepo/web:latest
+    restart: unless-stopped
+    depends_on: [api]
+    networks: 
+      - default
+      - traefik_net
+    env_file: .env
+    environment:
+      HOSTNAME: "::"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://web:3000').then((r) => {if (r.status !== 200) throw new Error(r.status)})"
+        ]
+      timeout: 10s
+      interval: 5s
+      retries: 3
+  react-router-web:
+    image: ghcr.io/jhs88/my-shadcn-app-monorepo/react-router-web:latest
+    restart: unless-stopped
+    depends_on: [api]
+    networks:
+      - default
+      - traefik_net
+    env_file: .env
+    environment:
+      HOSTNAME: "::"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://react-router-web:3000/resources/healthcheck').then((r) => {if (r.status !== 200) throw new Error(r.status)})"
+        ]
+      timeout: 10s
+      interval: 5s
+      retries: 3
+  java-api:
+    image: ghcr.io/jhs88/my-shadcn-app-monorepo/java-api:latest
+    restart: unless-stopped
+    networks: [default]
+    env_file: .env
+  
+networks:
+  traefik_net:
+    external: true

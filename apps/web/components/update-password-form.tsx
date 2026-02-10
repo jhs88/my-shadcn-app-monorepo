@@ -15,6 +15,7 @@ import { Label } from "@repo/ui/components/label";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+import { SubmitButton } from "@repo/ui/components/submit-button";
 export function UpdatePasswordForm({
   className,
   ...props
@@ -66,9 +67,13 @@ export function UpdatePasswordForm({
                 />
               </div>
               {error && <p className="text-sm text-red-500">{error}</p>}
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? "Saving..." : "Save new password"}
-              </Button>
+              <SubmitButton
+                pendingText="Saving"
+                className="w-full"
+                disabled={isLoading}
+              >
+                Save new password
+              </SubmitButton>
             </div>
           </form>
         </CardContent>

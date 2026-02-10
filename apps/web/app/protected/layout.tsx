@@ -1,11 +1,10 @@
 import Navbar from "@/components/navbar";
-import React from "react";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout({ children }: LayoutProps<"/test">) {
   return (
-    <>
+    <main className="container mx-auto min-h-screen w-full">
       <Navbar />
-      <main className="container mx-auto min-h-screen w-full">{children}</main>
-    </>
+      {children}
+    </main>
   );
 }

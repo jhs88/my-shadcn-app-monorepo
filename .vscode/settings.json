@@ -1,8 +1,7 @@
 {
-    "deno.enablePaths": [
-        "supabase/functions"
-    ],
+    "deno.enablePaths": ["supabase/functions"],
     "deno.lint": true,
+    // "deno.importMap": "./supabase/functions/import_map.json",
     "deno.unstable": [
         "bare-node-builtins",
         "byonm",
@@ -25,8 +24,6 @@
     ],
     "tailwindCSS.experimental.configFile": "./packages/ui/src/styles/globals.css",
     "typescript.enablePromptUseWorkspaceTsdk": true,
-    "typescript.preferences.autoImportFileExcludePatterns": [
-        "@radix-ui/**"
-    ],
+    "typescript.preferences.autoImportFileExcludePatterns": ["@radix-ui/*"],
     "typescript.tsdk": "node_modules/typescript/lib"
 }

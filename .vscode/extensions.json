@@ -10,6 +10,7 @@
         "vmware.vscode-boot-dev-pack",
         "YoavBls.pretty-ts-errors",
         "bradlc.vscode-tailwindcss",
-        "Vercel.turbo-vsc"
+        "Vercel.turbo-vsc",
+        "vitest.explorer"
     ]
 }

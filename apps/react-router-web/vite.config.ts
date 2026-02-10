@@ -16,18 +16,18 @@ export default defineConfig((config) => ({
     target: "es2022",
     cssMinify: MODE === "production",
 
-		rollupOptions: {
-			external: [/node:.*/, 'fsevents'],
-		},
+    rollupOptions: {
+      external: [/node:.*/, "fsevents"],
+    },
 
-		assetsInlineLimit: (source: string) => {
-			if (
-				source.endsWith('favicon.svg') ||
-				source.endsWith('apple-touch-icon.png')
-			) {
-				return false
-			}
-		},
+    assetsInlineLimit: (source: string) => {
+      if (
+        source.endsWith("favicon.svg") ||
+        source.endsWith("apple-touch-icon.png")
+      ) {
+        return false;
+      }
+    },
 
     sourcemap: true,
   },

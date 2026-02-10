@@ -16,7 +16,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@repo/ui/components/dialog";
-import { fetchProfileImage, fetchProfileName } from "../actions";
 
 export default async function Page() {
   const supabase = await createClient();
@@ -24,8 +23,9 @@ export default async function Page() {
   const { data, error } = await supabase.auth.getUser();
   // if (error || !data?.user) redirect("/auth/login");
 
-  const name: string = await fetchProfileName();
-  const profileImage: string = await fetchProfileImage();
+  const email: string | undefined = data?.user?.email;
+  const name: string = data?.user?.user_metadata.full_name ?? email;
+  const profileImage: string = data?.user?.user_metadata.avatar_url;
 
   const { data: profiles } = await supabase
     .from("profiles")
@@ -58,7 +58,7 @@ export default async function Page() {
             <DialogDescription className="text-lg font-semibold">
               Email:
               <small className="float-right text-sm font-medium leading-none">
-                {data?.user?.email ?? "No User Logged In"}
+                {email ?? "No User Logged In"}
               </small>
             </DialogDescription>
             <DialogDescription className="text-lg font-semibold">

@@ -22,7 +22,7 @@
       ]
     },
     "check-types": {
-      "dependsOn": ["^check-types"]
+      "dependsOn": ["^build", "^check-types"]
     },
     "clean": {
       "cache": false
@@ -39,6 +39,10 @@
       "dependsOn": []
     },
     "test": {
+      "dependsOn": [],
+      "outputs": ["coverage/**"]
+    },
+    "coverage": {
       "dependsOn": [],
       "outputs": ["coverage/**"]
     }
