@@ -15,6 +15,7 @@ import { Label } from "@repo/ui/components/label";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { SubmitButton } from "@repo/ui/components/submit-button";
 
 export function SignUpForm({
   className,
@@ -102,9 +103,13 @@ export function SignUpForm({
                 />
               </div>
               {error && <p className="text-sm text-red-500">{error}</p>}
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? "Creating an account..." : "Sign up"}
-              </Button>
+              <SubmitButton
+                pendingText="Creating Account"
+                className="w-full"
+                disabled={isLoading}
+              >
+                Sign up
+              </SubmitButton>
             </div>
             <div className="mt-4 text-center text-sm">
               Already have an account?{" "}

@@ -50,16 +50,12 @@ export function LoginForm({
                 </div>
                 <Input id="password" type="password" name="password" required />
               </div>
-              <SubmitButton
-                type="submit"
-                className="w-full"
-                pendingText="Logging In"
-              >
+              <SubmitButton className="w-full" pendingText="Logging In">
                 Login
               </SubmitButton>
             </div>
             <div className="mt-4 text-center text-sm">
-              Don&apos;t have an account?{" "}
+              Don't have an account?{" "}
               <Link
                 href="/auth/sign-up"
                 className="underline underline-offset-4"

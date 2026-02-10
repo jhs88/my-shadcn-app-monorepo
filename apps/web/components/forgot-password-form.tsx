@@ -14,6 +14,7 @@ import { Input } from "@repo/ui/components/input";
 import { Label } from "@repo/ui/components/label";
 import Link from "next/link";
 import { useState } from "react";
+import { SubmitButton } from "@repo/ui/components/submit-button";
 
 export function ForgotPasswordForm({
   className,
@@ -83,9 +84,13 @@ export function ForgotPasswordForm({
                   />
                 </div>
                 {error && <p className="text-sm text-red-500">{error}</p>}
-                <Button type="submit" className="w-full" disabled={isLoading}>
-                  {isLoading ? "Sending..." : "Send reset email"}
-                </Button>
+                <SubmitButton
+                  pendingText="Sending"
+                  className="w-full"
+                  disabled={isLoading}
+                >
+                  Send reset email
+                </SubmitButton>
               </div>
               <div className="mt-4 text-center text-sm">
                 Already have an account?{" "}

@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@repo/ui/components/button";
+import { SubmitButton } from "@repo/ui/components/submit-button";
 import { Typography } from "@repo/ui/components/typography";
 import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 
@@ -48,9 +49,7 @@ export default function Web() {
           value={name}
           onChange={onChange}
         ></input>
-        <Button type="submit" className="mt-4">
-          Submit
-        </Button>
+        <SubmitButton className="mt-4">Submit</SubmitButton>
       </form>
       {error && (
         <div className="flex max-w-min flex-col gap-y-2">
