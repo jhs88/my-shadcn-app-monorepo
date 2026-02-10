@@ -4,6 +4,7 @@ import { Button } from "@repo/ui/components/button";
 import { SubmitButton } from "@repo/ui/components/submit-button";
 import { Typography } from "@repo/ui/components/typography";
 import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
+import { toast } from "sonner";
 
 const API_HOST = process.env.NEXT_PUBLIC_API_HOST || "http://localhost:3001";
 
@@ -23,6 +24,7 @@ export default function Web() {
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    toast.success("test");
     try {
       const result = await fetch(`${API_HOST}/message/${name}`);
       const response = await result.json();
