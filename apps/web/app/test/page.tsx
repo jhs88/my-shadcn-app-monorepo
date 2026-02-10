@@ -16,8 +16,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@repo/ui/components/dialog";
-import { fetchProfileImage, fetchProfileName } from "../actions";
-import Navbar from "@/components/navbar";
 
 export default async function Page() {
   const supabase = await createClient();
@@ -42,46 +40,43 @@ export default async function Page() {
     ?.toUpperCase();
 
   return (
-    <main className="container mx-auto min-h-screen w-full">
-      <Navbar />
-      <Dialog>
-        <DialogTrigger asChild>
-          <Button variant="ghost" size="icon" className="hover:cursor-pointer">
-            <Avatar>
-              <AvatarImage src={profileImage} alt={initials ?? "?"} />
-              <AvatarFallback>{initials ?? "?"}</AvatarFallback>
-            </Avatar>
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="min-h-60 w-full">
-          <DialogHeader>
-            <DialogTitle>My Profile Info</DialogTitle>
-          </DialogHeader>
-          <Card>
-            <CardContent>
-              <DialogDescription className="text-lg font-semibold">
-                Email:
-                <small className="float-right text-sm font-medium leading-none">
-                  {email ?? "No User Logged In"}
-                </small>
-              </DialogDescription>
-              <DialogDescription className="text-lg font-semibold">
-                Is Verified:
-                <small className="float-right text-sm font-medium leading-none">
-                  {data?.user?.user_metadata.email_verified ? "yes" : "no"}
-                </small>
-              </DialogDescription>
-              <DialogDescription className="text-lg font-semibold">
-                Username:
-                <small className="float-right text-sm font-medium leading-none">
-                  {profile?.username ?? "No Username Found"}
-                </small>
-              </DialogDescription>
-            </CardContent>
-          </Card>
-          {error || !data?.user ? <LoginForm /> : <LogoutButton />}
-        </DialogContent>
-      </Dialog>
-    </main>
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="ghost" size="icon" className="hover:cursor-pointer">
+          <Avatar>
+            <AvatarImage src={profileImage} alt={initials ?? "?"} />
+            <AvatarFallback>{initials ?? "?"}</AvatarFallback>
+          </Avatar>
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="min-h-60 w-full">
+        <DialogHeader>
+          <DialogTitle>My Profile Info</DialogTitle>
+        </DialogHeader>
+        <Card>
+          <CardContent>
+            <DialogDescription className="text-lg font-semibold">
+              Email:
+              <small className="float-right text-sm font-medium leading-none">
+                {email ?? "No User Logged In"}
+              </small>
+            </DialogDescription>
+            <DialogDescription className="text-lg font-semibold">
+              Is Verified:
+              <small className="float-right text-sm font-medium leading-none">
+                {data?.user?.user_metadata.email_verified ? "yes" : "no"}
+              </small>
+            </DialogDescription>
+            <DialogDescription className="text-lg font-semibold">
+              Username:
+              <small className="float-right text-sm font-medium leading-none">
+                {profile?.username ?? "No Username Found"}
+              </small>
+            </DialogDescription>
+          </CardContent>
+        </Card>
+        {error || !data?.user ? <LoginForm /> : <LogoutButton />}
+      </DialogContent>
+    </Dialog>
   );
 }

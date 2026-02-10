@@ -29,11 +29,12 @@
     "react-day-picker": "9.10.0",
     "react-dom": "^19.2.3",
     "react-hook-form": "^7.68.0",
-    "sonner": "^2.0.5",
+    "sonner": "^2.0.7",
     "zod": "^3.25.48"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
+    "@repo/types": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@tailwindcss/postcss": "^4.1.7",
     "@testing-library/jest-dom": "^6.9.1",
@@ -48,9 +49,9 @@
     "eslint": "^9.27.0",
     "jsdom": "^27.3.0",
     "react-scan": "latest",
-    "tailwindcss": "^4.1.7",
+    "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3",
     "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^4.0.15"
+    "vitest": "4.0.15"
   }
 }

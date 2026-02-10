@@ -55,7 +55,7 @@ services:
           "CMD",
           "node",
           "-e",
-          "fetch('http://react-router-web:3000').then((r) => {if (r.status !== 200) throw new Error(r.status)})"
+          "fetch('http://react-router-web:3000/resources/healthcheck').then((r) => {if (r.status !== 200) throw new Error(r.status)})"
         ]
       timeout: 10s
       interval: 5s

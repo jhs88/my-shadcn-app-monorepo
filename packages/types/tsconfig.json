@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "bundler",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "moduleDetection": "force",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "module": "esnext",
+    "target": "es2022",
+    "isolatedModules": true
+  }
+}
