@@ -8,7 +8,7 @@ on:
 
 jobs:
   migrate:
-    runs-on: arc-runner-dind
+    runs-on: my-shadcn-app-monorepo
     env:
       SUPABASE_DB_URL: ${{ secrets.PRODUCTION_DB_URL }}
 
@@ -21,7 +21,7 @@ jobs:
       - run: supabase db push --db-url "$SUPABASE_DB_URL"
 
   apply:
-    runs-on: arc-runner-dind
+    runs-on: my-shadcn-app-monorepo
     env:
       TF_VAR_supabase_access_token: ${{ secrets.PRODUCTION_SUPABASE_ACCESS_TOKEN }}
       TF_VAR_linked_project: default 
