@@ -19,7 +19,7 @@ import {
 } from "@repo/ui/components/tooltip";
 import { useIsMobile } from "@repo/ui/hooks/use-mobile";
 import { cn } from "@repo/ui/lib/utils";
-import { Slot } from "radix-ui";
+import { Slot } from "@radix-ui/react-slot";
 import { VariantProps, cva } from "class-variance-authority";
 import { CircleXIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
