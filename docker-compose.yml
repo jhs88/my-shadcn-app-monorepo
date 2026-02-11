@@ -12,6 +12,7 @@ services:
       secrets:
         - turbo_token
     environment:
+      - NEXT_PUBLIC_API_HOST=${API_HOST}
       - NEXT_PUBLIC_SUPABASE_URL=${SUPABASE_URL}
       - NEXT_PUBLIC_SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
     restart: always
