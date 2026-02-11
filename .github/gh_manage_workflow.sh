@@ -15,11 +15,11 @@ fi
 WF_ACTION=$1
 WORKFLOW_FILE=$2
 
-if [ $WF_ACTION != "cancel" || $WF_ACTION != "delete"] then;
+if [ "$WF_ACTION" != "cancel" ] && [ "$WF_ACTION" != "delete" ]; then
     echo "Error: Invalid Workflow action"
     echo "Expected: \"cancel or delete\""
     exit 1
-if
+fi
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -28,6 +28,6 @@ NC='\033[0m'
 
 echo -e "${GREEN}Starting workflow cancellation for ${WORKFLOW_FILE}${NC}"
 
-for id in $(gh run list --workflow $WF_ACTION --json databaseId --jq '.[].databaseId'); do gh run ${WORKFLOW_FILE} "$id"; done
+for id in $(gh run list --workflow $WORKFLOW_FILE --json databaseId --jq '.[].databaseId'); do gh run $WF_ACTION "$id"; done
 
 echo -e "\n${GREEN}Workflow cancellation completed!${NC}"
