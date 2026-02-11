@@ -1,11 +1,12 @@
-import PageContainer from "@/components/layout/page-container";
 import Navbar from "@/components/navbar";
 
 export default function Layout({ children }: LayoutProps<"/test">) {
   return (
-    <PageContainer>
+    <>
       <Navbar />
-      {children}
-    </PageContainer>
+      <main className="container mx-auto w-full overflow-hidden py-4">
+        {children}
+      </main>
+    </>
   );
 }
