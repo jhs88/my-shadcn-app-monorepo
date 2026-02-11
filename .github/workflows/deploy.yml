@@ -4,13 +4,13 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - "master"
+      - "main"
       - "releases/v*"
     tags:
       - "v*"
-  pull_request:
-    branches:
-      - "master"
+  # pull_request:
+  #   branches:
+  #     - "mair"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

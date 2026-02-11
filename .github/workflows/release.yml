@@ -3,12 +3,12 @@ name: Release
 on:
   push:
     branches:
-      - 'master'
+      - main
     tags:
       - 'v*'
   pull_request:
     branches: 
-      - 'master'
+      - main
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
