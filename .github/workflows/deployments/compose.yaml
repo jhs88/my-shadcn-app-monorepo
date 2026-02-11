@@ -6,7 +6,6 @@ services:
     image: ghcr.io/jhs88/my-shadcn-app-monorepo/api:latest
     restart: unless-stopped
     networks: [default]
-    env_file: .env
     healthcheck:
       test:
         [
@@ -25,7 +24,6 @@ services:
     networks: 
       - default
       - traefik_net
-    env_file: .env
     environment:
       HOSTNAME: "::"
     healthcheck:
@@ -46,7 +44,6 @@ services:
     networks:
       - default
       - traefik_net
-    env_file: .env
     environment:
       HOSTNAME: "::"
     healthcheck:
