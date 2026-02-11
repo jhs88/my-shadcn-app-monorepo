@@ -14,7 +14,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@repo/ui/components/navigation-menu";
 import { cn } from "@repo/ui/lib/utils";
-import { ReactNode } from "react";
+import { type ReactNode } from "react";
 
 interface ComponentItem {
   title: string;
