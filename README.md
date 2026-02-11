@@ -2,6 +2,40 @@
 
 This template is for creating a turbo monorepo with shadcn/ui.
 
+## Getting Started
+
+### Requirements
+
+The following programs are required:
+
+- `node` >= 20
+- `pnpm` >= 10
+- `java` >= 21
+- `docker`
+- `git`
+
+The following programs are recommended:
+
+- [`nvm`](https://github.com/nvm-sh/nvm) ([Windows](https://github.com/coreybutler/nvm-windows)) for managing Node.js versions
+- [`sdkman`](https://sdkman.io/) for managing Java SDK versions
+- [`vscode`](https://code.visualstudio.com/) for a better development experience with plugin integration
+
+#### Installation
+
+```bash
+# install node, pnpm, & java
+nvm install lts/*
+
+# enable corepack and pnpm
+corepack enable
+
+# change to current version
+sdkman install java 21.0.6-tem 
+
+# add dependencies & run the project
+pnpm i & pnpm run dev
+```
+
 ## What's inside?
 
 This Turborepo includes the following:
@@ -25,7 +59,7 @@ This repo is configured to be built with Docker, and Docker compose. To build al
 
 ```
 # Install dependencies
-yarn install
+pnpm install
 
 # Create a network, which allows containers to communicate
 # with each other, by using their container name as a hostname
@@ -81,7 +115,7 @@ This will place the ui components in the `packages/ui/src/components` directory.
 
 #### Tailwind
 
-Your `tailwind.config.ts` and `globals.css` are already set up to use the components from the `ui` package.
+Your `globals.css` are already set up to use the components from the `ui` package.
 
 #### Using components
 
@@ -90,10 +124,3 @@ To use the components in your app, import them from the `ui` package.
 ```tsx
 import { Button } from "@repo/ui/components/button";
 ```
-
-### TODOs
-
-- [ ] Improve `packages` READMEs
-- [ ] Create a CI/CD pipeline for your app
-- [ ] Create Next.js "standalone mode" equivalent for react router
-- [ ] Bugfix `api` fails to start in dev mode because of logger needing to be built first
