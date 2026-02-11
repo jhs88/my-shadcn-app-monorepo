@@ -61,7 +61,6 @@ services:
     image: ghcr.io/jhs88/my-shadcn-app-monorepo/java-api:latest
     restart: unless-stopped
     networks: [default]
-    env_file: .env
   
 networks:
   traefik_net:
