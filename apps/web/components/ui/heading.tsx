@@ -1,5 +1,5 @@
-import { InfoButton } from "@repo/ui/components/info-button";
-import type { InfobarContent } from "@repo/ui/components/infobar";
+import { InfoButton } from "@/components/ui/info-button";
+import type { InfobarContent } from "@/components/ui/infobar";
 import React from "react";
 
 interface HeadingProps {

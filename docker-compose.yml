@@ -38,12 +38,16 @@ services:
       args:
         - TURBO_API=${TURBO_API}
         - TURBO_TEAM=${TURBO_TEAM}
+        - SUPABASE_URL=${SUPABASE_URL}
+        - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
       secrets:
         - turbo_token
     environment:
       - JAVA_API_HOST=${JAVA_API_HOST}
       - SUPABASE_URL=${SUPABASE_URL}
+      - VITE_SUPABASE_URL=${SUPABASE_URL}
       - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
+      - VITE_SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
     restart: always
     ports: [8080:3000]
     networks: [app_network]

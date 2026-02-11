@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@repo/ui/components/button";
-import { useInfobar, type InfobarContent } from "@repo/ui/components/infobar";
+import { useInfobar, type InfobarContent } from "@/components/ui/infobar";
 import { cn } from "@repo/ui/lib/utils";
 import { Info } from "lucide-react";
 import * as React from "react";

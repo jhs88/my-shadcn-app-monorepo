@@ -1,4 +1,4 @@
-import type { InfobarContent } from "@repo/ui/components/infobar";
+import type { InfobarContent } from "@/components/ui/infobar";
 import { ScrollArea } from "@repo/ui/components/scroll-area";
 import React from "react";
 import { Heading } from "../ui/heading";

@@ -85,7 +85,8 @@
     "react-dom": ">=19.2.0"
   },
   "exports": {
-    "./globals.css": "./src/styles/globals.css",
+    "./globals.css": "./globals.css",
+    "./themes.css": "./src/styles/globals.css",
     "./postcss.config": "./postcss.config.mjs",
     "./components/*": [
       "./src/components/*.tsx",

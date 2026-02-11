@@ -7,7 +7,7 @@ import { cn } from "@repo/ui/lib/utils";
 import { type Viewport, type Metadata } from "next";
 import { cookies } from "next/headers";
 
-import "@repo/ui/globals.css";
+import "@repo/ui/themes.css";
 
 const META_THEME_COLORS = {
   light: "#ffffff",

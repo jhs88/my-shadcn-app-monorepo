@@ -56,8 +56,16 @@ type InfobarContextProps = {
   setOpenMobile: (open: boolean) => void;
   isMobile: boolean;
   toggleInfobar: () => void;
-  content: InfobarContent | null;
-  setContent: (content: InfobarContent | null) => void;
+  content: {
+    title: string;
+    sections: DescriptiveSection[];
+  } | null;
+  setContent: (
+    content: {
+      title: string;
+      sections: DescriptiveSection[];
+    } | null,
+  ) => void;
   isPathnameChanging: boolean;
 };
 
