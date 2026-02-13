@@ -1,6 +1,6 @@
 # @repo/ui - Agent Guide
 
-Comprehensive shadcn/ui component library with 60+ reusable components for the MMG platform.
+Comprehensive shadcn/ui component library with 60+ reusable components.
 
 ## Tech Stack
 
