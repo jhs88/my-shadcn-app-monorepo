@@ -3,7 +3,7 @@ name: react-hook-forms
 description: Patterns and rules for using react-hook-forms library.
 ---
 
-This skill covers the patterns and best practices for implementing forms using React Hook Form in the MMG applications.
+This skill covers the patterns and best practices for implementing forms using React Hook Form in the applications.
 
 ## Overview
 

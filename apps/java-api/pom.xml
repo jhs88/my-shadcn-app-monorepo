@@ -131,10 +131,10 @@
 				</executions>
 				<configuration>
 					<excludes>
-						<exclude>com/mmg/api/**/entity/**</exclude>
-						<exclude>com/mmg/api/dto/**</exclude>
-						<exclude>com/mmg/api/config/**</exclude>
-						<exclude>com/mmg/api/ApiApplication.class</exclude>
+						<exclude>com/example/demo/**/entity/**</exclude>
+						<exclude>com/example/demo/dto/**</exclude>
+						<exclude>com/example/demo/config/**</exclude>
+						<exclude>com/example/demo/api/ApiApplication.class</exclude>
 					</excludes>
 					<rules>
 						<rule>

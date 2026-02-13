@@ -1,6 +1,6 @@
 # @repo/typescript-config - Agent Guide
 
-Shared TypeScript configurations for consistent compiler settings across the MMG monorepo.
+Shared TypeScript configurations for consistent compiler settings across the monorepo.
 
 ## Configurations
 
