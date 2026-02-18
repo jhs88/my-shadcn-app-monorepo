@@ -5,14 +5,14 @@ services:
   api:
     image: ghcr.io/jhs88/my-shadcn-app-monorepo/api:latest
     restart: unless-stopped
-    networks: [app_network]
+    networks: [default]
     healthcheck:
       test:
         [
           "CMD",
           "node",
           "-e",
-          "fetch('http://api:3001').then((r) => {if (r.status !== 200) throw new Error(r.status)})"
+          "fetch('http://127.0.0.1:3001').then((r) => {if (r.status !== 200) throw new Error(r.status)})"
         ]
       timeout: 10s
       interval: 5s
@@ -22,7 +22,7 @@ services:
     restart: unless-stopped
     depends_on: [api]
     networks: 
-      - app_network
+      - default
       - traefik_net
     environment:
       HOSTNAME: "::"
@@ -42,7 +42,7 @@ services:
     restart: unless-stopped
     depends_on: [api]
     networks:
-      - app_network
+      - default
       - traefik_net
     environment:
       HOSTNAME: "::"
@@ -60,10 +60,8 @@ services:
   java-api:
     image: ghcr.io/jhs88/my-shadcn-app-monorepo/java-api:latest
     restart: unless-stopped
-    networks: [app_network]
+    networks: [default]
   
 networks:
-  app_network:
-    internal: true
   traefik_net:
     external: true
