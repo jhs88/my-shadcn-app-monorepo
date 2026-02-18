@@ -12,7 +12,7 @@ services:
           "CMD",
           "node",
           "-e",
-          "fetch('http://127.0.0.1:3001').then((r) => {if (r.status !== 200) throw new Error(r.status)})"
+          "fetch('http://api:3001/message/healthcheck').then((r) => {if (r.status !== 200) throw new Error(r.status)})"
         ]
       timeout: 10s
       interval: 5s
