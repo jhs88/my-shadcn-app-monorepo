@@ -5,7 +5,7 @@ services:
   api:
     image: ghcr.io/jhs88/my-shadcn-app-monorepo/api:latest
     restart: unless-stopped
-    networks: [default]
+    networks: [app_network]
     healthcheck:
       test:
         [
@@ -22,7 +22,7 @@ services:
     restart: unless-stopped
     depends_on: [api]
     networks: 
-      - default
+      - app_network
       - traefik_net
     environment:
       HOSTNAME: "::"
@@ -42,7 +42,7 @@ services:
     restart: unless-stopped
     depends_on: [api]
     networks:
-      - default
+      - app_network
       - traefik_net
     environment:
       HOSTNAME: "::"
@@ -60,8 +60,10 @@ services:
   java-api:
     image: ghcr.io/jhs88/my-shadcn-app-monorepo/java-api:latest
     restart: unless-stopped
-    networks: [default]
+    networks: [app_network]
   
 networks:
+  app_network:
+    internal: true
   traefik_net:
     external: true
