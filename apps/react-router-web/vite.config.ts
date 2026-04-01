@@ -29,7 +29,7 @@ export default defineConfig((config) => ({
       }
     },
 
-    sourcemap: true,
+    // sourcemap: true,
   },
   sentryConfig,
   plugins: [
