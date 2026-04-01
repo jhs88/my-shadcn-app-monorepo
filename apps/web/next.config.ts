@@ -2,6 +2,8 @@ import { type NextConfig } from "next";
 
 export default {
   images: {
+    // loader: "custom",
+    // loaderFile: "./supabase-image-loader.js",
     localPatterns: [
       {
         pathname: "/assets/**",

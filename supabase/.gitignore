@@ -9,3 +9,5 @@
 
 # Terraform
 *_override.tf
+
+!migrations/*.sql
