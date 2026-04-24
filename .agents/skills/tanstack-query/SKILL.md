@@ -1,5 +1,6 @@
 ---
 name: tanstack-query
+description: Standardized patterns for TanStack Query in React — useSuspenseQuery with consistent query keys, useMutation for CRUD operations, server-side prefetching, and cache invalidation.
 ---
 
 The skill is for consistently using useSuspenseQuery from TanStack Query (React

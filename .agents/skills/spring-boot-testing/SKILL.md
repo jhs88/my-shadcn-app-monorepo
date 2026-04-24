@@ -1,5 +1,6 @@
 ---
 name: spring-boot-testing
+description: Comprehensive Spring Boot testing setup — unit tests with @WebMvcTest/@DataJpaTest, integration tests with @SpringBootTest, auto-configuration, and test best practices.
 ---
 # Spring Boot Testing Setup Guide
 

@@ -1,5 +1,6 @@
 ---
-name: spring-integtration-test-optimization
+name: spring-integration-test-optimization
+description: Strategies for optimizing Spring integration test performance — context caching, @MockBean avoidance, test slice selection, and separating unit vs integration test execution.
 ---
 # Optimizing Spring Integration Tests - Performance Guide
 
