@@ -21,7 +21,6 @@
     "**/.server/**/*",
     "**/.client/**/*",
     ".react-router/types/**/*",
-    "../../packages/ui/src/**/*",
     "./index.js"
   ]
 }

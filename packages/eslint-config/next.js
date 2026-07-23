@@ -14,6 +14,8 @@ import { config as baseConfig } from "./base.js"
  * @type {import("eslint").Linter.Config}
  * */
 export const nextJsConfig = [
+  // Next generates this directory; it must never be treated as application source.
+  { ignores: [".next/**"] },
   ...baseConfig,
   js.configs.recommended,
   eslintConfigPrettier,
