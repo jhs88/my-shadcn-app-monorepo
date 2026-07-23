@@ -36,6 +36,16 @@ sdkman install java 21.0.6-tem
 pnpm i & pnpm run dev
 ```
 
+### Verification
+
+Before opening a pull request or updating dependencies, run the full local verification suite:
+
+```bash
+pnpm verify
+```
+
+This runs participating workspace lint, type-check, test, and production build tasks without Docker image builds.
+
 ## What's inside?
 
 This Turborepo includes the following:
