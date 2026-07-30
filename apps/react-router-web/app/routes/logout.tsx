@@ -1,16 +1,13 @@
 import { type ActionFunctionArgs, redirect } from "react-router";
-import { createClient } from "~/lib/supabase/server";
+import { logout as logoutWorkflow } from "~/auth/workflows/server";
 
 export async function loader({ request }: ActionFunctionArgs) {
-  const { supabase, headers } = createClient(request);
+  const { result, headers } = await logoutWorkflow(request);
 
-  const { error } = await supabase.auth.signOut();
-
-  if (error) {
-    console.error(error);
-    return { success: false, error: error.message };
+  if (!result.ok) return { success: false, error: result.message };
+  if (result.status !== "signed-out") {
+    return { success: false, error: "Unexpected logout result" };
   }
 
-  // Redirect to dashboard or home page after successful sign-in
-  return redirect("/", { headers });
+  return redirect(result.redirectTo, { headers });
 }

@@ -14,51 +14,42 @@ import {
   redirect,
   useFetcher,
 } from "react-router";
-import { createClient } from "~/lib/supabase/server";
+import {
+  login as loginWorkflow,
+  startOAuthLogin as startOAuthLoginWorkflow,
+} from "~/auth/workflows/server";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-  const { supabase, headers } = createClient(request);
   const formData = await request.formData();
   const submission = formData.get("submission") as string;
 
   if (submission === "github") {
-    const origin = new URL(request.url).origin;
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: "github",
-      options: {
-        redirectTo: `${origin}/auth/oauth?next=/protected`,
-      },
+    const { result, headers } = await startOAuthLoginWorkflow(request, {
+      origin: new URL(request.url).origin,
     });
 
-    if (data.url) {
-      return redirect(data.url);
+    if (!result.ok) {
+      return { error: result.message };
+    }
+    if (result.status !== "oauth-redirect") {
+      return { error: "Unexpected OAuth result" };
     }
 
-    if (error) {
-      return {
-        error: error instanceof Error ? error.message : "An error occurred",
-      };
-    }
-    return {};
+    return redirect(result.externalUrl, { headers });
   }
 
   if (submission === "credentials") {
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
-
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
+    const { result, headers } = await loginWorkflow(request, {
+      email: String(formData.get("email") ?? ""),
+      password: String(formData.get("password") ?? ""),
     });
 
-    if (error) {
-      return {
-        error: error instanceof Error ? error.message : "An error occurred",
-      };
+    if (!result.ok) return { error: result.message };
+    if (result.status !== "signed-in") {
+      return { error: "Unexpected login result" };
     }
 
-    // Update this route to redirect to an authenticated route. The user already has an active session.
-    return redirect("/protected", { headers });
+    return redirect(result.redirectTo, { headers });
   }
 
   return { error: "Invalid submission" };
@@ -73,7 +64,7 @@ export default function Login() {
 
   const credentialsLoading = credentialsFetcher.state === "submitting";
   const oauthLoading = oauthFetcher.state === "submitting";
-  const loading = credentialsLoading ?? oauthLoading;
+  const loading = credentialsLoading || oauthLoading;
 
   return (
     <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">

@@ -1,4 +1,6 @@
-import { login } from "@/app/auth/actions";
+"use client";
+
+import { initialAuthActionState, login } from "@/app/auth/actions";
 import {
   Card,
   CardContent,
@@ -11,11 +13,14 @@ import { Label } from "@repo/ui/components/label";
 import { SubmitButton } from "@repo/ui/components/submit-button";
 import { cn } from "@repo/ui/lib/utils";
 import Link from "next/link";
+import { useActionState } from "react";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
+  const [state, formAction] = useActionState(login, initialAuthActionState);
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -26,7 +31,7 @@ export function LoginForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form action={login}>
+          <form action={formAction}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
@@ -50,6 +55,7 @@ export function LoginForm({
                 </div>
                 <Input id="password" type="password" name="password" required />
               </div>
+              {state.error && <p className="text-sm text-red-500">{state.error}</p>}
               <SubmitButton className="w-full" pendingText="Logging In">
                 Login
               </SubmitButton>
