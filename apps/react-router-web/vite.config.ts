@@ -12,6 +12,9 @@ import {
 const MODE = process.env.NODE_ENV;
 
 export default defineConfig((config) => ({
+  test: {
+    include: ["app/**/*.test.{ts,tsx}"],
+  },
   build: {
     target: "es2022",
     cssMinify: MODE === "production",

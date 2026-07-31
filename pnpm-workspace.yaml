@@ -6,3 +6,6 @@ packageExtensions:
   "@hookform/resolvers@5.2.2":
     peerDependencies:
       zod: "^3.25.0 || ^4.0.0"
+  "remix-themes@2.0.4":
+    peerDependencies:
+      react: "^19.2.8"
