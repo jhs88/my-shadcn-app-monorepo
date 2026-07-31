@@ -9,27 +9,20 @@ import {
 import { Input } from "@repo/ui/components/input";
 import { Label } from "@repo/ui/components/label";
 import { type ActionFunctionArgs, redirect, useFetcher } from "react-router";
-import { createClient } from "~/lib/supabase/server";
+import { updatePassword as updatePasswordWorkflow } from "~/auth/workflows/server";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-  const { supabase, headers } = createClient(request);
   const formData = await request.formData();
-  const password = formData.get("password") as string;
+  const { result, headers } = await updatePasswordWorkflow(request, {
+    password: String(formData.get("password") ?? ""),
+  });
 
-  if (!password) {
-    return { error: "Password is required" };
+  if (!result.ok) return { error: result.message };
+  if (result.status !== "password-updated") {
+    return { error: "Unexpected password update result" };
   }
 
-  const { error } = await supabase.auth.updateUser({ password: password });
-
-  if (error) {
-    return {
-      error: error instanceof Error ? error.message : "An error occurred",
-    };
-  }
-
-  // Redirect to sign-in page after successful password update
-  return redirect("/protected", { headers });
+  return redirect(result.redirectTo, { headers });
 };
 
 export default function Page() {

@@ -49,6 +49,15 @@ Data is fetched server-side via React Router loaders:
 
 Loaders run on the server, so they have access to cookies and server-side Supabase client.
 
+### Auth workflow module
+
+Auth mutations use route actions as thin framework adapters around `app/auth/workflows/`:
+- `server.ts` — creates the Supabase adapter and preserves response headers
+- `operations.ts` — owns validation, auth orchestration, and result shaping
+- `types.ts` / `validation.ts` — define the auth workflow interface and invariants
+
+Routes such as `login.tsx`, `sign-up.tsx`, `forgot-password.tsx`, `update-password.tsx`, and `logout.tsx` translate `FormData` and redirects around the auth workflow module instead of owning the auth rules directly.
+
 ### Supabase integration
 
 Two clients in `app/lib/supabase/`:
@@ -99,3 +108,5 @@ Express adapter includes:
 | **Loader** | A React Router function that fetches data server-side before rendering a route |
 | **Nonce** | A per-request cryptographic token injected into CSP headers to allow specific inline scripts |
 | **Action route** | A file prefixed with `action.` that handles form submissions and mutations |
+| **Auth workflow** | The local module in `app/auth/workflows/` that owns auth validation, Supabase orchestration, and typed auth results |
+| **Framework adapter** | A route action or form that translates React Router request/response details around the auth workflow |

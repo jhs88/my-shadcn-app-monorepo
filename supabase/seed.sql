@@ -12,6 +12,8 @@ create table profiles (
 
 alter table profiles enable row level security;
 
+grant select, insert, update on table profiles to authenticated;
+
 create policy "Public profiles are viewable by the owner."
   on profiles for select
   using ( auth.uid() = id );

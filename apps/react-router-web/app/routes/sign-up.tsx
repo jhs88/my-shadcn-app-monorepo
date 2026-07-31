@@ -15,43 +15,23 @@ import {
   useFetcher,
   useSearchParams,
 } from "react-router";
-import { createClient } from "~/lib/supabase/server";
+import { signUp as signUpWorkflow } from "~/auth/workflows/server";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-  const { supabase } = createClient(request);
-
   const url = new URL(request.url);
   const origin = url.origin;
-
   const formData = await request.formData();
-
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
-  const repeatPassword = formData.get("repeat-password") as string;
-
-  if (!password) {
-    return {
-      error: "Password is required",
-    };
-  }
-
-  if (password !== repeatPassword) {
-    return { error: "Passwords do not match" };
-  }
-
-  const { error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      emailRedirectTo: `${origin}/protected`,
-    },
+  const { result, headers } = await signUpWorkflow(request, {
+    email: String(formData.get("email") ?? ""),
+    password: String(formData.get("password") ?? ""),
+    repeatPassword: String(formData.get("repeat-password") ?? ""),
+    emailRedirectTo: `${origin}/protected`,
   });
 
-  if (error) {
-    return { error: error.message };
-  }
+  if (!result.ok) return { error: result.message };
+  if (result.status !== "signed-up") return { error: "Unexpected sign-up result" };
 
-  return redirect("/sign-up?success");
+  return redirect(result.redirectTo, { headers });
 };
 
 export default function SignUp() {

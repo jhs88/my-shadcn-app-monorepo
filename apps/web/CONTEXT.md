@@ -52,7 +52,12 @@ Auth operations use Next.js server actions in `app/auth/actions.ts`:
 - `oauthLogin(origin)` — initiates GitHub OAuth flow
 - `logout()` — signs out, redirects to login
 
-All auth actions use `redirect()` for navigation and `revalidatePath("/", "layout")` to refresh the layout.
+The server actions are thin framework adapters around the auth workflow module in `app/auth/workflows/`:
+- `server.ts` — creates the Supabase adapter for server actions
+- `operations.ts` — owns validation, auth orchestration, and result shaping
+- `types.ts` / `validation.ts` — define the auth workflow interface and invariants
+
+The auth workflow module returns typed results; `app/auth/actions.ts` maps those results to `redirect()` and `revalidatePath("/", "layout")`.
 
 ### TanStack Query
 
@@ -97,3 +102,5 @@ Themes are styled via CSS variables in `@repo/ui/src/styles/themes/`.
 | **Protected route** | Any route under `/protected/` that requires authentication |
 | **Theme** | A visual style defined by CSS variables (e.g., "supabase", "vercel", "neobrutalism") |
 | **Server action** | A Next.js server-side function called from client components for mutations |
+| **Auth workflow** | The local module in `app/auth/workflows/` that owns auth validation, Supabase orchestration, and typed auth results |
+| **Framework adapter** | A Next.js server action or form that translates framework input/output around the auth workflow |

@@ -16,31 +16,31 @@ import {
   useFetcher,
   useSearchParams,
 } from "react-router";
-import { createClient } from "~/lib/supabase/server";
+import { startPasswordReset as startPasswordResetWorkflow } from "~/auth/workflows/server";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
-  const email = formData.get("email") as string;
-
-  const { supabase, headers } = createClient(request);
   const origin = new URL(request.url).origin;
-
-  // Send the actual reset password email
-  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+  const { result, headers } = await startPasswordResetWorkflow(request, {
+    email: String(formData.get("email") ?? ""),
     redirectTo: `${origin}/auth/confirm?next=/update-password`,
   });
 
-  if (error) {
+  if (!result.ok) {
     return data(
       {
-        error: error instanceof Error ? error.message : "An error occurred",
-        data: { email },
+        error: result.message,
+        data: { email: String(formData.get("email") ?? "") },
       },
       { headers },
     );
   }
 
-  return redirect("/forgot-password?success");
+  if (result.status !== "password-reset-requested") {
+    return data({ error: "Unexpected password reset result" }, { headers });
+  }
+
+  return redirect(result.redirectTo, { headers });
 };
 
 export default function ForgotPassword() {
