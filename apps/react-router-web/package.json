@@ -5,6 +5,11 @@
   "type": "module",
   "scripts": {
     "test": "vitest run",
+    "e2e:bootstrap": "node ../../scripts/bootstrap-playwright-supabase-user.mjs",
+    "e2e:server": "node ./e2e-server.js",
+    "test:e2e": "pnpm e2e:bootstrap && playwright test",
+    "test:e2e:smoke": "pnpm e2e:bootstrap && playwright test --project=smoke",
+    "test:e2e:integration": "pnpm e2e:bootstrap && playwright test --project=integration",
     "build": "react-router build",
     "dev": "react-router dev",
     "dev:test": "node ./server/dev-server.js",
@@ -52,6 +57,7 @@
   },
   "devDependencies": {
     "@react-router/dev": "7.18.1",
+    "@playwright/test": "^1.55.0",
     "@repo/eslint-config": "workspace:*",
     "@repo/types": "workspace:*",
     "@repo/typescript-config": "workspace:*",

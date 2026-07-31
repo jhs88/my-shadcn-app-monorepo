@@ -59,7 +59,16 @@ export default function Test({ loaderData }: Route.ComponentProps) {
 
   return (
     <>
-      <Navbar />
+      <Navbar
+        actions={[
+          {
+            text: "Logout",
+            href: "/logout",
+            isButton: true,
+            variant: "outline",
+          },
+        ]}
+      />
       <main className="container mx-auto min-h-screen w-full overflow-hidden">
         <div className="flex w-full gap-6">
           <Dialog>
@@ -68,6 +77,7 @@ export default function Test({ loaderData }: Route.ComponentProps) {
                 size="icon-sm"
                 variant="ghost"
                 className="hover:cursor-pointer"
+                aria-label="Open profile dialog"
               >
                 <Avatar>
                   <AvatarImage
@@ -125,7 +135,7 @@ export default function Test({ loaderData }: Route.ComponentProps) {
                         <img
                           className="object-cover"
                           src={profile?.avatar_url ?? profileImage}
-                          alt={initials ?? "?"}
+                          alt="Profile avatar"
                         />
                       </ItemMedia>
                     </ItemHeader>

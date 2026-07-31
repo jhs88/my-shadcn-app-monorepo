@@ -17,10 +17,10 @@ import {
 } from "./operations";
 
 const config = {
-  protectedRedirect: "/protected",
+  protectedRedirect: "/test",
   signUpRedirect: "/sign-up?success",
   forgotPasswordRedirect: "/forgot-password?success",
-  loginRedirect: "/protected",
+  loginRedirect: "/test",
   logoutRedirect: "/",
 };
 

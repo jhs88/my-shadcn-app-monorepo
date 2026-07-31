@@ -16,7 +16,10 @@
     "version-packages": "changeset version",
     "release": "turbo run build --affected && changeset publish",
     "update-types": "npx supabase gen types --lang=typescript --db-url \"$SUPABASE_DB_URL\" > packages/types/database.types.ts",
-    "knip": "knip"
+    "knip": "knip",
+    "test:react-router-web:e2e": "pnpm --filter react-router-web test:e2e",
+    "test:react-router-web:e2e:smoke": "pnpm --filter react-router-web test:e2e:smoke",
+    "test:react-router-web:e2e:integration": "pnpm --filter react-router-web test:e2e:integration"
   },
   "devDependencies": {
     "@changesets/cli": "^2.31.1",
