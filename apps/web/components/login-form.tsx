@@ -1,6 +1,7 @@
 "use client";
 
-import { initialAuthActionState, login } from "@/app/auth/actions";
+import { initialAuthActionState } from "@/app/auth/action-state";
+import { login } from "@/app/auth/actions";
 import {
   Card,
   CardContent,

@@ -10,13 +10,7 @@ import {
 } from "@/app/auth/workflows/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-
-export type AuthActionState = {
-  error?: string;
-  success?: string;
-};
-
-export const initialAuthActionState: AuthActionState = {};
+import type { AuthActionState } from "@/app/auth/action-state";
 
 export async function signup(
   _: AuthActionState,

@@ -1,6 +1,7 @@
 "use client";
 
-import { initialAuthActionState, signup } from "@/app/auth/actions";
+import { initialAuthActionState } from "@/app/auth/action-state";
+import { signup } from "@/app/auth/actions";
 import { cn } from "@repo/ui/lib/utils";
 import {
   Card,
