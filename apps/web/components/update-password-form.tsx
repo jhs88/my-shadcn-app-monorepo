@@ -1,9 +1,7 @@
 "use client";
 
-import {
-  initialAuthActionState,
-  saveUpdatedPassword,
-} from "@/app/auth/actions";
+import { initialAuthActionState } from "@/app/auth/action-state";
+import { saveUpdatedPassword } from "@/app/auth/actions";
 import { cn } from "@repo/ui/lib/utils";
 import {
   Card,

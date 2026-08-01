@@ -21,3 +21,4 @@ Multi-context monorepo — `CONTEXT-MAP.md` at root points to per-app `CONTEXT.m
 ## Surprises / Confusion Points
 
 - `apps/react-router-web` reads the repo root `.env` by default via `apps/react-router-web/index.js`, and that file may point at a remote Supabase instance. Local e2e work that is meant to run against `supabase start` must override the app's Supabase env explicitly instead of trusting the default `.env`.
+- pnpm settings such as `packageExtensions` belong in `pnpm-workspace.yaml`; pnpm 10 ignores the legacy root `package.json#pnpm` field.
