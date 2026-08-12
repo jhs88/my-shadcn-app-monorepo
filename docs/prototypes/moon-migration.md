@@ -140,3 +140,13 @@ Use this branch as the base for a CI-only experiment:
 5. prototype one Docker image, preferably `apps/api`, before touching the other
    three;
 6. decide whether the operational gains justify a full migration.
+
+## API Docker prototype
+
+The API Dockerfile now exercises moon's documented multi-stage integration:
+`docker scaffold api`, a focused pnpm install, `moon run api:build`, then
+`docker prune`. The explicit pnpm install is required because the workspace
+deliberately configures moon with `javascript.installDependencies: false`.
+It remains prototype evidence until its clean image build,
+runtime health endpoint, dependency closure, image contents, and comparison to
+the Turbo-built baseline have been recorded on the Wayfinder ticket.
