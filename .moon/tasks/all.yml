@@ -1,7 +1,6 @@
 # Match Turbo's workspace-wide environment hash inputs without defining tasks
 # that projects do not actually provide.
 implicitInputs:
-  - "$CI"
   - "$PLAYWRIGHT_PORT"
   - "$PLAYWRIGHT_TEST_BASE_URL"
   - "$PLAYWRIGHT_TEST_EMAIL"
