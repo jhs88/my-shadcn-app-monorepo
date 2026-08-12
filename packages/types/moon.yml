@@ -1,0 +1,8 @@
+layer: "library"
+tags: ["typescript", "supabase"]
+
+tasks:
+  lint:
+    command: "pnpm run lint"
+    options:
+      runInCI: true

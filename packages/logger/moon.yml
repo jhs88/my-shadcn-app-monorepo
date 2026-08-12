@@ -1,0 +1,18 @@
+stack: "backend"
+layer: "library"
+tags: ["typescript"]
+
+tasks:
+  build:
+    command: "pnpm run build"
+    deps: ["^:build"]
+    outputs: ["dist/**/*"]
+  clean:
+    command: "pnpm run clean"
+    options:
+      cache: false
+      runInCI: false
+  lint:
+    command: "pnpm run lint"
+    options:
+      runInCI: true

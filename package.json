@@ -19,10 +19,16 @@
     "knip": "knip",
     "test:react-router-web:e2e": "pnpm --filter react-router-web test:e2e",
     "test:react-router-web:e2e:smoke": "pnpm --filter react-router-web test:e2e:smoke",
-    "test:react-router-web:e2e:integration": "pnpm --filter react-router-web test:e2e:integration"
+    "test:react-router-web:e2e:integration": "pnpm --filter react-router-web test:e2e:integration",
+    "moon:build": "moon run :build",
+    "moon:lint": "moon run :lint",
+    "moon:test": "moon run :test",
+    "moon:check-types": "moon run :check-types",
+    "moon:verify": "moon run :lint :check-types :test :build"
   },
   "devDependencies": {
     "@changesets/cli": "^2.31.1",
+    "@moonrepo/cli": "2.4.6",
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@types/node": "^20.19.43",
