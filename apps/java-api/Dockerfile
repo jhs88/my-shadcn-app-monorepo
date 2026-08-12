@@ -1,44 +1,31 @@
 FROM node:24-alpine AS base
-ARG TURBO_TELEMETRY_DISABLED=1
-ENV TURBO_TELEMETRY_DISABLED=$TURBO_TELEMETRY_DISABLED
-ENV PNPM_HOME="/pnpm" 
+
+ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-RUN apk update && apk add --no-cache libc6-compat
-RUN corepack enable
+ENV MOON_TOOLCHAIN_FORCE_GLOBALS=true
+
+RUN apk add --no-cache libc6-compat \
+    && corepack enable \
+    && npm install --global @moonrepo/cli@2.4.6
+
 WORKDIR /app
 
-
-FROM base AS builder
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm i -g turbo
+FROM base AS skeleton
 COPY . .
-RUN turbo prune java-api --docker
+RUN moon docker scaffold java-api
 
-
-FROM base AS installer
-
-COPY --from=builder /app/out/json/ .
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm i
-
-COPY --from=builder /app/out/full/ .
+FROM base AS build
+COPY --from=skeleton /app/.moon/docker/configs .
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+COPY --from=skeleton /app/.moon/docker/sources .
 
 ENV JAVA_HOME="/opt/java/openjdk"
 ENV PATH="$JAVA_HOME/bin:$PATH"
-COPY --from=eclipse-temurin:21-alpine ${JAVA_HOME} ${JAVA_HOME} 
+COPY --from=eclipse-temurin:21-alpine $JAVA_HOME $JAVA_HOME
 
-ARG TURBO_API
-ENV TURBO_API=$TURBO_API
-
-ARG TURBO_TEAM
-ENV TURBO_TEAM=$TURBO_TEAM
-
-# ARG TURBO_TOKEN
-# ENV TURBO_TOKEN=$TURBO_TOKEN
-
-RUN --mount=type=bind,source=.git,target=.git \
-    --mount=type=cache,id=maven,target=/root/.m2 \
-    --mount=type=secret,id=turbo_token,env=TURBO_TOKEN \
-    pnpm build
-
+RUN --mount=type=cache,id=maven,target=/root/.m2 \
+    rm -rf apps/java-api/target \
+    && moon run java-api:build
 
 FROM eclipse-temurin:21-jre-alpine AS runner
 WORKDIR /app
@@ -46,7 +33,7 @@ WORKDIR /app
 RUN addgroup --system --gid 1001 java \
     && adduser --system --uid 1001 java
 
-USER java 
+COPY --from=build --chown=java:java /app/apps/java-api/target/*.jar ./
 
-COPY --from=installer --chown=java:java /app/apps/java-api/target/*.jar .
-CMD java -jar demo*.jar
+USER java
+CMD ["sh", "-c", "java -jar demo*.jar"]

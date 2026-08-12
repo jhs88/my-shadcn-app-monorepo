@@ -150,3 +150,9 @@ deliberately configures moon with `javascript.installDependencies: false`.
 It remains prototype evidence until its clean image build,
 runtime health endpoint, dependency closure, image contents, and comparison to
 the Turbo-built baseline have been recorded on the Wayfinder ticket.
+
+The same pattern has now been adapted to all four images. React Router retains
+focused production dependencies, Next.js retains standalone output, and Java
+copies Temurin 21 into the moon build stage while keeping the JRE-only runtime.
+Local Compose and the GHCR publication workflow no longer pass Turbo cache
+arguments or secrets to the converted Dockerfiles.

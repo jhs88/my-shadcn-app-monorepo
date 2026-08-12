@@ -4,13 +4,9 @@ services:
     build:
       context: .
       dockerfile: ./apps/web/Dockerfile
-      args: 
-        - TURBO_API=${TURBO_API}
-        - TURBO_TEAM=${TURBO_TEAM}
+      args:
         - SUPABASE_URL=${SUPABASE_URL}
         - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
-      secrets:
-        - turbo_token
     environment:
       - NEXT_PUBLIC_API_HOST=${API_HOST}
       - NEXT_PUBLIC_SUPABASE_URL=${SUPABASE_URL}
@@ -23,11 +19,6 @@ services:
     build:
       context: .
       dockerfile: ./apps/api/Dockerfile
-      args: 
-        - TURBO_API=${TURBO_API}
-        - TURBO_TEAM=${TURBO_TEAM}
-      secrets:
-        - turbo_token
     restart: always
     ports: [3001:3001]
     networks: [app_network]
@@ -37,12 +28,8 @@ services:
       context: .
       dockerfile: ./apps/react-router-web/Dockerfile
       args:
-        - TURBO_API=${TURBO_API}
-        - TURBO_TEAM=${TURBO_TEAM}
         - SUPABASE_URL=${SUPABASE_URL}
         - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
-      secrets:
-        - turbo_token
     environment:
       - JAVA_API_HOST=${JAVA_API_HOST}
       - SUPABASE_URL=${SUPABASE_URL}
@@ -57,18 +44,9 @@ services:
     build:
       context: .
       dockerfile: ./apps/java-api/Dockerfile
-      args:
-        - TURBO_API=${TURBO_API}
-        - TURBO_TEAM=${TURBO_TEAM}
-      secrets:
-        - turbo_token
     restart: always
     ports: [8081:8080]
     networks: [app_network]
 
 networks:
   app_network:
-
-secrets:
-  turbo_token:
-    environment: TURBO_TOKEN
