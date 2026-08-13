@@ -106,3 +106,33 @@ jobs:
       - name: Reflect probe failures
         if: always() && (steps.full.outcome != 'success' || steps.affected.outcome != 'success')
         run: exit 1
+
+  docker:
+    name: Moon Docker prototype (${{ matrix.target }})
+    runs-on: my-shadcn-app-monorepo
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [api, java-api, web, react-router-web]
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Moon image without publishing
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: apps/${{ matrix.target }}/Dockerfile.moon
+          push: false
+          load: false
+          platforms: linux/amd64
+          build-args: |
+            SUPABASE_URL=http://127.0.0.1:54321
+            SUPABASE_ANON_KEY=moon-ci-local-placeholder
+            NEXT_PUBLIC_API_HOST=http://127.0.0.1:3001
+          cache-from: type=gha,scope=moon-${{ matrix.target }}
+          cache-to: type=gha,mode=max,scope=moon-${{ matrix.target }}

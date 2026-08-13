@@ -156,3 +156,25 @@ focused production dependencies, Next.js retains standalone output, and Java
 copies Temurin 21 into the moon build stage while keeping the JRE-only runtime.
 Local Compose and the GHCR publication workflow no longer pass Turbo cache
 arguments or secrets to the converted Dockerfiles.
+
+Validated locally on 2026-08-13:
+
+- `pnpm moon:verify` completed all 18 tasks, including Java 21 and both frontend
+  production builds.
+- The affected CI probe from `origin/main` to the branch completed 28 actions
+  and selected all 18 verification targets because workspace-level Moon
+  configuration changed.
+- The API image runs as `expressjs`, serves `/status` and `/message/:name`, and
+  is approximately 192 MB on the local builder.
+- The Java API image runs as `java`, serves `UP` from the repository's current
+  `/actutaor/health` path and seeded `/items`, and is approximately 270 MB.
+- The React Router image runs as `reactrouter`, serves `/`, and redirects an
+  unauthenticated `/test` request to `/login`; its existing health route returns
+  the same 500 response under both the former Turbo path and Moon.
+- The Next.js image runs as `nextjs`, serves `/`, and redirects unauthenticated
+  `/protected` requests to `/auth/login`.
+
+The `Dockerfile.moon` files remain side-by-side shadow artifacts for CI parity
+while the primary Dockerfiles exercise the branch's Moon cutover. The shadow
+workflow builds all four without publishing; deployment promotion remains a
+separate decision.
