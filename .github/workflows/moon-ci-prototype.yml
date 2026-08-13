@@ -134,5 +134,3 @@ jobs:
             SUPABASE_URL=http://127.0.0.1:54321
             SUPABASE_ANON_KEY=moon-ci-local-placeholder
             NEXT_PUBLIC_API_HOST=http://127.0.0.1:3001
-          cache-from: type=gha,scope=moon-${{ matrix.target }}
-          cache-to: type=gha,mode=max,scope=moon-${{ matrix.target }}
