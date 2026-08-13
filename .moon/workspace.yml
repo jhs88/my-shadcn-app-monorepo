@@ -18,4 +18,4 @@ vcs:
   provider: "github"
 
 # The package.json dev dependency pins the exact prototype CLI version.
-versionConstraint: ">=2.4.6"
+versionConstraint: "=2.4.6"

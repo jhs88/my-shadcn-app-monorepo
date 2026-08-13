@@ -1,46 +1,71 @@
 FROM node:24-alpine AS base
-
-ENV PNPM_HOME="/pnpm"
+ENV PNPM_HOME="/pnpm" 
 ENV PATH="$PNPM_HOME:$PATH"
-ENV MOON_TOOLCHAIN_FORCE_GLOBALS=true
-
-RUN apk add --no-cache libc6-compat \
-    && corepack enable \
-    && npm install --global @moonrepo/cli@2.4.6
-
+RUN corepack enable
+# Set working directory
 WORKDIR /app
 
-FROM base AS skeleton
-COPY . .
-RUN moon docker scaffold react-router-web
 
-FROM base AS build
-COPY --from=skeleton /app/.moon/docker/configs .
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
-COPY --from=skeleton /app/.moon/docker/sources .
+FROM base AS builder
+ARG TURBO_TELEMETRY_DISABLED=1
+ENV TURBO_TELEMETRY_DISABLED=$TURBO_TELEMETRY_DISABLED
+# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
+RUN apk update && apk add --no-cache libc6-compat
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm i -g turbo
+COPY . .
+RUN turbo prune react-router-web --docker
+
+
+# Add lockfile and package.json's of isolated subworkspace
+FROM base AS installer
+RUN apk update && apk add --no-cache libc6-compat
+
+# First install dependencies (as they change less often)
+COPY --from=builder /app/out/json/ .
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm i
+
+# Build the project and its dependencies
+COPY --from=builder /app/out/full/ .
+
+# Uncomment and use build args to enable remote caching
+ARG TURBO_API
+ENV TURBO_API=$TURBO_API
+
+ARG TURBO_TEAM
+ENV TURBO_TEAM=$TURBO_TEAM
+
+# ARG TURBO_TOKEN
+# ENV TURBO_TOKEN=$TURBO_TOKEN
+
+ARG TURBO_TELEMETRY_DISABLED=1
+ENV TURBO_TELEMETRY_DISABLED=$TURBO_TELEMETRY_DISABLED
 
 ARG SUPABASE_URL
 ARG SUPABASE_ANON_KEY
 ENV VITE_SUPABASE_URL=$SUPABASE_URL
 ENV VITE_SUPABASE_ANON_KEY=$SUPABASE_ANON_KEY
 
-RUN rm -rf apps/react-router-web/build \
-    && moon run react-router-web:build \
-    && moon docker prune
+RUN --mount=type=bind,source=.git,target=.git \
+    --mount=type=secret,id=turbo_token,env=TURBO_TOKEN \
+    pnpm build
 
-FROM node:24-alpine AS runner
-ENV NODE_ENV=production
-WORKDIR /app
 
+FROM base AS runner
+
+# First install prod dependencies
+COPY --from=builder /app/out/json/ .
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm i --prod
+
+# Don't run production as root
 RUN addgroup --system --gid 1001 nodejs \
     && adduser --system --uid 1001 reactrouter
-
-COPY --from=build --chown=reactrouter:nodejs /app/node_modules ./node_modules
-COPY --from=build --chown=reactrouter:nodejs /app/apps/react-router-web/node_modules ./apps/react-router-web/node_modules
-COPY --from=build --chown=reactrouter:nodejs /app/apps/react-router-web/package.json ./apps/react-router-web/package.json
-COPY --from=build --chown=reactrouter:nodejs /app/apps/react-router-web/public ./apps/react-router-web/public
-COPY --from=build --chown=reactrouter:nodejs /app/apps/react-router-web/build ./apps/react-router-web/build
-
 USER reactrouter
-WORKDIR /app/apps/react-router-web
-CMD ["./node_modules/.bin/react-router-serve", "./build/server/index.js"]
+
+# Copy only the source code for the app, not the entire project
+ARG APP_PATH="/app/apps/react-router-web"
+COPY --from=installer --chown=reactrouter:nodejs ${APP_PATH}/public ${APP_PATH}/public
+COPY --from=installer --chown=reactrouter:nodejs ${APP_PATH}/package.json ${APP_PATH}/
+COPY --from=installer --chown=reactrouter:nodejs ${APP_PATH}/build ${APP_PATH}/build
+
+WORKDIR ${APP_PATH}
+CMD ["npx", "react-router-serve", "./build/server/index.js"]

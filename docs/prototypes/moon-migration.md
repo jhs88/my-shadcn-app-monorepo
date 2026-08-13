@@ -174,10 +174,11 @@ Validated locally on 2026-08-13:
 - The Next.js image runs as `nextjs`, serves `/`, and redirects unauthenticated
   `/protected` requests to `/auth/login`.
 
-The `Dockerfile.moon` files remain side-by-side shadow artifacts for CI parity
-while the primary Dockerfiles exercise the branch's Moon cutover. The shadow
-workflow builds all four without publishing; deployment promotion remains a
-separate decision.
+The `Dockerfile.moon` files remain side-by-side shadow artifacts for CI parity.
+The primary Dockerfiles, Compose configuration, and deployment workflow remain
+Turbo-backed until the remaining affected-selection and remote-cache decisions
+are complete. The shadow workflow builds all four Moon paths without publishing;
+deployment promotion remains a separate decision.
 
 The first four-image shadow run showed that exporting Buildx caches to GitHub
 with `mode=max` did not complete on the ephemeral self-hosted runners after

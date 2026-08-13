@@ -3,9 +3,13 @@
 This is a throwaway CI probe on `prototype/moon-migration`, not the final CI
 contract and not a required check.
 
-It answers one question: can the pinned moon 2.4.6 configuration execute the
-repository's complete verification graph on the existing CI runner and emit an
-understandable affected-task report?
+It answers two additive-migration questions:
+
+1. Can the pinned moon 2.4.6 configuration execute the repository's complete
+   verification graph on the existing CI runner and emit an understandable
+   affected-task report?
+2. Can all four side-by-side `Dockerfile.moon` paths build without publishing,
+   while the production Docker and deployment seams remain unchanged?
 
 The workflow runs both probes even when one fails, publishes their outcomes to
 the job summary, and uploads moon's JSON reports for inspection. Its push
@@ -28,4 +32,4 @@ contains `CI=true` for tools that alter behavior under CI.
 - Dependabot-specific behavior
 - Promotion thresholds and the representative-change matrix
 - Remote-cache configuration
-- Docker builds and deployment
+- Deployment and replacement of the production Dockerfiles
