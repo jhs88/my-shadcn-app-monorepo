@@ -23,10 +23,156 @@ permissions:
 # network and implements the Bazel Remote Execution v2 cache API.
 env:
   MOON_REMOTE_HOST: grpc://172.16.8.179:9092
+  MOON_REMOTE_CACHE_PROOF_NONCE: ${{ github.run_id }}-${{ github.run_attempt }}
 
 jobs:
+  remote-cache-seed:
+    name: Moon remote cache seed
+    runs-on: my-shadcn-app-monorepo
+    timeout-minutes: 15
+    outputs:
+      runner-name: ${{ steps.runner.outputs.name }}
+      task-hash: ${{ steps.seed.outputs.task-hash }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "20"
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Record seed runner
+        id: runner
+        run: |
+          echo "name=$RUNNER_NAME" >> "$GITHUB_OUTPUT"
+          printf 'runner=%s\nhost=%s\n' "$RUNNER_NAME" "$(hostname)" > remote-cache-runner.txt
+
+      - name: Seed remote cache without reading it
+        id: seed
+        env:
+          MOON_CACHE: write
+        run: |
+          rm -rf .moon/cache packages/logger/dist
+          pnpm exec moon run logger:build
+          mkdir -p .moon/prototype-evidence
+          cp .moon/cache/runReport.json .moon/prototype-evidence/remote-cache-seed-report.json
+          node -e '
+            const fs = require("node:fs");
+            const report = JSON.parse(fs.readFileSync(".moon/cache/runReport.json", "utf8"));
+            const action = report.actions.find(({ label }) => label === "RunTask(logger:build)");
+            const hash = action?.operations.find(({ meta }) => meta?.type === "hash-generation")?.meta?.hash;
+            if (!hash) throw new Error("Seed report did not contain a task hash");
+            fs.appendFileSync(process.env.GITHUB_OUTPUT, `task-hash=${hash}\n`);
+          '
+
+      - name: Verify seed executed and produced output
+        run: |
+          node -e '
+            const fs = require("node:fs");
+            const report = JSON.parse(fs.readFileSync(".moon/prototype-evidence/remote-cache-seed-report.json", "utf8"));
+            const action = report.actions.find(({ label }) => label === "RunTask(logger:build)");
+            if (!action || action.status !== "passed") {
+              throw new Error(`Expected logger:build to execute during seed, got ${action?.status ?? "missing"}`);
+            }
+            if (!fs.existsSync("packages/logger/dist/index.js")) {
+              throw new Error("Seed did not produce packages/logger/dist/index.js");
+            }
+          '
+
+      - name: Upload seed evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: moon-remote-cache-seed-evidence
+          path: |
+            .moon/prototype-evidence/remote-cache-seed-report.json
+            remote-cache-runner.txt
+          retention-days: 7
+
+  remote-cache-restore:
+    name: Moon remote cache restore
+    needs: remote-cache-seed
+    runs-on: my-shadcn-app-monorepo
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "20"
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Prove a different ephemeral runner
+        env:
+          SEED_RUNNER_NAME: ${{ needs.remote-cache-seed.outputs.runner-name }}
+        run: |
+          test -n "$SEED_RUNNER_NAME"
+          test "$RUNNER_NAME" != "$SEED_RUNNER_NAME"
+          printf 'seed_runner=%s\nrestore_runner=%s\nhost=%s\n' \
+            "$SEED_RUNNER_NAME" "$RUNNER_NAME" "$(hostname)" > remote-cache-runner.txt
+
+      - name: Restore output from remote cache without writing
+        id: restore
+        env:
+          MOON_CACHE: read
+          SEED_TASK_HASH: ${{ needs.remote-cache-seed.outputs.task-hash }}
+        run: |
+          rm -rf .moon/cache packages/logger/dist
+          pnpm exec moon run logger:build
+          mkdir -p .moon/prototype-evidence
+          cp .moon/cache/runReport.json .moon/prototype-evidence/remote-cache-restore-report.json
+          node -e '
+            const fs = require("node:fs");
+            const report = JSON.parse(fs.readFileSync(".moon/cache/runReport.json", "utf8"));
+            const action = report.actions.find(({ label }) => label === "RunTask(logger:build)");
+            const hash = action?.operations.find(({ meta }) => meta?.type === "hash-generation")?.meta?.hash;
+            if (!hash) throw new Error("Restore report did not contain a task hash");
+            if (hash !== process.env.SEED_TASK_HASH) {
+              throw new Error(`Seed and restore hashes differ: ${process.env.SEED_TASK_HASH} != ${hash}`);
+            }
+          '
+
+      - name: Verify output came from remote cache
+        run: |
+          node -e '
+            const fs = require("node:fs");
+            const report = JSON.parse(fs.readFileSync(".moon/prototype-evidence/remote-cache-restore-report.json", "utf8"));
+            const action = report.actions.find(({ label }) => label === "RunTask(logger:build)");
+            if (!action || action.status !== "cached-from-remote") {
+              throw new Error(`Expected logger:build cached-from-remote, got ${action?.status ?? "missing"}`);
+            }
+            if (!fs.existsSync("packages/logger/dist/index.js")) {
+              throw new Error("Remote cache did not restore packages/logger/dist/index.js");
+            }
+          '
+
+      - name: Upload restore evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: moon-remote-cache-restore-evidence
+          path: |
+            .moon/prototype-evidence/remote-cache-restore-report.json
+            remote-cache-runner.txt
+          retention-days: 7
+
   prototype:
     name: Moon CI prototype (non-required)
+    needs: remote-cache-restore
     runs-on: my-shadcn-app-monorepo
     timeout-minutes: 45
     steps:
@@ -72,8 +218,12 @@ jobs:
         id: affected
         continue-on-error: true
         env:
-          MOON_BASE: ${{ github.event_name == 'workflow_dispatch' && inputs.base || github.event.before }}
-          MOON_HEAD: ${{ github.event_name == 'workflow_dispatch' && inputs.head || github.sha }}
+          MOON_BASE:
+            ${{ github.event_name == 'workflow_dispatch' && inputs.base ||
+            github.event.before }}
+          MOON_HEAD:
+            ${{ github.event_name == 'workflow_dispatch' && inputs.head ||
+            github.sha }}
         run: pnpm exec moon ci :lint :check-types :test :build
 
       - name: Preserve affected-run report
@@ -110,7 +260,9 @@ jobs:
           retention-days: 7
 
       - name: Reflect probe failures
-        if: always() && (steps.full.outcome != 'success' || steps.affected.outcome != 'success')
+        if:
+          always() && (steps.full.outcome != 'success' || steps.affected.outcome
+          != 'success')
         run: exit 1
 
   docker:

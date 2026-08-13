@@ -24,6 +24,18 @@ This is Moon's task-output cache, not Buildx's layer cache. A Moon artifact
 contains a task's declared outputs and its stdout/stderr and is keyed by Moon's
 task hash. It does not store repository source code. [Remote-cache FAQ](https://moonrepo.dev/docs/guides/remote-cache#faq)
 
+### Next.js standalone exception
+
+`web:build` is deliberately non-cacheable under Moon 2.4.6. Next.js standalone
+output contains pnpm dependency symlinks under `.next/standalone/node_modules`.
+The generated application is valid, but Moon rejects this output while archiving
+it with `task_runner::output::symlink_outside_workspace` when a symlink target is
+outside the path Moon recognizes as its workspace. The task command itself exits
+successfully before output collection fails. Declaring only a subset of the
+standalone output would risk restoring an incomplete deployment artifact, so the
+safe prototype boundary is `options.cache: false` for this one task. The other
+17 verification tasks continue to use local and remote caching.
+
 ## Configuration and authentication
 
 - `MOON_REMOTE_HOST=grpc://172.16.8.179:9092` is sufficient for the currently
@@ -102,6 +114,15 @@ A defensible ARC proof should preserve all of the following:
    evidence as workflow artifacts. Moon warns that reports under `.moon/cache`
    may be overwritten or cleaned and should be copied elsewhere for persistence.
    [Moon CI reports](https://moonrepo.dev/docs/commands/ci#reports)
+
+The shadow workflow implements this as two ordered jobs. A per-workflow nonce is
+part of `logger:build`'s task inputs, so every seed has a new cache key that could
+not have existed before the run. The seed job uses `MOON_CACHE=write`, so the
+task must execute and upload. The restore job runs on a different ARC runner,
+removes both `.moon/cache` and `packages/logger/dist`, uses `MOON_CACHE=read`, and
+fails unless the report status is exactly `cached-from-remote`, the seed and
+restore hashes match, and the declared output is restored. Both reports and
+runner identities are uploaded as seven-day evidence artifacts.
 
 A plain `cached` status is insufficient: Moon may reuse already hydrated local
 outputs or its local cache. Moon 2.4 also warms the local cache after a remote

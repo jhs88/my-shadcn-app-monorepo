@@ -6,6 +6,11 @@ tasks:
   build:
     command: "pnpm run build"
     deps: ["^:build"]
+    # Next standalone output contains pnpm symlinks. Moon 2.4.6 rejects this
+    # valid deployment tree while archiving task outputs, so keep this one
+    # build out of Moon's local and remote task caches.
+    options:
+      cache: false
     inputs:
       - "**/*"
       - "/.env*"

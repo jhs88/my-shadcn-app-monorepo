@@ -6,6 +6,9 @@ tasks:
   build:
     command: "pnpm run build"
     deps: ["^:build"]
+    inputs:
+      - "**/*"
+      - "$MOON_REMOTE_CACHE_PROOF_NONCE"
     outputs: ["dist/**/*"]
   clean:
     command: "pnpm run clean"
