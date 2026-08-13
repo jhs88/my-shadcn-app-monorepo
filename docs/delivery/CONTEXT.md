@@ -131,3 +131,7 @@ _Avoid_: Test suite, feature tier
 **Conformance report**:
 A signed record binding an implementation and specification version to replayable scenario outcomes and their evidence identities.
 _Avoid_: Checklist, CI summary
+
+**Compose contract parity**:
+The condition in which the Turbo and Moon Compose build paths independently satisfy the same corrected four-service runtime contract, including build success, healthy startup, runtime identity, service connectivity, and representative behavior. It does not require byte-identical images or preservation of known baseline defects.
+_Avoid_: Identical images, matching existing bugs, four containers started
