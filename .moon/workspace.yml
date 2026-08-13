@@ -19,3 +19,10 @@ vcs:
 
 # The package.json dev dependency pins the exact prototype CLI version.
 versionConstraint: "=2.4.6"
+
+# The host is supplied by CI through MOON_REMOTE_HOST so local development does
+# not depend on the in-cluster cache. Use a repository-specific namespace to
+# avoid sharing artifacts with unrelated moon workspaces on the same service.
+remote:
+  cache:
+    instanceName: "my-shadcn-app-monorepo"

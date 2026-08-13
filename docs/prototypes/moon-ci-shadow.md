@@ -25,11 +25,23 @@ every task affected on every CI run and invalidate the selection experiment.
 The prototype removes `$CI` from `implicitInputs`; the process environment still
 contains `CI=true` for tools that alter behavior under CI.
 
+## Remote task cache
+
+The shadow workflow supplies `MOON_REMOTE_HOST=grpc://172.16.8.179:9092` at the
+workflow level. Moon therefore uses the verified Bazel Remote Execution v2
+cache service from ARC while local development remains independent of that
+in-network endpoint. Cached artifacts use the repository-specific
+`my-shadcn-app-monorepo` instance name and Moon's default read-write cache mode.
+
+This is Moon task-output caching for the verification graph. It is separate
+from Docker Buildx layer caching, which remains disabled in the correctness-only
+Docker matrix after cache export stalled on ephemeral runners.
+
 ## Deferred deliberately
 
 - Branch-protection and required-check changes
 - The permanent workflow topology and check names
 - Dependabot-specific behavior
 - Promotion thresholds and the representative-change matrix
-- Remote-cache configuration
+- Proof of cold population followed by remote hydration on a fresh ARC runner
 - Deployment and replacement of the production Dockerfiles

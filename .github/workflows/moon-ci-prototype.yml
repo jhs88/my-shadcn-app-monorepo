@@ -18,6 +18,12 @@ on:
 permissions:
   contents: read
 
+# Keep the prototype conditional outside CI: moon only enables remote caching
+# when this host is present. The service is reachable from the ARC runner
+# network and implements the Bazel Remote Execution v2 cache API.
+env:
+  MOON_REMOTE_HOST: grpc://172.16.8.179:9092
+
 jobs:
   prototype:
     name: Moon CI prototype (non-required)
