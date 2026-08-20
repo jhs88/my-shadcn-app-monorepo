@@ -15,7 +15,12 @@ import {
 } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@repo/ui/components/accordion";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@repo/ui/components/accordion";
 import { Alert, AlertDescription, AlertTitle } from "@repo/ui/components/alert";
 import {
   AlertDialog,
@@ -29,7 +34,12 @@ import {
   AlertDialogTrigger,
 } from "@repo/ui/components/alert-dialog";
 import { AspectRatio } from "@repo/ui/components/aspect-ratio";
-import { Avatar, AvatarBadge, AvatarFallback, AvatarImage } from "@repo/ui/components/avatar";
+import {
+  Avatar,
+  AvatarBadge,
+  AvatarFallback,
+  AvatarImage,
+} from "@repo/ui/components/avatar";
 import { Badge } from "@repo/ui/components/badge";
 import {
   Breadcrumb,
@@ -65,7 +75,11 @@ import {
   type ChartConfig,
 } from "@repo/ui/components/chart";
 import { Checkbox } from "@repo/ui/components/checkbox";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@repo/ui/components/collapsible";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@repo/ui/components/collapsible";
 import {
   Combobox,
   ComboboxContent,
@@ -137,7 +151,11 @@ import {
   FieldLegend,
   FieldSet,
 } from "@repo/ui/components/field";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@repo/ui/components/hover-card";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@repo/ui/components/hover-card";
 import { Input } from "@repo/ui/components/input";
 import {
   InputGroup,
@@ -145,7 +163,11 @@ import {
   InputGroupButton,
   InputGroupInput,
 } from "@repo/ui/components/input-group";
-import { InputOTP, InputOTPGroup, InputOTPSlot } from "@repo/ui/components/input-otp";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@repo/ui/components/input-otp";
 import {
   Item,
   ItemContent,
@@ -165,7 +187,10 @@ import {
   MenubarShortcut,
   MenubarTrigger,
 } from "@repo/ui/components/menubar";
-import { NativeSelect, NativeSelectOption } from "@repo/ui/components/native-select";
+import {
+  NativeSelect,
+  NativeSelectOption,
+} from "@repo/ui/components/native-select";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -192,9 +217,17 @@ import {
   PopoverTitle,
   PopoverTrigger,
 } from "@repo/ui/components/popover";
-import { Progress, ProgressLabel, ProgressValue } from "@repo/ui/components/progress";
+import {
+  Progress,
+  ProgressLabel,
+  ProgressValue,
+} from "@repo/ui/components/progress";
 import { RadioGroup, RadioGroupItem } from "@repo/ui/components/radio-group";
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@repo/ui/components/resizable";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@repo/ui/components/resizable";
 import { ScrollArea } from "@repo/ui/components/scroll-area";
 import {
   Select,
@@ -238,11 +271,21 @@ import {
   TableHeader,
   TableRow,
 } from "@repo/ui/components/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/components/tabs";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@repo/ui/components/tabs";
 import { Textarea } from "@repo/ui/components/textarea";
 import { Toggle } from "@repo/ui/components/toggle";
 import { ToggleGroup, ToggleGroupItem } from "@repo/ui/components/toggle-group";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@repo/ui/components/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@repo/ui/components/tooltip";
 
 export function loader() {
   if (!import.meta.env.DEV) {
@@ -282,9 +325,11 @@ function Section({
     <section
       id={id}
       data-testid={`gallery-section-${id}`}
-      className="scroll-mt-24 space-y-4 border-b border-border pb-10"
+      className="border-border scroll-mt-24 space-y-4 border-b pb-10"
     >
-      <h2 className="text-lg font-semibold tracking-tight text-foreground">{title}</h2>
+      <h2 className="text-foreground text-lg font-semibold tracking-tight">
+        {title}
+      </h2>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">{children}</div>
     </section>
   );
@@ -302,12 +347,14 @@ function Demo({
   return (
     <div
       data-testid={`demo-${name}`}
-      className="flex flex-col gap-3 rounded-lg border border-border bg-card p-4"
+      className="border-border bg-card flex flex-col gap-3 rounded-lg border p-4"
     >
-      <span className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+      <span className="text-muted-foreground text-xs font-medium uppercase tracking-wide">
         {name}
       </span>
-      <div className={`flex flex-wrap items-center gap-3 ${className ?? ""}`}>{children}</div>
+      <div className={`flex flex-wrap items-center gap-3 ${className ?? ""}`}>
+        {children}
+      </div>
     </div>
   );
 }
@@ -328,13 +375,19 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-const comboboxFrameworks = ["Next.js", "Remix", "React Router", "Astro", "Vite"];
+const comboboxFrameworks = [
+  "Next.js",
+  "Remix",
+  "React Router",
+  "Astro",
+  "Vite",
+];
 
 function ThemeSwitcher() {
   const [theme, setTheme] = useState(() =>
     typeof document === "undefined"
       ? ""
-      : (document.documentElement.dataset.theme ?? "")
+      : (document.documentElement.dataset.theme ?? ""),
   );
 
   return (
@@ -366,7 +419,9 @@ function DirectionDemo() {
   return (
     <div className="flex w-full flex-col gap-2">
       <Slider defaultValue={[40]} aria-label="RTL slider" />
-      <p className="text-xs text-muted-foreground">DirectionProvider direction: {direction}</p>
+      <p className="text-muted-foreground text-xs">
+        DirectionProvider direction: {direction}
+      </p>
     </div>
   );
 }
@@ -378,7 +433,7 @@ function CalendarDemo() {
       mode="single"
       selected={date}
       onSelect={setDate}
-      className="rounded-lg border border-border"
+      className="border-border rounded-lg border"
     />
   );
 }
@@ -386,8 +441,11 @@ function CalendarDemo() {
 export default function GalleryRoute() {
   return (
     <TooltipProvider delay={150}>
-      <div data-testid="gallery" className="min-h-screen bg-background text-foreground">
-        <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur">
+      <div
+        data-testid="gallery"
+        className="bg-background text-foreground min-h-screen"
+      >
+        <header className="border-border bg-background/95 sticky top-0 z-40 border-b backdrop-blur">
           <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3">
             <h1 className="text-base font-semibold">Component Gallery</h1>
             <nav className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
@@ -475,14 +533,20 @@ export default function GalleryRoute() {
                 <Kbd>Ctrl</Kbd>
                 <Kbd>K</Kbd>
               </KbdGroup>
-              <span className="text-sm text-muted-foreground">to open search</span>
+              <span className="text-muted-foreground text-sm">
+                to open search
+              </span>
             </Demo>
           </Section>
 
           <Section id="forms-inputs" title="Forms & Inputs">
             <Demo name="input">
               <Input placeholder="Text input" className="max-w-56" />
-              <Input type="email" placeholder="email@example.com" className="max-w-56" />
+              <Input
+                type="email"
+                placeholder="email@example.com"
+                className="max-w-56"
+              />
               <Input disabled placeholder="Disabled" className="max-w-56" />
             </Demo>
             <Demo name="textarea">
@@ -491,7 +555,9 @@ export default function GalleryRoute() {
             <Demo name="label">
               <div className="flex items-center gap-2">
                 <Checkbox id="gallery-terms" />
-                <Label htmlFor="gallery-terms">Accept terms and conditions</Label>
+                <Label htmlFor="gallery-terms">
+                  Accept terms and conditions
+                </Label>
               </div>
             </Demo>
             <Demo name="checkbox">
@@ -539,15 +605,25 @@ export default function GalleryRoute() {
               <NativeSelect defaultValue="one">
                 <NativeSelectOption value="one">Option one</NativeSelectOption>
                 <NativeSelectOption value="two">Option two</NativeSelectOption>
-                <NativeSelectOption value="three">Option three</NativeSelectOption>
+                <NativeSelectOption value="three">
+                  Option three
+                </NativeSelectOption>
               </NativeSelect>
             </Demo>
             <Demo name="slider" className="w-full">
               <div className="w-full max-w-sm">
-                <Slider defaultValue={[33]} max={100} aria-label="Single slider" />
+                <Slider
+                  defaultValue={[33]}
+                  max={100}
+                  aria-label="Single slider"
+                />
               </div>
               <div className="w-full max-w-sm">
-                <Slider defaultValue={[25, 75]} max={100} aria-label="Range slider" />
+                <Slider
+                  defaultValue={[25, 75]}
+                  max={100}
+                  aria-label="Range slider"
+                />
               </div>
             </Demo>
             <Demo name="input-otp">
@@ -575,7 +651,10 @@ export default function GalleryRoute() {
             </Demo>
             <Demo name="combobox">
               <Combobox items={comboboxFrameworks}>
-                <ComboboxInput placeholder="Select a framework" className="w-56" />
+                <ComboboxInput
+                  placeholder="Select a framework"
+                  className="w-56"
+                />
                 <ComboboxContent>
                   <ComboboxEmpty>No frameworks found.</ComboboxEmpty>
                   <ComboboxList>
@@ -598,7 +677,9 @@ export default function GalleryRoute() {
                   <Field>
                     <FieldLabel htmlFor="gallery-field-name">Name</FieldLabel>
                     <Input id="gallery-field-name" placeholder="Ada Lovelace" />
-                    <FieldDescription>Shown on your public profile.</FieldDescription>
+                    <FieldDescription>
+                      Shown on your public profile.
+                    </FieldDescription>
                   </Field>
                 </FieldGroup>
               </FieldSet>
@@ -608,7 +689,9 @@ export default function GalleryRoute() {
           <Section id="overlays" title="Overlays">
             <Demo name="dialog">
               <Dialog>
-                <DialogTrigger render={<Button variant="outline">Open Dialog</Button>} />
+                <DialogTrigger
+                  render={<Button variant="outline">Open Dialog</Button>}
+                />
                 <DialogContent>
                   <DialogHeader>
                     <DialogTitle>Edit profile</DialogTitle>
@@ -627,16 +710,22 @@ export default function GalleryRoute() {
             </Demo>
             <Demo name="alert-dialog">
               <AlertDialog>
-                <AlertDialogTrigger render={<Button variant="destructive">Delete account</Button>} />
+                <AlertDialogTrigger
+                  render={<Button variant="destructive">Delete account</Button>}
+                />
                 <AlertDialogContent>
                   <AlertDialogHeader>
-                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                    <AlertDialogTitle>
+                      Are you absolutely sure?
+                    </AlertDialogTitle>
                     <AlertDialogDescription>
                       This action cannot be undone.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
-                    <AlertDialogCancel render={<Button variant="outline">Cancel</Button>} />
+                    <AlertDialogCancel
+                      render={<Button variant="outline">Cancel</Button>}
+                    />
                     <AlertDialogAction render={<Button>Continue</Button>} />
                   </AlertDialogFooter>
                 </AlertDialogContent>
@@ -644,13 +733,17 @@ export default function GalleryRoute() {
             </Demo>
             <Demo name="sheet">
               <Sheet>
-                <SheetTrigger render={<Button variant="outline">Open Sheet</Button>} />
+                <SheetTrigger
+                  render={<Button variant="outline">Open Sheet</Button>}
+                />
                 <SheetContent side="right">
                   <SheetHeader>
                     <SheetTitle>Sheet title</SheetTitle>
-                    <SheetDescription>A panel that slides in from the edge.</SheetDescription>
+                    <SheetDescription>
+                      A panel that slides in from the edge.
+                    </SheetDescription>
                   </SheetHeader>
-                  <div className="px-4 text-sm text-muted-foreground">
+                  <div className="text-muted-foreground px-4 text-sm">
                     Sheet body content goes here.
                   </div>
                 </SheetContent>
@@ -658,28 +751,38 @@ export default function GalleryRoute() {
             </Demo>
             <Demo name="drawer">
               <Drawer>
-                <DrawerTrigger render={<Button variant="outline">Open Drawer</Button>} />
+                <DrawerTrigger
+                  render={<Button variant="outline">Open Drawer</Button>}
+                />
                 <DrawerContent>
                   <DrawerHeader>
                     <DrawerTitle>Drawer title</DrawerTitle>
-                    <DrawerDescription>A bottom drawer with swipe support.</DrawerDescription>
+                    <DrawerDescription>
+                      A bottom drawer with swipe support.
+                    </DrawerDescription>
                   </DrawerHeader>
-                  <div className="px-4 text-sm text-muted-foreground">
+                  <div className="text-muted-foreground px-4 text-sm">
                     Drawer body content goes here.
                   </div>
                   <DrawerFooter>
-                    <DrawerClose render={<Button variant="outline">Close</Button>} />
+                    <DrawerClose
+                      render={<Button variant="outline">Close</Button>}
+                    />
                   </DrawerFooter>
                 </DrawerContent>
               </Drawer>
             </Demo>
             <Demo name="popover">
               <Popover>
-                <PopoverTrigger render={<Button variant="outline">Open Popover</Button>} />
+                <PopoverTrigger
+                  render={<Button variant="outline">Open Popover</Button>}
+                />
                 <PopoverContent className="w-64">
                   <PopoverHeader>
                     <PopoverTitle>Dimensions</PopoverTitle>
-                    <PopoverDescription>Set the layer dimensions.</PopoverDescription>
+                    <PopoverDescription>
+                      Set the layer dimensions.
+                    </PopoverDescription>
                   </PopoverHeader>
                   <div className="flex flex-col gap-2">
                     <Input placeholder="Width" />
@@ -690,11 +793,13 @@ export default function GalleryRoute() {
             </Demo>
             <Demo name="hover-card">
               <HoverCard>
-                <HoverCardTrigger render={<Button variant="link">@shadcn</Button>} />
+                <HoverCardTrigger
+                  render={<Button variant="link">@shadcn</Button>}
+                />
                 <HoverCardContent className="w-64">
                   <div className="flex flex-col gap-1">
                     <span className="text-sm font-semibold">shadcn</span>
-                    <span className="text-sm text-muted-foreground">
+                    <span className="text-muted-foreground text-sm">
                       The creator of shadcn/ui.
                     </span>
                   </div>
@@ -703,13 +808,15 @@ export default function GalleryRoute() {
             </Demo>
             <Demo name="tooltip">
               <Tooltip>
-                <TooltipTrigger render={<Button variant="outline">Hover me</Button>} />
+                <TooltipTrigger
+                  render={<Button variant="outline">Hover me</Button>}
+                />
                 <TooltipContent>Tooltip content</TooltipContent>
               </Tooltip>
             </Demo>
             <Demo name="context-menu">
               <ContextMenu>
-                <ContextMenuTrigger className="flex h-24 w-full items-center justify-center rounded-md border border-dashed border-border text-sm text-muted-foreground">
+                <ContextMenuTrigger className="border-border text-muted-foreground flex h-24 w-full items-center justify-center rounded-md border border-dashed text-sm">
                   Right click here
                 </ContextMenuTrigger>
                 <ContextMenuContent>
@@ -720,13 +827,17 @@ export default function GalleryRoute() {
                     Paste <ContextMenuShortcut>Ctrl+V</ContextMenuShortcut>
                   </ContextMenuItem>
                   <ContextMenuSeparator />
-                  <ContextMenuItem variant="destructive">Delete</ContextMenuItem>
+                  <ContextMenuItem variant="destructive">
+                    Delete
+                  </ContextMenuItem>
                 </ContextMenuContent>
               </ContextMenu>
             </Demo>
             <Demo name="dropdown-menu">
               <DropdownMenu>
-                <DropdownMenuTrigger render={<Button variant="outline">Open Menu</Button>} />
+                <DropdownMenuTrigger
+                  render={<Button variant="outline">Open Menu</Button>}
+                />
                 <DropdownMenuContent className="w-48">
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
                   <DropdownMenuSeparator />
@@ -791,19 +902,28 @@ export default function GalleryRoute() {
                     <NavigationMenuContent>
                       <ul className="grid w-56 gap-1 p-1">
                         <li>
-                          <NavigationMenuLink href="#">Accordion</NavigationMenuLink>
+                          <NavigationMenuLink href="#">
+                            Accordion
+                          </NavigationMenuLink>
                         </li>
                         <li>
-                          <NavigationMenuLink href="#">Dialog</NavigationMenuLink>
+                          <NavigationMenuLink href="#">
+                            Dialog
+                          </NavigationMenuLink>
                         </li>
                         <li>
-                          <NavigationMenuLink href="#">Popover</NavigationMenuLink>
+                          <NavigationMenuLink href="#">
+                            Popover
+                          </NavigationMenuLink>
                         </li>
                       </ul>
                     </NavigationMenuContent>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
-                    <NavigationMenuLink href="#" className={navigationMenuTriggerStyle()}>
+                    <NavigationMenuLink
+                      href="#"
+                      className={navigationMenuTriggerStyle()}
+                    >
                       Documentation
                     </NavigationMenuLink>
                   </NavigationMenuItem>
@@ -842,16 +962,22 @@ export default function GalleryRoute() {
                   <TabsTrigger value="account">Account</TabsTrigger>
                   <TabsTrigger value="password">Password</TabsTrigger>
                 </TabsList>
-                <TabsContent value="account" className="rounded-md border border-border p-3 text-sm">
+                <TabsContent
+                  value="account"
+                  className="border-border rounded-md border p-3 text-sm"
+                >
                   Account settings panel.
                 </TabsContent>
-                <TabsContent value="password" className="rounded-md border border-border p-3 text-sm">
+                <TabsContent
+                  value="password"
+                  className="border-border rounded-md border p-3 text-sm"
+                >
                   Password settings panel.
                 </TabsContent>
               </Tabs>
             </Demo>
             <Demo name="command" className="w-full">
-              <Command className="w-full max-w-sm rounded-lg border border-border">
+              <Command className="border-border w-full max-w-sm rounded-lg border">
                 <CommandInput placeholder="Type a command..." />
                 <CommandList>
                   <CommandEmpty>No results found.</CommandEmpty>
@@ -870,7 +996,7 @@ export default function GalleryRoute() {
               </Command>
             </Demo>
             <Demo name="sidebar" className="w-full">
-              <div className="h-56 w-full overflow-hidden rounded-lg border border-border">
+              <div className="border-border h-56 w-full overflow-hidden rounded-lg border">
                 <SidebarProvider className="h-full min-h-0 w-full" defaultOpen>
                   <Sidebar collapsible="none" className="h-full">
                     <SidebarContent>
@@ -892,7 +1018,7 @@ export default function GalleryRoute() {
                       </SidebarGroup>
                     </SidebarContent>
                   </Sidebar>
-                  <div className="flex flex-1 items-center justify-center bg-muted/40 p-4 text-sm text-muted-foreground">
+                  <div className="bg-muted/40 text-muted-foreground flex flex-1 items-center justify-center p-4 text-sm">
                     Main content
                   </div>
                 </SidebarProvider>
@@ -910,11 +1036,15 @@ export default function GalleryRoute() {
               <Accordion defaultValue={["item-1"]} className="w-full">
                 <AccordionItem value="item-1">
                   <AccordionTrigger>Is it accessible?</AccordionTrigger>
-                  <AccordionContent>Yes. It follows the WAI-ARIA design pattern.</AccordionContent>
+                  <AccordionContent>
+                    Yes. It follows the WAI-ARIA design pattern.
+                  </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="item-2">
                   <AccordionTrigger>Is it styled?</AccordionTrigger>
-                  <AccordionContent>Yes. It uses theme tokens.</AccordionContent>
+                  <AccordionContent>
+                    Yes. It uses theme tokens.
+                  </AccordionContent>
                 </AccordionItem>
               </Accordion>
             </Demo>
@@ -943,10 +1073,14 @@ export default function GalleryRoute() {
                   </CardAction>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-muted-foreground">Card content goes here.</p>
+                  <p className="text-muted-foreground text-sm">
+                    Card content goes here.
+                  </p>
                 </CardContent>
                 <CardFooter>
-                  <span className="text-xs text-muted-foreground">Card footer</span>
+                  <span className="text-muted-foreground text-xs">
+                    Card footer
+                  </span>
                 </CardFooter>
               </Card>
             </Demo>
@@ -955,7 +1089,7 @@ export default function GalleryRoute() {
                 <CarouselContent>
                   {[1, 2, 3].map((n) => (
                     <CarouselItem key={n}>
-                      <div className="flex aspect-square items-center justify-center rounded-md border border-border bg-muted text-2xl font-semibold">
+                      <div className="border-border bg-muted flex aspect-square items-center justify-center rounded-md border text-2xl font-semibold">
                         {n}
                       </div>
                     </CarouselItem>
@@ -969,7 +1103,12 @@ export default function GalleryRoute() {
               <ChartContainer config={chartConfig} className="h-48 w-full">
                 <BarChart data={chartData} accessibilityLayer>
                   <CartesianGrid vertical={false} />
-                  <XAxis dataKey="month" tickLine={false} axisLine={false} tickMargin={8} />
+                  <XAxis
+                    dataKey="month"
+                    tickLine={false}
+                    axisLine={false}
+                    tickMargin={8}
+                  />
                   <ChartTooltip content={<ChartTooltipContent />} />
                   <Bar dataKey="views" fill="var(--color-views)" radius={4} />
                 </BarChart>
@@ -1018,7 +1157,7 @@ export default function GalleryRoute() {
               </ItemGroup>
             </Demo>
             <Demo name="empty" className="w-full">
-              <Empty className="border border-dashed border-border">
+              <Empty className="border-border border border-dashed">
                 <EmptyHeader>
                   <EmptyMedia variant="icon">
                     <Inbox />
@@ -1035,11 +1174,11 @@ export default function GalleryRoute() {
             </Demo>
             <Demo name="aspect-ratio" className="w-full">
               <div className="w-full max-w-sm">
-                <AspectRatio ratio={16 / 9} className="rounded-lg bg-muted" />
+                <AspectRatio ratio={16 / 9} className="bg-muted rounded-lg" />
               </div>
             </Demo>
             <Demo name="scroll-area" className="w-full">
-              <ScrollArea className="h-32 w-full max-w-sm rounded-md border border-border">
+              <ScrollArea className="border-border h-32 w-full max-w-sm rounded-md border">
                 <div className="flex flex-col gap-2 p-4 text-sm">
                   {Array.from({ length: 12 }, (_, i) => (
                     <span key={i}>Scrollable row {i + 1}</span>
@@ -1050,14 +1189,18 @@ export default function GalleryRoute() {
             <Demo name="resizable" className="w-full">
               <ResizablePanelGroup
                 orientation="horizontal"
-                className="min-h-28 w-full max-w-md rounded-lg border border-border"
+                className="border-border min-h-28 w-full max-w-md rounded-lg border"
               >
                 <ResizablePanel defaultSize="50">
-                  <div className="flex h-full items-center justify-center text-sm">One</div>
+                  <div className="flex h-full items-center justify-center text-sm">
+                    One
+                  </div>
                 </ResizablePanel>
                 <ResizableHandle withHandle />
                 <ResizablePanel defaultSize="50">
-                  <div className="flex h-full items-center justify-center text-sm">Two</div>
+                  <div className="flex h-full items-center justify-center text-sm">
+                    Two
+                  </div>
                 </ResizablePanel>
               </ResizablePanelGroup>
             </Demo>
@@ -1074,15 +1217,19 @@ export default function GalleryRoute() {
             </Demo>
             <Demo name="collapsible" className="w-full">
               <Collapsible className="w-full max-w-sm">
-                <CollapsibleTrigger render={<Button variant="outline">Toggle repositories</Button>} />
-                <div className="mt-2 rounded-md border border-border px-3 py-2 text-sm">
+                <CollapsibleTrigger
+                  render={
+                    <Button variant="outline">Toggle repositories</Button>
+                  }
+                />
+                <div className="border-border mt-2 rounded-md border px-3 py-2 text-sm">
                   Always visible
                 </div>
                 <CollapsibleContent className="mt-2 flex flex-col gap-2">
-                  <div className="rounded-md border border-border px-3 py-2 text-sm">
+                  <div className="border-border rounded-md border px-3 py-2 text-sm">
                     Hidden repo one
                   </div>
-                  <div className="rounded-md border border-border px-3 py-2 text-sm">
+                  <div className="border-border rounded-md border px-3 py-2 text-sm">
                     Hidden repo two
                   </div>
                 </CollapsibleContent>
@@ -1095,7 +1242,9 @@ export default function GalleryRoute() {
               <div className="flex w-full flex-col gap-3">
                 <Alert>
                   <AlertTitle>Heads up!</AlertTitle>
-                  <AlertDescription>You can add components with the CLI.</AlertDescription>
+                  <AlertDescription>
+                    You can add components with the CLI.
+                  </AlertDescription>
                 </Alert>
                 <Alert variant="destructive">
                   <AlertTitle>Error</AlertTitle>

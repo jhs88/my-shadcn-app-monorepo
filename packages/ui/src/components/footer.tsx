@@ -5,7 +5,7 @@ function Footer({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="footer"
-      className={cn("bg-background text-foreground pt-12 pb-4", className)}
+      className={cn("bg-background text-foreground pb-4 pt-12", className)}
       {...props}
     />
   );
