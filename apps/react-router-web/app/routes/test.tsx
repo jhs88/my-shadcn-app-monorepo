@@ -72,23 +72,25 @@ export default function Test({ loaderData }: Route.ComponentProps) {
       <main className="container mx-auto min-h-screen w-full overflow-hidden">
         <div className="flex w-full gap-6">
           <Dialog>
-            <DialogTrigger asChild>
-              <Button
-                size="icon-sm"
-                variant="ghost"
-                className="hover:cursor-pointer"
-                aria-label="Open profile dialog"
-              >
-                <Avatar>
-                  <AvatarImage
-                    className="object-cover"
-                    src={profile?.avatar_url ?? profileImage}
-                    alt={initials ?? "?"}
-                  />
-                  <AvatarFallback>{initials ?? "?"}</AvatarFallback>
-                </Avatar>
-              </Button>
-            </DialogTrigger>
+            <DialogTrigger
+              render={
+                <Button
+                  size="icon-sm"
+                  variant="ghost"
+                  className="hover:cursor-pointer"
+                  aria-label="Open profile dialog"
+                >
+                  <Avatar>
+                    <AvatarImage
+                      className="object-cover"
+                      src={profile?.avatar_url ?? profileImage}
+                      alt={initials ?? "?"}
+                    />
+                    <AvatarFallback>{initials ?? "?"}</AvatarFallback>
+                  </Avatar>
+                </Button>
+              }
+            />
             <DialogContent className="min-h-60 w-full">
               <DialogHeader>
                 <DialogTitle>My Profile Info</DialogTitle>
