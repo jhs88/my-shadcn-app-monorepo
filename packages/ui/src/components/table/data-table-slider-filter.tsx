@@ -109,9 +109,9 @@ export function DataTableSliderFilter<TData>({
   );
 
   const onSliderValueChange = React.useCallback(
-    (value: RangeValue) => {
+    (value: number | readonly number[]) => {
       if (Array.isArray(value) && value.length === 2) {
-        column.setFilterValue(value);
+        column.setFilterValue([value[0], value[1]] as RangeValue);
       }
     },
     [column],
@@ -129,8 +129,9 @@ export function DataTableSliderFilter<TData>({
 
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        <Button variant="outline" size="sm" className="border-dashed">
+      <PopoverTrigger
+        render={<Button variant="outline" size="sm" className="border-dashed" />}
+      >
           {columnFilterValue ? (
             <div
               role="button"
@@ -156,7 +157,6 @@ export function DataTableSliderFilter<TData>({
               {unit ? ` ${unit}` : ""}
             </>
           ) : null}
-        </Button>
       </PopoverTrigger>
       <PopoverContent align="start" className="flex w-auto flex-col gap-4">
         <div className="flex flex-col gap-3">

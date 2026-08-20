@@ -173,8 +173,9 @@ export function DataTableDateFilter<TData>({
 
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        <Button variant="outline" size="sm" className="border-dashed">
+      <PopoverTrigger
+        render={<Button variant="outline" size="sm" className="border-dashed" />}
+      >
           {hasValue ? (
             <div
               role="button"
@@ -189,12 +190,11 @@ export function DataTableDateFilter<TData>({
             <CalendarIcon />
           )}
           {label}
-        </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
         {multiple ? (
           <Calendar
-            initialFocus
+            autoFocus
             mode="range"
             selected={
               getIsDateRange(selectedDates)
@@ -205,7 +205,7 @@ export function DataTableDateFilter<TData>({
           />
         ) : (
           <Calendar
-            initialFocus
+            autoFocus
             mode="single"
             selected={
               !getIsDateRange(selectedDates) ? selectedDates[0] : undefined

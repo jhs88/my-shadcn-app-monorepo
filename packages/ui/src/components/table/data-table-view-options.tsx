@@ -1,6 +1,6 @@
 "use client";
 
-import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
+import { Check, ChevronsUpDown } from "lucide-react";
 import { Button } from "@repo/ui/components/button";
 import {
   Command,
@@ -40,18 +40,20 @@ export function DataTableViewOptions<TData>({
 
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        <Button
-          aria-label="Toggle columns"
-          role="combobox"
-          variant="outline"
-          size="sm"
-          className="ml-auto hidden h-8 lg:flex"
-        >
+      <PopoverTrigger
+        render={
+          <Button
+            aria-label="Toggle columns"
+            role="combobox"
+            variant="outline"
+            size="sm"
+            className="ml-auto hidden h-8 lg:flex"
+          />
+        }
+      >
           <Settings2 />
           View
-          <CaretSortIcon className="ml-auto opacity-50" />
-        </Button>
+          <ChevronsUpDown className="ml-auto opacity-50" />
       </PopoverTrigger>
       <PopoverContent align="end" className="w-44 p-0">
         <Command>
@@ -71,7 +73,7 @@ export function DataTableViewOptions<TData>({
                       ? column.columnDef.header
                       : (column.columnDef.meta?.label ?? column.id)}
                   </span>
-                  <CheckIcon
+                  <Check
                     className={cn(
                       "ml-auto size-4 shrink-0",
                       column.getIsVisible() ? "opacity-100" : "opacity-0",

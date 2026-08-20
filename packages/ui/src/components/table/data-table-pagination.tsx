@@ -1,4 +1,4 @@
-import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@repo/ui/components/button";
 import {
   Select,
@@ -84,7 +84,7 @@ export function DataTablePagination<TData>({
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            <ChevronLeftIcon />
+            <ChevronLeft />
           </Button>
           <Button
             aria-label="Go to next page"
@@ -94,7 +94,7 @@ export function DataTablePagination<TData>({
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            <ChevronRightIcon />
+            <ChevronRight />
           </Button>
           <Button
             aria-label="Go to last page"

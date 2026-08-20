@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@repo/ui/components/button";
 import {
   Select,
@@ -109,7 +109,7 @@ export function CustomPagination<TData>({
             onClick={() => onPageChange(page - 1)}
             disabled={page === 0}
           >
-            <ChevronLeftIcon />
+            <ChevronLeft />
           </Button>
           <Button
             aria-label="Go to next page"
@@ -119,7 +119,7 @@ export function CustomPagination<TData>({
             onClick={() => onPageChange(page + 1)}
             disabled={page >= pageCount - 1}
           >
-            <ChevronRightIcon />
+            <ChevronRight />
           </Button>
           <Button
             aria-label="Go to last page"

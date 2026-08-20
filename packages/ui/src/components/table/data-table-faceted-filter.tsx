@@ -1,7 +1,7 @@
 "use client";
 
 import type { Option } from "@repo/ui/types/data-table";
-import { CheckIcon } from "@radix-ui/react-icons";
+import { Check } from "lucide-react";
 import { Badge } from "@repo/ui/components/badge";
 import { Button } from "@repo/ui/components/button";
 import {
@@ -76,8 +76,9 @@ export function DataTableFacetedFilter<TData, TValue>({
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button variant="outline" size="sm" className="border-dashed">
+      <PopoverTrigger
+        render={<Button variant="outline" size="sm" className="border-dashed" />}
+      >
           {selectedValues?.size > 0 ? (
             <div
               role="button"
@@ -128,7 +129,6 @@ export function DataTableFacetedFilter<TData, TValue>({
               </div>
             </>
           )}
-        </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[12.5rem] p-0" align="start">
         <Command>
@@ -152,7 +152,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                           : "opacity-50 [&_svg]:invisible",
                       )}
                     >
-                      <CheckIcon />
+                      <Check />
                     </div>
                     {option.icon && <option.icon />}
                     <span className="truncate">{option.label}</span>
