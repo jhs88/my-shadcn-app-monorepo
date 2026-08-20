@@ -70,7 +70,7 @@ export default function Test({ loaderData }: Route.ComponentProps) {
         ]}
       />
       <main className="container mx-auto min-h-screen w-full overflow-hidden">
-        <div className="flex w-full gap-6">
+        <div className="flex w-full gap-6 pt-6">
           <Dialog>
             <DialogTrigger
               render={
