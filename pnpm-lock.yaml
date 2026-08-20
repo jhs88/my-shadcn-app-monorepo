@@ -202,6 +202,9 @@ importers:
       react-router:
         specifier: 7.18.1
         version: 7.18.1(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      recharts:
+        specifier: ^3.8.0
+        version: 3.8.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react-is@18.3.1)(react@19.2.8)(redux@5.0.1)
       remix-hook-form:
         specifier: 7.1.1
         version: 7.1.1(react-dom@19.2.8(react@19.2.8))(react-hook-form@7.71.1(react@19.2.8))(react-router@7.18.1(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react@19.2.8)
