@@ -18,9 +18,9 @@ import {
 } from "react-router";
 import { startPasswordReset as startPasswordResetWorkflow } from "~/auth/workflows/server";
 
-export const action = async ({ request }: ActionFunctionArgs) => {
+export const action = async ({ request, url }: ActionFunctionArgs) => {
   const formData = await request.formData();
-  const origin = new URL(request.url).origin;
+  const origin = url.origin;
   const { result, headers } = await startPasswordResetWorkflow(request, {
     email: String(formData.get("email") ?? ""),
     redirectTo: `${origin}/auth/confirm?next=/update-password`,

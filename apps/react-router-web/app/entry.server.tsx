@@ -12,9 +12,7 @@ import {
 } from "react-dom/server";
 import {
   type ActionFunctionArgs,
-  type AppLoadContext,
   type EntryContext,
-  type HandleDocumentRequestFunction,
   type LoaderFunctionArgs,
   ServerRouter,
 } from "react-router";
@@ -29,17 +27,11 @@ global.ENV = getEnv();
 
 const MODE = process.env.NODE_ENV ?? "development";
 
-type DocRequestArgs = Parameters<HandleDocumentRequestFunction>;
-
 export default function handleRequest(
   request: Request,
   responseStatusCode: number,
   responseHeaders: Headers,
   routerContext: EntryContext,
-  // This is ignored so we can keep it in the template for visibility.  Feel
-  // free to delete this parameter in your app if you're not using it!
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  loadContext: AppLoadContext,
 ) {
   if (process.env.NODE_ENV === "production" && process.env.SENTRY_DSN)
     responseHeaders.append("Document-Policy", "js-profiling");

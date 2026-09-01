@@ -1,10 +1,9 @@
 import { type LoaderFunctionArgs, redirect } from "react-router";
 import { createClient } from "~/lib/supabase/server";
 
-export async function loader({ request }: LoaderFunctionArgs) {
-  const requestUrl = new URL(request.url);
-  const code = requestUrl.searchParams.get("code");
-  const _next = requestUrl.searchParams.get("next");
+export async function loader({ request, url }: LoaderFunctionArgs) {
+  const code = url.searchParams.get("code");
+  const _next = url.searchParams.get("next");
   const next = _next?.startsWith("/") ? _next : "/";
   if (code) {
     const { supabase, headers } = createClient(request);

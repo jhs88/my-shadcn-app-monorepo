@@ -19,13 +19,13 @@ import {
   startOAuthLogin as startOAuthLoginWorkflow,
 } from "~/auth/workflows/server";
 
-export const action = async ({ request }: ActionFunctionArgs) => {
+export const action = async ({ request, url }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const submission = formData.get("submission") as string;
 
   if (submission === "github") {
     const { result, headers } = await startOAuthLoginWorkflow(request, {
-      origin: new URL(request.url).origin,
+      origin: url.origin,
     });
 
     if (!result.ok) {
@@ -72,7 +72,9 @@ export default function Login() {
         <div className="flex flex-col gap-6">
           <Card>
             <CardHeader>
-              <CardTitle className="text-2xl">Login</CardTitle>
+              <CardTitle className="text-2xl">
+                <h1>Login</h1>
+              </CardTitle>
               <CardDescription>
                 Enter your email below to login to your account
               </CardDescription>
