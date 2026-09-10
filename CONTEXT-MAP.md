@@ -15,7 +15,7 @@ This is a **demo/template monorepo** showcasing shadcn/ui integration across mul
 
 | Package | Path | Description |
 | --- | --- | --- |
-| **@repo/ui** | `packages/ui` | shadcn/ui component library — shared across both web apps, includes theme system (6 themes), data table components |
+| **@repo/ui** | [`packages/ui`](packages/ui/CONTEXT.md) | shadcn/ui component library — shared across both web apps, includes theme system (6 themes), data table components |
 | **@repo/logger** | `packages/logger` | Isomorphic logger wrapper around `console.log` |
 | **@repo/types** | `packages/types` | Supabase-generated TypeScript types (`database.types.ts`) |
 | **@repo/eslint-config** | `packages/eslint-config` | ESLint presets — base, next, react-internal |

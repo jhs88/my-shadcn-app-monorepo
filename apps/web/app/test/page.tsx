@@ -52,17 +52,23 @@ export default async function Page() {
   return (
     <PageContainer>
       <Dialog>
-        <DialogTrigger asChild>
-          <Button variant="ghost" size="icon" className="hover:cursor-pointer">
-            <Avatar>
-              <AvatarImage
-                src={profile?.avatar_url ?? profileImage}
-                alt={initials ?? "?"}
-              />
-              <AvatarFallback>{initials ?? "?"}</AvatarFallback>
-            </Avatar>
-          </Button>
-        </DialogTrigger>
+        <DialogTrigger
+          render={
+            <Button
+              variant="ghost"
+              size="icon"
+              className="hover:cursor-pointer"
+            >
+              <Avatar>
+                <AvatarImage
+                  src={profile?.avatar_url ?? profileImage}
+                  alt={initials ?? "?"}
+                />
+                <AvatarFallback>{initials ?? "?"}</AvatarFallback>
+              </Avatar>
+            </Button>
+          }
+        />
         <DialogContent className="min-h-60 w-full">
           <DialogHeader>
             <DialogTitle>My Profile Info</DialogTitle>

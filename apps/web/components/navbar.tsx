@@ -1,9 +1,9 @@
 import { Menu } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { type ReactNode } from "react";
+import { type ComponentProps, type ReactNode } from "react";
 
-import { Button, type ButtonProps } from "@repo/ui/components/button";
+import { Button } from "@repo/ui/components/button";
 import {
   Navbar as NavbarComponent,
   NavbarLeft,
@@ -21,7 +21,7 @@ interface NavbarLink {
 interface NavbarActionProps {
   text: string;
   href: string;
-  variant?: ButtonProps["variant"];
+  variant?: ComponentProps<typeof Button>["variant"];
   icon?: ReactNode;
   iconRight?: ReactNode;
   isButton?: boolean;
@@ -85,13 +85,11 @@ export default function Navbar({
                 <Button
                   key={index}
                   variant={action.variant ?? "default"}
-                  asChild
+                  render={<a href={action.href} />}
                 >
-                  <a href={action.href}>
-                    {action.icon}
-                    {action.text}
-                    {action.iconRight}
-                  </a>
+                  {action.icon}
+                  {action.text}
+                  {action.iconRight}
                 </Button>
               ) : (
                 <a
@@ -104,16 +102,18 @@ export default function Navbar({
               ),
             )}
             <Sheet>
-              <SheetTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="shrink-0 md:hidden"
-                >
-                  <Menu className="size-5" />
-                  <span className="sr-only">Toggle navigation menu</span>
-                </Button>
-              </SheetTrigger>
+              <SheetTrigger
+                render={
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="shrink-0 md:hidden"
+                  >
+                    <Menu className="size-5" />
+                    <span className="sr-only">Toggle navigation menu</span>
+                  </Button>
+                }
+              />
               <SheetContent side="right">
                 <nav className="grid gap-6 text-lg font-medium">
                   <a

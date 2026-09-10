@@ -7,18 +7,20 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@repo/ui/components/dropdown-menu";
-import {
-  CaretSortIcon,
-  ChevronDownIcon,
-  ChevronUpIcon,
-  Cross2Icon,
-} from "@radix-ui/react-icons";
 import { cn } from "@repo/ui/lib/utils";
 import type { Column } from "@tanstack/react-table";
-import { EyeOff } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronsUpDown,
+  ChevronUp,
+  EyeOff,
+  X,
+} from "lucide-react";
 
-interface DataTableColumnHeaderProps<TData, TValue>
-  extends React.ComponentProps<typeof DropdownMenuTrigger> {
+interface DataTableColumnHeaderProps<
+  TData,
+  TValue,
+> extends React.ComponentProps<typeof DropdownMenuTrigger> {
   column: Column<TData, TValue>;
   title: string;
 }
@@ -45,11 +47,11 @@ export function DataTableColumnHeader<TData, TValue>({
         {title}
         {column.getCanSort() &&
           (column.getIsSorted() === "desc" ? (
-            <ChevronDownIcon />
+            <ChevronDown />
           ) : column.getIsSorted() === "asc" ? (
-            <ChevronUpIcon />
+            <ChevronUp />
           ) : (
-            <CaretSortIcon />
+            <ChevronsUpDown />
           ))}
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-28">
@@ -60,7 +62,7 @@ export function DataTableColumnHeader<TData, TValue>({
               checked={column.getIsSorted() === "asc"}
               onClick={() => column.toggleSorting(false)}
             >
-              <ChevronUpIcon />
+              <ChevronUp />
               Asc
             </DropdownMenuCheckboxItem>
             <DropdownMenuCheckboxItem
@@ -68,7 +70,7 @@ export function DataTableColumnHeader<TData, TValue>({
               checked={column.getIsSorted() === "desc"}
               onClick={() => column.toggleSorting(true)}
             >
-              <ChevronDownIcon />
+              <ChevronDown />
               Desc
             </DropdownMenuCheckboxItem>
             {column.getIsSorted() && (
@@ -76,7 +78,7 @@ export function DataTableColumnHeader<TData, TValue>({
                 className="[&_svg]:text-muted-foreground pl-2"
                 onClick={() => column.clearSorting()}
               >
-                <Cross2Icon />
+                <X />
                 Reset
               </DropdownMenuItem>
             )}

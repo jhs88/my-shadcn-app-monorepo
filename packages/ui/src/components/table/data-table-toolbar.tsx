@@ -4,7 +4,7 @@ import { DataTableDateFilter } from "@repo/ui/components/table/data-table-date-f
 import { DataTableFacetedFilter } from "@repo/ui/components/table/data-table-faceted-filter";
 import { DataTableSliderFilter } from "@repo/ui/components/table/data-table-slider-filter";
 import { DataTableViewOptions } from "@repo/ui/components/table/data-table-view-options";
-import { Cross2Icon } from "@radix-ui/react-icons";
+import { X } from "lucide-react";
 import { Button } from "@repo/ui/components/button";
 import { Input } from "@repo/ui/components/input";
 import { cn } from "@repo/ui/lib/utils";
@@ -54,7 +54,7 @@ export function DataTableToolbar<TData>({
             className="border-dashed"
             onClick={onReset}
           >
-            <Cross2Icon />
+            <X />
             Reset
           </Button>
         )}
