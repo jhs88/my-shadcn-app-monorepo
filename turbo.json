@@ -43,13 +43,10 @@
     "dev": {
       "cache": false,
       "persistent": true,
-      "inputs": [
-        "$TURBO_DEFAULT$",
-        ".env*"
-      ]
+      "inputs": ["$TURBO_DEFAULT$", ".env*"]
     },
     "lint": {
-      "dependsOn": []
+      "dependsOn": ["^build"]
     },
     "test": {
       "dependsOn": [],

@@ -4,8 +4,8 @@ Comprehensive shadcn/ui component library with 60+ reusable components.
 
 ## Tech Stack
 
-- **Base**: shadcn/ui components
-- **Primitives**: Radix UI
+- **Base**: shadcn/ui components (base flavor, `base-nova` style)
+- **Primitives**: Base UI (`@base-ui/react`); `form.tsx` is the one Radix holdout (`@radix-ui/react-label` + `@radix-ui/react-slot`) until a Base UI form rewrite
 - **Styling**: Tailwind CSS
 - **Animations**: Framer Motion
 - **Icons**: Lucide React

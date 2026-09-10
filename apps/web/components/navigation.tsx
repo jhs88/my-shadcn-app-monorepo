@@ -128,10 +128,10 @@ export default function Navigation({
           <NavigationMenuItem key={index}>
             {item.isLink ? (
               <NavigationMenuLink
-                asChild
                 className={navigationMenuTriggerStyle()}
+                render={<Link href={item.href ?? ""} />}
               >
-                <Link href={item.href ?? ""}>{item.title}</Link>
+                {item.title}
               </NavigationMenuLink>
             ) : (
               <>
@@ -140,20 +140,22 @@ export default function Navigation({
                   {item.content === "default" ? (
                     <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
                       <li className="row-span-3">
-                        <NavigationMenuLink asChild>
-                          <a
-                            className="from-muted/30 to-muted/10 bg-linear-to-b outline-hidden flex h-full w-full select-none flex-col justify-end rounded-md p-6 no-underline focus:shadow-md"
-                            href={logoHref}
-                          >
-                            {logo}
-                            <div className="mb-2 mt-4 text-lg font-medium">
-                              {logoTitle}
-                            </div>
-                            <p className="text-muted-foreground text-sm leading-tight">
-                              {logoDescription}
-                            </p>
-                          </a>
-                        </NavigationMenuLink>
+                        <NavigationMenuLink
+                          render={
+                            <a
+                              className="from-muted/30 to-muted/10 bg-linear-to-b outline-hidden flex h-full w-full select-none flex-col justify-end rounded-md p-6 no-underline focus:shadow-md"
+                              href={logoHref}
+                            >
+                              {logo}
+                              <div className="mb-2 mt-4 text-lg font-medium">
+                                {logoTitle}
+                              </div>
+                              <p className="text-muted-foreground text-sm leading-tight">
+                                {logoDescription}
+                              </p>
+                            </a>
+                          }
+                        />
                       </li>
                       {introItems.map((intro, i) => (
                         <ListItem key={i} href={intro.href} title={intro.title}>
@@ -194,21 +196,23 @@ function ListItem({
 }: React.ComponentProps<"a"> & { title: string }) {
   return (
     <li>
-      <NavigationMenuLink asChild>
-        <a
-          data-slot="list-item"
-          className={cn(
-            "hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground outline-hidden block select-none space-y-1 rounded-md p-3 leading-none no-underline transition-colors",
-            className,
-          )}
-          {...props}
-        >
-          <div className="text-sm font-medium leading-none">{title}</div>
-          <p className="text-muted-foreground line-clamp-2 text-sm leading-snug">
-            {children}
-          </p>
-        </a>
-      </NavigationMenuLink>
+      <NavigationMenuLink
+        render={
+          <a
+            data-slot="list-item"
+            className={cn(
+              "hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground outline-hidden block select-none space-y-1 rounded-md p-3 leading-none no-underline transition-colors",
+              className,
+            )}
+            {...props}
+          >
+            <div className="text-sm font-medium leading-none">{title}</div>
+            <p className="text-muted-foreground line-clamp-2 text-sm leading-snug">
+              {children}
+            </p>
+          </a>
+        }
+      />
     </li>
   );
 }

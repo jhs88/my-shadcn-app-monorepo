@@ -56,7 +56,9 @@ export function LoginForm({
                 </div>
                 <Input id="password" type="password" name="password" required />
               </div>
-              {state.error && <p className="text-sm text-red-500">{state.error}</p>}
+              {state.error && (
+                <p className="text-sm text-red-500">{state.error}</p>
+              )}
               <SubmitButton className="w-full" pendingText="Logging In">
                 Login
               </SubmitButton>

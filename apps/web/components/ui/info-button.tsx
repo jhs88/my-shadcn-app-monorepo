@@ -33,7 +33,9 @@ export function InfoButton({
     setContent(content);
   }, [content, setContent]);
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick: NonNullable<
+    React.ComponentProps<typeof Button>["onClick"]
+  > = (e) => {
     setContent(content);
     setOpen(true);
     props.onClick?.(e);

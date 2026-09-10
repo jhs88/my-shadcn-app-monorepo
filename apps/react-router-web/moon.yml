@@ -37,10 +37,6 @@ tasks:
     options:
       cache: false
       runInCI: false
-  dev-test:
-    command: "pnpm run dev:test"
-    options:
-      runInCI: false
   e2e-bootstrap:
     command: "pnpm run e2e:bootstrap"
     options:

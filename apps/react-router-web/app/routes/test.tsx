@@ -21,27 +21,30 @@ import {
   ItemTitle,
 } from "@repo/ui/components/item";
 import { ScrollArea } from "@repo/ui/components/scroll-area";
-import { redirect, type LoaderFunctionArgs } from "react-router";
 import { toast } from "sonner";
+import {
+  authenticatedRequestContext,
+  protectedRouteAuthMiddleware,
+} from "~/auth/protected-route-auth.server";
 import Navbar from "~/components/navbar";
-import { createClient } from "~/lib/supabase/server";
 import type { Route } from "./+types/test";
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const { supabase } = createClient(request);
+export const middleware: Route.MiddlewareFunction[] = [
+  protectedRouteAuthMiddleware,
+];
 
-  const { data, error } = await supabase.auth.getUser();
-  if (error || !data?.user) return redirect("/login");
+export const loader = async ({ context }: Route.LoaderArgs) => {
+  const { supabase, user } = context.get(authenticatedRequestContext);
 
-  const email: string | undefined = data?.user?.email;
-  const name: string = data?.user?.user_metadata.full_name ?? email;
-  const emailVerified: string = data?.user?.user_metadata.email_verified;
-  const profileImage: string | undefined = data?.user?.user_metadata.avatar_url;
+  const email: string | undefined = user.email;
+  const name: string = user.user_metadata.full_name ?? email;
+  const emailVerified: string = user.user_metadata.email_verified;
+  const profileImage: string | undefined = user.user_metadata.avatar_url;
 
   const { data: profiles } = await supabase
     .from("profiles")
     .select()
-    .filter("id", "eq", data?.user?.id);
+    .filter("id", "eq", user.id);
 
   const profile = profiles ? profiles[0] : undefined;
   const initials = name
@@ -54,8 +57,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 export default function Test({ loaderData }: Route.ComponentProps) {
-  const { email, emailVerified, name, initials, profile, profileImage } =
-    loaderData;
+  const { email, emailVerified, initials, profile, profileImage } = loaderData;
 
   return (
     <>
@@ -70,25 +72,27 @@ export default function Test({ loaderData }: Route.ComponentProps) {
         ]}
       />
       <main className="container mx-auto min-h-screen w-full overflow-hidden">
-        <div className="flex w-full gap-6">
+        <div className="flex w-full gap-6 pt-6">
           <Dialog>
-            <DialogTrigger asChild>
-              <Button
-                size="icon-sm"
-                variant="ghost"
-                className="hover:cursor-pointer"
-                aria-label="Open profile dialog"
-              >
-                <Avatar>
-                  <AvatarImage
-                    className="object-cover"
-                    src={profile?.avatar_url ?? profileImage}
-                    alt={initials ?? "?"}
-                  />
-                  <AvatarFallback>{initials ?? "?"}</AvatarFallback>
-                </Avatar>
-              </Button>
-            </DialogTrigger>
+            <DialogTrigger
+              render={
+                <Button
+                  size="icon-sm"
+                  variant="ghost"
+                  className="hover:cursor-pointer"
+                  aria-label="Open profile dialog"
+                >
+                  <Avatar>
+                    <AvatarImage
+                      className="object-cover"
+                      src={profile?.avatar_url ?? profileImage}
+                      alt={initials ?? "?"}
+                    />
+                    <AvatarFallback>{initials ?? "?"}</AvatarFallback>
+                  </Avatar>
+                </Button>
+              }
+            />
             <DialogContent className="min-h-60 w-full">
               <DialogHeader>
                 <DialogTitle>My Profile Info</DialogTitle>
