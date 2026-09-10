@@ -1,0 +1,64 @@
+services:
+  web:
+    container_name: web
+    build:
+      context: .
+      dockerfile: ./apps/web/Dockerfile.moon
+      args:
+        NEXT_PUBLIC_API_HOST: ${API_HOST:-http://localhost:3001}
+        SUPABASE_URL: ${SUPABASE_URL:-}
+        SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY:-}
+    environment:
+      NEXT_PUBLIC_API_HOST: ${API_HOST:-http://localhost:3001}
+      NEXT_PUBLIC_SUPABASE_URL: ${SUPABASE_URL:-}
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY:-}
+    restart: always
+    ports:
+      - "3000:3000"
+    networks:
+      - app_network
+
+  api:
+    container_name: api
+    build:
+      context: .
+      dockerfile: ./apps/api/Dockerfile.moon
+    restart: always
+    ports:
+      - "3001:3001"
+    networks:
+      - app_network
+
+  react-router-web:
+    container_name: react-router-web
+    build:
+      context: .
+      dockerfile: ./apps/react-router-web/Dockerfile.moon
+      args:
+        SUPABASE_URL: ${SUPABASE_URL:-}
+        SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY:-}
+    environment:
+      JAVA_API_HOST: ${JAVA_API_HOST:-http://java-api:8080}
+      SUPABASE_URL: ${SUPABASE_URL:-}
+      VITE_SUPABASE_URL: ${SUPABASE_URL:-}
+      SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY:-}
+      VITE_SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY:-}
+    restart: always
+    ports:
+      - "8080:3000"
+    networks:
+      - app_network
+
+  java-api:
+    container_name: java-api
+    build:
+      context: .
+      dockerfile: ./apps/java-api/Dockerfile.moon
+    restart: always
+    ports:
+      - "8081:8080"
+    networks:
+      - app_network
+
+networks:
+  app_network:

@@ -1,1 +1,16 @@
 node_modules
+.moon/cache
+.moon/docker
+**/.moon/cache
+**/.moon/docker
+**/.cachebro
+**/.env
+**/.env.*
+**/.next
+**/.react-router
+**/build
+**/coverage
+**/dist
+**/playwright-report
+**/target
+**/test-results

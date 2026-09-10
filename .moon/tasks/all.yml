@@ -1,0 +1,13 @@
+# Match Turbo's workspace-wide environment hash inputs without defining tasks
+# that projects do not actually provide.
+implicitInputs:
+  - "$PLAYWRIGHT_PORT"
+  - "$PLAYWRIGHT_TEST_BASE_URL"
+  - "$PLAYWRIGHT_TEST_EMAIL"
+  - "$PLAYWRIGHT_TEST_PASSWORD"
+  - "$PLAYWRIGHT_TEST_USERNAME"
+  - "$PLAYWRIGHT_TEST_FULL_NAME"
+  - "$PLAYWRIGHT_TEST_AVATAR_URL"
+  - "$PLAYWRIGHT_SUPABASE_URL"
+  - "$PLAYWRIGHT_SUPABASE_ANON_KEY"
+  - "$PLAYWRIGHT_SUPABASE_SERVICE_ROLE_KEY"

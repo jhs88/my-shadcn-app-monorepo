@@ -22,6 +22,12 @@ This is a **demo/template monorepo** showcasing shadcn/ui integration across mul
 | **@repo/typescript-config** | `packages/typescript-config` | Shared tsconfig.json base configurations |
 | **@repo/jest-presets** | `packages/jest-presets` | Jest configuration presets for Node.js projects |
 
+## Cross-cutting contexts
+
+| Context | Path | Description |
+| --- | --- | --- |
+| **delivery** | [`docs/delivery/CONTEXT.md`](docs/delivery/CONTEXT.md) | Publication, promotion, deployment, and rollback of the four-service runtime |
+
 ## System-wide decisions
 
 See [`docs/adr/`](docs/adr/) for architectural decision records that apply to the entire monorepo.

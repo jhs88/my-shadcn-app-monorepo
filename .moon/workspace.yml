@@ -1,0 +1,28 @@
+# Configures all projects within the workspace to create a project graph.
+# Accepts a list of globs, a mapping of projects to relative file paths,
+# or both values.
+projects:
+  - "apps/*"
+  - "packages/*"
+
+# Configures the version control system (VCS). Also known as
+# source code management (SCM).
+vcs:
+  # The default branch / base.
+  defaultBranch: "main"
+
+  # The upstream version control provider, where the repository
+  # source code is stored.
+  # @since 1.8.0
+  # @values "bitbucket" | "bitbucket-legacy" | "github" | "gitlab" | "other"
+  provider: "github"
+
+# The package.json dev dependency pins the exact prototype CLI version.
+versionConstraint: "=2.4.6"
+
+# The host is supplied by CI through MOON_REMOTE_HOST so local development does
+# not depend on the in-cluster cache. Use a repository-specific namespace to
+# avoid sharing artifacts with unrelated moon workspaces on the same service.
+remote:
+  cache:
+    instanceName: "my-shadcn-app-monorepo"
