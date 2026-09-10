@@ -5,10 +5,7 @@ on:
     branches:
       - main
     tags:
-      - 'v*'
-  pull_request:
-    branches: 
-      - main
+      - "v*"
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
@@ -18,8 +15,8 @@ permissions:
   packages: write
   attestations: write
   id-token: write
- 
-env:    # To use Turborepo Remote Caching, set the following environment variables for the job.
+
+env: # To use Turborepo Remote Caching, set the following environment variables for the job.
   TURBO_TELEMETRY_DISABLED: ${{ vars.TURBO_TELEMETRY_DISABLED }}
   TURBO_API: ${{ vars.TURBO_API }}
   TURBO_TEAM: ${{ vars.TURBO_TEAM }}
@@ -41,11 +38,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-turbo-
 
-      - name: Set up JDK 
+      - name: Set up JDK
         uses: actions/setup-java@v5
         with:
-          java-version: '21'
-          distribution: 'temurin'
+          java-version: "21"
+          distribution: "temurin"
           cache: maven
 
       - name: 📦 Setup pnpm
