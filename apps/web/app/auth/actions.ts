@@ -8,9 +8,9 @@ import {
   startPasswordReset as startPasswordResetWorkflow,
   updatePassword as updatePasswordWorkflow,
 } from "@/app/auth/workflows/server";
+import type { AuthActionState } from "@/app/auth/action-state";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import type { AuthActionState } from "@/app/auth/action-state";
 
 export async function signup(
   _: AuthActionState,
@@ -26,7 +26,8 @@ export async function signup(
   });
 
   if (!result.ok) return { error: result.message };
-  if (result.status !== "signed-up") return { error: "Unexpected sign-up result" };
+  if (result.status !== "signed-up")
+    return { error: "Unexpected sign-up result" };
 
   redirect(result.redirectTo);
 }
@@ -41,7 +42,8 @@ export async function login(
   });
 
   if (!result.ok) return { error: result.message };
-  if (result.status !== "signed-in") return { error: "Unexpected login result" };
+  if (result.status !== "signed-in")
+    return { error: "Unexpected login result" };
 
   if (result.revalidateLayout) {
     revalidatePath("/", "layout");

@@ -7,7 +7,7 @@ This is a **demo/template monorepo** showcasing shadcn/ui integration across mul
 | Context | Path | Description |
 | --- | --- | --- |
 | **web** | [`apps/web/CONTEXT.md`](apps/web/CONTEXT.md) | Next.js 16 example — demonstrates server actions, TanStack Query, theme system |
-| **react-router-web** | [`apps/react-router-web/CONTEXT.md`](apps/react-router-web/CONTEXT.md) | React Router v7 example — demonstrates loaders/actions, CSP nonce security, Sentry monitoring |
+| **react-router-web** | [`apps/react-router-web/CONTEXT.md`](apps/react-router-web/CONTEXT.md) | React Router framework-mode SSR example — demonstrates loaders/actions, middleware, CSP nonce security, Sentry monitoring |
 | **api** | [`apps/api/CONTEXT.md`](apps/api/CONTEXT.md) | Express.js example — minimal REST API demonstrating esbuild-register TypeScript runtime |
 | **java-api** | [`apps/java-api/CONTEXT.md`](apps/java-api/CONTEXT.md) | Spring Boot 3 example — Item CRUD with JPA/H2, comprehensive test hierarchy patterns |
 

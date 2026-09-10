@@ -17,8 +17,7 @@ import {
 } from "react-router";
 import { signUp as signUpWorkflow } from "~/auth/workflows/server";
 
-export const action = async ({ request }: ActionFunctionArgs) => {
-  const url = new URL(request.url);
+export const action = async ({ request, url }: ActionFunctionArgs) => {
   const origin = url.origin;
   const formData = await request.formData();
   const { result, headers } = await signUpWorkflow(request, {
@@ -29,7 +28,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   });
 
   if (!result.ok) return { error: result.message };
-  if (result.status !== "signed-up") return { error: "Unexpected sign-up result" };
+  if (result.status !== "signed-up")
+    return { error: "Unexpected sign-up result" };
 
   return redirect(result.redirectTo, { headers });
 };

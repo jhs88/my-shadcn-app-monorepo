@@ -1,17 +1,18 @@
 import { Button } from "@repo/ui/components/button";
-import { redirect } from "react-router";
-import { createClient } from "~/lib/supabase/server";
+import {
+  authenticatedRequestContext,
+  protectedRouteAuthMiddleware,
+} from "~/auth/protected-route-auth.server";
 import type { Route } from "./+types/protected";
 
-export const loader = async ({ request }: Route.LoaderArgs) => {
-  const { supabase } = createClient(request);
+export const middleware: Route.MiddlewareFunction[] = [
+  protectedRouteAuthMiddleware,
+];
 
-  const { data, error } = await supabase.auth.getUser();
-  if (error || !data?.user) {
-    return redirect("/login");
-  }
+export const loader = async ({ context }: Route.LoaderArgs) => {
+  const { user } = context.get(authenticatedRequestContext);
 
-  return data;
+  return { user };
 };
 
 export default function ProtectedPage({ loaderData }: Route.ComponentProps) {

@@ -8,7 +8,7 @@
 
 Include two web frontends as **demonstration examples**, not as production counterparts:
 - **`web`** — Next.js 16 (App Router) example
-- **`react-router-web`** — React Router v7 (SSR + Express adapter) example
+- **`react-router-web`** — React Router framework-mode SSR example
 
 Both share:
 - `@repo/ui` component library
@@ -21,7 +21,7 @@ Both share:
 This monorepo is a template that demonstrates shadcn/ui integration across different React SSR frameworks. Each frontend shows how the same UI components, auth flows, and theming work in its framework's idiomatic patterns:
 
 - Next.js example demonstrates server actions, App Router conventions, TanStack Query, and Vercel deployment
-- React Router example demonstrates loaders/actions, CSP nonce security, Sentry monitoring, and Express adapter
+- React Router example demonstrates loaders/actions, route middleware, CSP nonce security, and Sentry monitoring
 
 ## Consequences
 
@@ -38,3 +38,4 @@ This monorepo is a template that demonstrates shadcn/ui integration across diffe
 ## Related
 - ADR-0002: Supabase for authentication and storage
 - ADR-0003: shadcn/ui as shared component library
+- `apps/react-router-web/docs/adr/0003-built-in-react-router-servers.md` amends the original Express-adapter runtime choice
