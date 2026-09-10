@@ -1,0 +1,9 @@
+stack: "frontend"
+layer: "library"
+tags: ["react", "shadcn"]
+
+tasks:
+  lint:
+    command: "pnpm run lint"
+    options:
+      runInCI: true

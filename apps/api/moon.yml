@@ -1,0 +1,26 @@
+stack: "backend"
+layer: "application"
+tags: ["node", "express"]
+
+tasks:
+  build:
+    command: "pnpm run build"
+    deps: ["^:build"]
+    inputs:
+      - "**/*"
+      - "$JAVA_API_HOST"
+      - "$PORT"
+    outputs: ["dist/**/*"]
+  clean:
+    command: "pnpm run clean"
+    options:
+      cache: false
+      runInCI: false
+  lint:
+    command: "pnpm run lint"
+    deps: ["^:build"]
+    options:
+      runInCI: true
+  test:
+    command: "pnpm run test"
+    deps: ["^:build"]

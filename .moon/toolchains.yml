@@ -1,0 +1,10 @@
+javascript:
+  packageManager: "pnpm"
+  inferTasksFromScripts: true
+  installDependencies: false
+
+node:
+  versionFromPrototools: false
+
+pnpm:
+  versionFromPrototools: false

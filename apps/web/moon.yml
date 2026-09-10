@@ -1,0 +1,54 @@
+stack: "frontend"
+layer: "application"
+tags: ["next", "react", "supabase"]
+
+tasks:
+  build:
+    command: "pnpm run build"
+    deps: ["^:build"]
+    # Next standalone output contains pnpm symlinks. Moon 2.4.6 rejects this
+    # valid deployment tree while archiving task outputs, so keep this one
+    # build out of Moon's local and remote task caches.
+    options:
+      cache: false
+    inputs:
+      - "**/*"
+      - "/.env*"
+      - "$JAVA_API_HOST"
+      - "$NEXT_PUBLIC_API_HOST"
+      - "$NEXT_PUBLIC_SUPABASE_URL"
+      - "$NEXT_PUBLIC_SUPABASE_ANON_KEY"
+      - "$NODE_ENV"
+      - "$SUPABASE_URL"
+      - "$SUPABASE_ANON_KEY"
+      - "$PORT"
+    outputs:
+      - ".next/**/*"
+      - "!.next/cache/**/*"
+  check-types:
+    command: "pnpm run check-types"
+    deps: ["^:build", "^:check-types"]
+  lint:
+    command: "pnpm run lint"
+    options:
+      runInCI: true
+  test:
+    command: "pnpm run test"
+  coverage:
+    command: "pnpm run coverage"
+    outputs: ["coverage/**/*"]
+    options:
+      runInCI: false
+  clean:
+    command: "pnpm run clean"
+    options:
+      cache: false
+      runInCI: false
+  react-scan:
+    command: "pnpm run react-scan"
+    options:
+      runInCI: false
+  test-ui:
+    command: "pnpm run test:ui"
+    options:
+      runInCI: false

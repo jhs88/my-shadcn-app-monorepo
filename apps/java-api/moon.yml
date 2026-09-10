@@ -1,0 +1,21 @@
+# The package.json remains the adapter to Maven during coexistence.
+stack: "backend"
+layer: "application"
+tags: ["java", "spring"]
+
+tasks:
+  build:
+    command: "pnpm run build"
+    deps: ["^:build"]
+    outputs: ["target/**/*"]
+  # Both Maven scripts begin with `clean` and write the same target directory.
+  # Serialize them when a pipeline requests build and test together.
+  test:
+    command: "pnpm run test"
+    deps: ["~:build"]
+    outputs: ["target/**/*"]
+  clean:
+    command: "pnpm run clean"
+    options:
+      cache: false
+      runInCI: false

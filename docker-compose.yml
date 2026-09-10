@@ -3,7 +3,7 @@ services:
     container_name: web
     build:
       context: .
-      dockerfile: ./apps/web/Dockerfile
+      dockerfile: ./apps/web/Dockerfile.moon
       args: 
         - TURBO_API=${TURBO_API}
         - TURBO_TEAM=${TURBO_TEAM}
@@ -22,7 +22,7 @@ services:
     container_name: api
     build:
       context: .
-      dockerfile: ./apps/api/Dockerfile
+      dockerfile: ./apps/api/Dockerfile.moon
       args: 
         - TURBO_API=${TURBO_API}
         - TURBO_TEAM=${TURBO_TEAM}
@@ -35,7 +35,7 @@ services:
     container_name: react-router-web
     build:
       context: .
-      dockerfile: ./apps/react-router-web/Dockerfile
+      dockerfile: ./apps/react-router-web/Dockerfile.moon
       args:
         - TURBO_API=${TURBO_API}
         - TURBO_TEAM=${TURBO_TEAM}
@@ -56,7 +56,7 @@ services:
     container_name: java-api 
     build:
       context: .
-      dockerfile: ./apps/java-api/Dockerfile
+      dockerfile: ./apps/java-api/Dockerfile.moon
       args:
         - TURBO_API=${TURBO_API}
         - TURBO_TEAM=${TURBO_TEAM}

@@ -1,0 +1,63 @@
+stack: "frontend"
+layer: "application"
+tags: ["react", "react-router", "supabase"]
+
+tasks:
+  build:
+    command: "pnpm run build"
+    deps: ["^:build"]
+    inputs:
+      - "**/*"
+      - "/.env*"
+      - "$JAVA_API_HOST"
+      - "$NODE_ENV"
+      - "$SUPABASE_URL"
+      - "$SUPABASE_ANON_KEY"
+      - "$VITE_SUPABASE_URL"
+      - "$VITE_SUPABASE_ANON_KEY"
+      - "$SENTRY_AUTH_TOKEN"
+      - "$SENTRY_ORG"
+      - "$SENTRY_PROJECT"
+      - "$SENTRY_DSN"
+      - "$COMMIT_SHA"
+      - "$ALLOW_INDEXING"
+      - "$PORT"
+    outputs: ["build/**/*"]
+  check-types:
+    command: "pnpm run check-types"
+    deps: ["^:build", "^:check-types"]
+  lint:
+    command: "pnpm run lint"
+    options:
+      runInCI: true
+  test:
+    command: "pnpm run test"
+  clean:
+    command: "pnpm run clean"
+    options:
+      cache: false
+      runInCI: false
+  e2e-bootstrap:
+    command: "pnpm run e2e:bootstrap"
+    options:
+      runInCI: false
+  e2e-server:
+    command: "pnpm run e2e:server"
+    options:
+      runInCI: false
+  test-e2e:
+    command: "pnpm run test:e2e"
+    options:
+      runInCI: false
+  test-e2e-smoke:
+    command: "pnpm run test:e2e:smoke"
+    options:
+      runInCI: false
+  test-e2e-integration:
+    command: "pnpm run test:e2e:integration"
+    options:
+      runInCI: false
+  typecheck:
+    command: "pnpm run typecheck"
+    options:
+      runInCI: false

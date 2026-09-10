@@ -40,3 +40,7 @@ npm-debug.log*
 
 # deno lock for supabase
 deno.lock
+
+# moon
+.moon/cache
+.moon/docker
