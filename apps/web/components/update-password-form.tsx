@@ -46,7 +46,9 @@ export function UpdatePasswordForm({
                   required
                 />
               </div>
-              {state.error && <p className="text-sm text-red-500">{state.error}</p>}
+              {state.error && (
+                <p className="text-sm text-red-500">{state.error}</p>
+              )}
               <SubmitButton pendingText="Saving" className="w-full">
                 Save new password
               </SubmitButton>

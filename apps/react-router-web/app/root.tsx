@@ -42,14 +42,14 @@ export const links: LinksFunction = () => [
   // } as const, // necessary to make typescript happy
 ];
 
-export const meta: Route.MetaFunction = ({ data }) => [
-  { title: data ? "React Router" : "Error | React Router" },
+export const meta: Route.MetaFunction = ({ loaderData }) => [
+  { title: loaderData ? "React Router" : "Error | React Router" },
   { name: "description", content: `Basic React Router Example` },
 ];
 
 export const headers: Route.HeadersFunction = pipeHeaders;
 
-export async function loader({ request }: Route.LoaderArgs) {
+export async function loader({ request, url }: Route.LoaderArgs) {
   const { getTheme } = await themeSessionResolver(request);
 
   const timings = makeTimings("root loader");
@@ -58,7 +58,7 @@ export async function loader({ request }: Route.LoaderArgs) {
     {
       requestInfo: {
         origin: getDomainUrl(request),
-        path: new URL(request.url).pathname,
+        path: url.pathname,
       },
       ENV: getEnv(),
       theme: getTheme(),

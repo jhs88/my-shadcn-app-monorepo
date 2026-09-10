@@ -68,7 +68,9 @@ export function ForgotPasswordForm({
                     required
                   />
                 </div>
-                {state.error && <p className="text-sm text-red-500">{state.error}</p>}
+                {state.error && (
+                  <p className="text-sm text-red-500">{state.error}</p>
+                )}
                 <SubmitButton pendingText="Sending" className="w-full">
                   Send reset email
                 </SubmitButton>

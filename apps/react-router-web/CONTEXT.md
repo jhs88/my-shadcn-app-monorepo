@@ -6,14 +6,14 @@
 
 ## Tech stack
 
-- **Framework**: React Router v7 (fs-routes, SSR with Express adapter)
+- **Framework**: React Router framework mode (fs-routes and SSR)
 - **Language**: TypeScript, React 19
 - **Auth**: Supabase (email/password + GitHub OAuth)
 - **Data loading**: React Router loaders (server-side fetch)
-- **Monitoring**: Sentry (profiling-node + react-router integrations)
+- **Monitoring**: Sentry React Router integration with browser profiling and replay
 - **UI**: @repo/ui (shadcn/ui components), Tailwind CSS, sonner (toasts)
-- **Server**: Express middleware (compression, rate limiting, morgan logging)
-- **Security**: Helmet (CSP with nonce support), close-with-grace for graceful shutdown
+- **Server**: React Router's development server locally and `react-router-serve` in production
+- **Security**: Helmet content APIs with per-request CSP nonces during SSR
 
 ## Routing structure (file-based via fs-routes)
 
@@ -74,17 +74,14 @@ Configured via `@nichtsam/helmet` with CSP nonce support:
 
 Sentry integration:
 - `app/utils/monitoring.client.tsx` — client-side Sentry initialization
-- `@sentry/profiling-node` — server-side profiling
-- `@sentry/react-router` — React Router error tracking
+- `@sentry/react-router` — React Router error tracking, browser profiling, and replay
+- `vite.config.ts` and `react-router.config.ts` — production source-map upload hooks
 
-### Server middleware stack
+### Canonical server runtime
 
-Express adapter includes:
-- Compression (gzip)
-- Rate limiting (`express-rate-limit`)
-- Morgan logging
-- isbot detection for SSR optimization
-- Graceful shutdown (`close-with-grace`)
+Use `react-router dev` for local development and `react-router-serve` with the
+built server bundle for production. The Docker image and the package `start`
+script use the same production server path.
 
 ## Environment variables
 

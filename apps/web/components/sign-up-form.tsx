@@ -52,12 +52,7 @@ export function SignUpForm({
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
                 </div>
-                <Input
-                  id="password"
-                  name="password"
-                  type="password"
-                  required
-                />
+                <Input id="password" name="password" type="password" required />
               </div>
               <div className="grid gap-2">
                 <div className="flex items-center">
@@ -70,7 +65,9 @@ export function SignUpForm({
                   required
                 />
               </div>
-              {state.error && <p className="text-sm text-red-500">{state.error}</p>}
+              {state.error && (
+                <p className="text-sm text-red-500">{state.error}</p>
+              )}
               <SubmitButton pendingText="Creating Account" className="w-full">
                 Sign up
               </SubmitButton>

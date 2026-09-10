@@ -1,9 +1,9 @@
 import { reactRouter } from "@react-router/dev/vite";
 import tailwindcss from "@tailwindcss/vite";
 import { reactRouterDevTools } from "react-router-devtools";
-import { defineConfig } from "vite";
 import { envOnlyMacros } from "vite-env-only";
 import tsconfigPaths from "vite-tsconfig-paths";
+import { configDefaults, defineConfig } from "vitest/config";
 import {
   type SentryReactRouterBuildOptions,
   sentryReactRouter,
@@ -14,6 +14,10 @@ const MODE = process.env.NODE_ENV;
 export default defineConfig((config) => ({
   test: {
     include: ["app/**/*.test.{ts,tsx}"],
+    exclude: [...configDefaults.exclude, "playwright/**"],
+  },
+  preview: {
+    host: "127.0.0.1",
   },
   build: {
     target: "es2022",
