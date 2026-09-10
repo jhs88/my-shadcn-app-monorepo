@@ -29,7 +29,7 @@ ENV VITE_SUPABASE_ANON_KEY=$SUPABASE_ANON_KEY
 COPY --from=skeleton /app/.moon/docker/configs/ .
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
     moon docker setup \
-    && pnpm install --frozen-lockfile
+    && pnpm install --frozen-lockfile --filter react-router-web...
 
 COPY --from=skeleton /app/.moon/docker/sources/ .
 RUN moon run react-router-web:build \

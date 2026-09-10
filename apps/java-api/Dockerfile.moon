@@ -26,7 +26,7 @@ FROM base AS build
 COPY --from=skeleton /app/.moon/docker/configs/ .
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
     moon docker setup \
-    && pnpm install --frozen-lockfile
+    && pnpm install --frozen-lockfile --filter java-api...
 
 COPY --from=skeleton /app/.moon/docker/sources/ .
 RUN --mount=type=cache,id=maven,target=/root/.m2 \
