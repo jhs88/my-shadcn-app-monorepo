@@ -1,4 +1,7 @@
 node_modules
+.git
+**/node_modules
+**/.turbo
 .moon/cache
 .moon/docker
 **/.moon/cache

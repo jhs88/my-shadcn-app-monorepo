@@ -6,10 +6,12 @@ ENV PATH="$PNPM_HOME:$PATH"
 RUN apk update && apk add --no-cache libc6-compat
 RUN corepack enable
 WORKDIR /app
+COPY package.json ./package.json
+RUN corepack prepare "$(node -p 'require("./package.json").packageManager')" --activate
 
 
 FROM base AS builder
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm i -g turbo
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm i -g turbo@2.10.7
 COPY . .
 RUN turbo prune java-api --docker
 
@@ -34,8 +36,7 @@ ENV TURBO_TEAM=$TURBO_TEAM
 # ARG TURBO_TOKEN
 # ENV TURBO_TOKEN=$TURBO_TOKEN
 
-RUN --mount=type=bind,source=.git,target=.git \
-    --mount=type=cache,id=maven,target=/root/.m2 \
+RUN --mount=type=cache,id=maven,target=/root/.m2 \
     --mount=type=secret,id=turbo_token,env=TURBO_TOKEN \
     pnpm build
 

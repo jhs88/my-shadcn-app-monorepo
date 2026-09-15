@@ -4,12 +4,14 @@ ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
 # Set working directory
 WORKDIR /app
+COPY package.json ./package.json
+RUN corepack prepare "$(node -p 'require("./package.json").packageManager')" --activate
 
 
 FROM base AS builder
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk update && apk add --no-cache libc6-compat
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm i -g turbo
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm i -g turbo@2.10.7
 COPY . .
 RUN turbo prune api --docker
 
@@ -35,8 +37,7 @@ ENV TURBO_TEAM=$TURBO_TEAM
 # ARG TURBO_TOKEN
 # ENV TURBO_TOKEN=$TURBO_TOKEN
 
-RUN --mount=type=bind,source=.git,target=.git \
-    --mount=type=secret,id=turbo_token,env=TURBO_TOKEN \
+RUN --mount=type=secret,id=turbo_token,env=TURBO_TOKEN \
     pnpm build
 
 
