@@ -2,7 +2,7 @@
 
 ## Overview
 
-**Demo example** showing how to integrate shadcn/ui in a React Router v7 application with SSR. Demonstrates loaders/actions for data loading, CSP nonce security headers, Sentry monitoring, and Supabase auth — using React Router's idiomatic patterns.
+**Demo example** showing how to integrate shadcn/ui in a React Router v8 application with SSR. Demonstrates loaders/actions for data loading, CSP nonce security headers, Sentry monitoring, and Supabase auth — using React Router's idiomatic patterns.
 
 ## Tech stack
 
