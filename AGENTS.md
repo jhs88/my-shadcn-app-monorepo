@@ -20,6 +20,8 @@ Multi-context monorepo — `CONTEXT-MAP.md` at root points to per-app `CONTEXT.m
 
 ## Surprises / Confusion Points
 
+- All Turbo Dockerfiles must expose the root package manager pin before their global Turbo install. Without it, Corepack selected pnpm 12 on Node 24 and failed with `ERR_PNPM_GLOBAL_BIN_DIR_NOT_IN_PATH`. Container builds use full task builds, so they exclude `.git` and do not require a Git bind mount.
+- Frontend image builds need the public Supabase URL and anon key passed by the deployment workflow and allowed through Turbo's build environment list; declaring Docker build arguments alone does not make them available to Next.js or Vite under Turbo's strict environment mode.
 - pnpm settings such as `packageExtensions` belong in `pnpm-workspace.yaml`; pnpm 10 ignores the legacy root `package.json#pnpm` field.
 - The current Turbo-based `apps/api/Dockerfile` runs `pnpm i -g turbo` before copying the root `package.json`, so Corepack cannot see the repository's pinned pnpm version. As of 2026-08-12 it selects pnpm 11 on Node 20 and fails on the missing `node:sqlite` built-in. Docker setup steps must activate or expose the repository-pinned package manager before invoking pnpm.
 - `apps/java-api/src/main/resources/application.properties` configures the actuator base path as `/actutaor` (misspelled), so the current container health endpoint is `/actutaor/health`, not `/actuator/health`.

@@ -23,7 +23,7 @@ permissions:
   attestations: write
   id-token: write
 
-env: 
+env:
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
 
 jobs:
@@ -31,9 +31,18 @@ jobs:
     name: 📦 Build & Deploy Containers
     runs-on: my-shadcn-app-monorepo
     strategy:
+      fail-fast: false
       matrix:
         target: [api, java-api, web, react-router-web]
     steps:
+      - name: Validate frontend build configuration
+        if: matrix.target == 'web' || matrix.target == 'react-router-web'
+        env:
+          SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          test -n "$SUPABASE_URL" || { echo "::error::Configure the SUPABASE_URL repository variable"; exit 1; }
+          test -n "$SUPABASE_ANON_KEY" || { echo "::error::Configure the SUPABASE_ANON_KEY repository secret (public anon key)"; exit 1; }
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v4
 
@@ -69,6 +78,8 @@ jobs:
         with:
           context: .
           build-args: |
+            SUPABASE_URL=${{ vars.SUPABASE_URL }}
+            SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}
             "TURBO_API=${{ vars.TURBO_API }}"
             "TURBO_TEAM=${{ vars.TURBO_TEAM }}"
             "TURBO_TELEMETRY_DISABLED=${{ vars.TURBO_TELEMETRY_DISABLED }}"
