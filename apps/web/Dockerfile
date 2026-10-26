@@ -1,10 +1,10 @@
-FROM node:24-alpine AS base
+FROM node:24.22.1-alpine AS base
 ENV PNPM_HOME="/pnpm" 
-ENV PATH="$PNPM_HOME:$PATH"
+ENV PATH="$PNPM_HOME/bin:$PNPM_HOME:$PATH"
 RUN corepack enable
 # Set working directory
 WORKDIR /app
-COPY package.json ./package.json
+COPY package.json pnpm-workspace.yaml ./
 RUN corepack prepare "$(node -p 'require("./package.json").packageManager')" --activate
 
 
@@ -13,7 +13,7 @@ ARG TURBO_TELEMETRY_DISABLED=1
 ENV TURBO_TELEMETRY_DISABLED=$TURBO_TELEMETRY_DISABLED
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk update && apk add --no-cache libc6-compat
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm i -g turbo@2.10.7
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm add --global "turbo@$(node -p 'require("./package.json").devDependencies.turbo.replace(/^[~^]/, "")')"
 COPY . .
 RUN turbo prune web --docker
 
@@ -24,7 +24,7 @@ RUN apk update && apk add --no-cache libc6-compat
 
 # First install the dependencies (as they change less often)
 COPY --from=builder /app/out/json/ .
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm i
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 
 # Build the project
 COPY --from=builder /app/out/full/ .

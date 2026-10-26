@@ -9,16 +9,19 @@ import {
   TableHeader,
   TableRow,
 } from "@repo/ui/components/table";
-import { type Table as TanstackTable, flexRender } from "@tanstack/react-table";
+import { flexRender } from "@tanstack/react-table";
+import type { Table as TanstackTable, RowData } from "@repo/ui/lib/data-table";
 import type * as React from "react";
 
-interface DataTableProps<TData> extends React.ComponentProps<"div"> {
+interface DataTableProps<
+  TData extends RowData,
+> extends React.ComponentProps<"div"> {
   table: TanstackTable<TData>;
   actionBar?: React.ReactNode;
   onRowClick?: (row: TData) => void;
 }
 
-export function DataTable<TData>({
+export function DataTable<TData extends RowData>({
   table,
   actionBar,
   children,

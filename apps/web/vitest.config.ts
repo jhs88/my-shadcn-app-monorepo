@@ -1,4 +1,4 @@
-import tsconfigPaths from "vite-tsconfig-paths";
+import { fileURLToPath } from "node:url";
 import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 
@@ -7,9 +7,13 @@ export default defineConfig({
     react({
       jsxImportSource: "react",
     }),
-    tsconfigPaths(),
   ],
+  resolve: { tsconfigPaths: true },
   test: {
+    // Separate CLI processes must not invalidate one another's module cache.
+    fsModuleCachePath: fileURLToPath(
+      new URL("./node_modules/.vitest-cache", import.meta.url),
+    ),
     environment: "jsdom",
     globals: true,
     include: ["app/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],

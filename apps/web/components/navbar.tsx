@@ -85,6 +85,8 @@ export default function Navbar({
                 <Button
                   key={index}
                   variant={action.variant ?? "default"}
+                  nativeButton={false}
+                  role="link"
                   render={<a href={action.href} />}
                 >
                   {action.icon}

@@ -1,14 +1,14 @@
-FROM node:24-alpine AS base
+FROM node:24.22.1-alpine AS base
 
 ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-
-RUN apk add --no-cache libc6-compat \
-    && corepack enable \
-    && corepack prepare pnpm@10.28.0 --activate \
-    && pnpm add --global @moonrepo/cli@2.4.6
+ENV PATH="$PNPM_HOME/bin:$PNPM_HOME:$PATH"
 
 WORKDIR /app
+COPY package.json pnpm-workspace.yaml ./
+RUN apk add --no-cache libc6-compat \
+    && corepack enable \
+    && corepack prepare "$(node -p 'require("./package.json").packageManager')" --activate \
+    && pnpm add --global "@moonrepo/cli@$(node -p 'require("./package.json").devDependencies["@moonrepo/cli"]')"
 
 
 FROM base AS skeleton
@@ -36,7 +36,7 @@ RUN moon run react-router-web:build \
     && moon docker prune
 
 
-FROM node:24-alpine AS runner
+FROM node:24.22.1-alpine AS runner
 
 ENV NODE_ENV="production"
 ENV PORT="3000"

@@ -3,7 +3,6 @@
   "compilerOptions": {
     "target": "ESNext",
     "verbatimModuleSyntax": true,
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./*"],
       "@repo/types": ["../../packages/types/index.ts"],
@@ -13,7 +12,9 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "rootDir": "../..",
+    "types": ["node", "react", "react-dom", "vite/client"]
   },
   "include": [
     "next-env.d.ts",

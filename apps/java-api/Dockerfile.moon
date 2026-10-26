@@ -1,18 +1,18 @@
-FROM node:24-alpine AS base
+FROM node:24.22.1-alpine AS base
 
 ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
+ENV PATH="$PNPM_HOME/bin:$PNPM_HOME:$PATH"
 ENV JAVA_HOME="/opt/java/openjdk"
 ENV PATH="$JAVA_HOME/bin:$PATH"
 
+WORKDIR /app
+COPY package.json pnpm-workspace.yaml ./
 RUN apk add --no-cache libc6-compat \
     && corepack enable \
-    && corepack prepare pnpm@10.28.0 --activate \
-    && pnpm add --global @moonrepo/cli@2.4.6
+    && corepack prepare "$(node -p 'require("./package.json").packageManager')" --activate \
+    && pnpm add --global "@moonrepo/cli@$(node -p 'require("./package.json").devDependencies["@moonrepo/cli"]')"
 
 COPY --from=eclipse-temurin:21-alpine $JAVA_HOME $JAVA_HOME
-
-WORKDIR /app
 
 
 FROM base AS skeleton

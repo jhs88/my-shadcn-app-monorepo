@@ -10,10 +10,12 @@ import {
   SelectValue,
 } from "@repo/ui/components/select";
 import { cn } from "@repo/ui/lib/utils";
-import { type Table } from "@tanstack/react-table";
+import type { Table, RowData } from "@repo/ui/lib/data-table";
 import { ChevronsLeft, ChevronsRight } from "lucide-react";
 
-interface CustomPaginationProps<TData> extends React.ComponentProps<"div"> {
+interface CustomPaginationProps<
+  TData extends RowData,
+> extends React.ComponentProps<"div"> {
   table: Table<TData>;
   page: number;
   pageSize: number;
@@ -23,7 +25,7 @@ interface CustomPaginationProps<TData> extends React.ComponentProps<"div"> {
   pageSizeOptions?: number[];
 }
 
-export function CustomPagination<TData>({
+export function CustomPagination<TData extends RowData>({
   table,
   page,
   pageSize,
@@ -45,7 +47,7 @@ export function CustomPagination<TData>({
       {...props}
     >
       {/* Left status */}
-      <div className="text-muted-foreground flex-1 whitespace-nowrap text-sm">
+      <div className="text-muted-foreground flex-1 text-sm whitespace-nowrap">
         {table.getFilteredSelectedRowModel().rows.length > 0 ? (
           <>
             {table.getFilteredSelectedRowModel().rows.length} of {totalItems}{" "}
@@ -59,7 +61,7 @@ export function CustomPagination<TData>({
       {/* Controls */}
       <div className="flex flex-col-reverse items-center gap-4 sm:flex-row sm:gap-6 lg:gap-8">
         <div className="flex items-center space-x-2">
-          <p className="whitespace-nowrap text-sm font-medium">Rows per page</p>
+          <p className="text-sm font-medium whitespace-nowrap">Rows per page</p>
           <Select
             value={String(pageSize)}
             onValueChange={(val) => {

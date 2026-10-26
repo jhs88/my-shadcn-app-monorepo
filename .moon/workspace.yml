@@ -18,7 +18,7 @@ vcs:
   provider: "github"
 
 # The package.json dev dependency pins the exact prototype CLI version.
-versionConstraint: "=2.4.6"
+versionConstraint: "=2.6.4"
 
 # The host is supplied by CI through MOON_REMOTE_HOST so local development does
 # not depend on the in-cluster cache. Use a repository-specific namespace to
