@@ -4,6 +4,22 @@ export function init() {
   Sentry.init({
     dsn: ENV.SENTRY_DSN,
     environment: ENV.MODE,
+    // Preserve the v10 collection and transaction defaults during the v11 migration.
+    traceLifecycle: "static",
+    dataCollection: {
+      userInfo: false,
+      cookies: false,
+      httpHeaders: {
+        request: { deny: ["forwarded", "-ip", "remote-", "via", "-user"] },
+        response: { deny: ["forwarded", "-ip", "remote-", "via", "-user"] },
+      },
+      httpBodies: [],
+      urlQueryParams: { deny: ["forwarded", "-ip", "remote-", "via", "-user"] },
+      genAI: { inputs: false, outputs: false },
+      databaseQueryData: false,
+      graphQL: { document: false, variables: false },
+      frameContextLines: 7,
+    },
     beforeSend(event) {
       if (event.request?.url) {
         const url = new URL(event.request.url);

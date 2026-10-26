@@ -8,8 +8,8 @@ This template is for creating a turbo monorepo with shadcn/ui.
 
 The following programs are required:
 
-- `node` >= 20
-- `pnpm` >= 10
+- `node` 24.22.1 (pinned in `.node-version`)
+- `pnpm` 12.15.0 (pinned in `package.json#packageManager`)
 - `java` >= 21
 - `docker`
 - `git`
@@ -24,16 +24,19 @@ The following programs are recommended:
 
 ```bash
 # install node, pnpm, & java
-nvm install lts/*
+nvm install "$(cat .node-version)"
+nvm use "$(cat .node-version)"
 
 # enable corepack and pnpm
 corepack enable
+corepack install
 
 # change to current version
 sdkman install java 21.0.6-tem 
 
 # add dependencies & run the project
-pnpm i & pnpm run dev
+pnpm install --frozen-lockfile
+pnpm run dev
 ```
 
 ### Verification
@@ -53,7 +56,7 @@ This Turborepo includes the following:
 ### Apps and Packages
 
 - `web`: a [Next.js](https://nextjs.org/) app
-- `react-router-web`: a [React Router v7](https://reactrouter.com/) app
+- `react-router-web`: a [React Router v8](https://reactrouter.com/) app
 - `api`: an [Express](https://expressjs.com/) server
 - `@repo/ui`: a React component library made from `shadcn/ui`.
 - `@repo/logger`: Isomorphic logger (a small wrapper around console.log)

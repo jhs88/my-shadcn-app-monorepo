@@ -7,3 +7,7 @@ tasks:
     command: "pnpm run lint"
     options:
       runInCI: true
+  check-types:
+    command: "pnpm run check-types"
+  test:
+    command: "pnpm run test"

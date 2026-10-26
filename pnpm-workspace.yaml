@@ -3,6 +3,8 @@ packages:
   - "packages/*"
 
 overrides:
+  # Devtools 0.8 retains the plugin API and supports Vite 8.
+  "react-router-devtools>@tanstack/devtools-vite": 0.8.5
   # Security fixes for transitive dependencies; constrain overrides to the affected major.
   fast-uri: 3.1.7
   "js-yaml@3": 3.15.2
@@ -16,13 +18,28 @@ overrides:
   "react-d3-tree>uuid": 11.1.1
 
 packageExtensions:
-  "@sentry/react-router@10.69.0":
-    # Its exported plugin types import Vite, but the package omits this peer.
-    peerDependencies:
-      vite: "^7.0.0"
-  "@hookform/resolvers@5.2.2":
-    peerDependencies:
-      zod: "^3.25.0 || ^4.0.0"
   "remix-themes@2.0.4":
     peerDependencies:
       react: "^19.2.8"
+
+peerDependencyRules:
+  allowedVersions:
+    # Validated React rules through @eslint/compat; remove when upstream supports ESLint 10.
+    "eslint-plugin-react@7.37.5>eslint": "10.13.0"
+
+# Versions already selected and validated in the 2026-10-26 frontend upgrade.
+# Keep pnpm's default release-age policy for every other version.
+minimumReleaseAgeExclude:
+  - "@tanstack/eslint-plugin-query@5.105.0"
+  - "@tanstack/query-core@5.105.0"
+  - "@tanstack/query-devtools@5.105.0"
+  - "@tanstack/react-query@5.105.0"
+  - "@tanstack/react-query-devtools@5.105.0"
+  - "@tanstack/react-virtual@3.14.23"
+  - "@tanstack/virtual-core@3.19.8"
+  - "baseline-browser-mapping@2.11.33"
+  - "magic-string@1.4.4"
+
+# Use esbuild's packaged platform binaries, as before this migration.
+allowBuilds:
+  esbuild: false

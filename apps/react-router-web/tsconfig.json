@@ -9,12 +9,12 @@
     "types": ["node", "vite/client"],
     "verbatimModuleSyntax": true,
     "noEmit": true,
-    "baseUrl": ".",
     "paths": {
       "~/*": ["./app/*"],
       "@repo/types": ["../../packages/types/index.ts"],
       "@repo/ui/*": ["../../packages/ui/src/*"]
-    }
+    },
+    "rootDir": "../.."
   },
   "include": [
     "**/*",

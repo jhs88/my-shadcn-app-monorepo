@@ -1,6 +1,8 @@
 import { type NextConfig } from "next";
 
 export default {
+  // Repository-owned agent instructions are maintained independently.
+  agentRules: false,
   images: {
     // loader: "custom",
     // loaderFile: "./supabase-image-loader.js",

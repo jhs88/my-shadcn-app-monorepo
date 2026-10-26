@@ -37,3 +37,15 @@ test("gets smallest number directive", () => {
   expect(result.maxAge).toBe(10);
   expect(result.sharedMaxAge).toBe(300);
 });
+
+test("conservatively protects field-specific private and no-cache directives", () => {
+  const result = parse(
+    getConservativeCacheControl(
+      'private="Set-Cookie", max-age=3600',
+      'no-cache="Authorization", max-age=60',
+    ),
+  );
+  expect(result.private).toBe(true);
+  expect(result.noCache).toBe(true);
+  expect(result.maxAge).toBe(60);
+});

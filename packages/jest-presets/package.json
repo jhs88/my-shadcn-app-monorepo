@@ -7,6 +7,7 @@
   ],
   "dependencies": {
     "jest": "^29.7.0",
-    "ts-jest": "^29.4.12"
+    "ts-jest": "^29.4.12",
+    "typescript": "npm:@typescript/typescript6@6.0.2"
   }
 }

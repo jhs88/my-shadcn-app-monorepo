@@ -18,7 +18,10 @@ export function createClient(request: Request) {
             value: string;
           }[];
         },
-        setAll(cookiesToSet) {
+        setAll(cookiesToSet, responseHeaders) {
+          Object.entries(responseHeaders).forEach(([name, value]) =>
+            headers.set(name, value),
+          );
           cookiesToSet.forEach(({ name, value, options }) =>
             headers.append(
               "Set-Cookie",

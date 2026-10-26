@@ -1,18 +1,24 @@
-import js from "@eslint/js"
-import pluginNext from "@next/eslint-plugin-next"
-import eslintConfigPrettier from "eslint-config-prettier"
-import pluginReact from "eslint-plugin-react"
-import pluginReactHooks from "eslint-plugin-react-hooks"
-import globals from "globals"
-import tseslint from "typescript-eslint"
+import { fixupConfigRules } from "@eslint/compat";
+import js from "@eslint/js";
+import pluginNext from "@next/eslint-plugin-next";
+import eslintConfigPrettier from "eslint-config-prettier";
+import pluginReact from "eslint-plugin-react";
+import pluginReactHooks from "eslint-plugin-react-hooks";
+import globals from "globals";
+import tseslint from "typescript-eslint";
 
-import { config as baseConfig } from "./base.js"
+import { config as baseConfig } from "./base.js";
+
+// Keep React rule coverage while upstream adds native ESLint 10 support.
+const [reactRecommended] = fixupConfigRules(
+  pluginReact.configs.flat.recommended,
+);
 
 /**
  * A custom ESLint configuration for libraries that use Next.js.
  *
  * @type {import("eslint").Linter.Config}
- * */
+ */
 export const nextJsConfig = [
   // Next generates this directory; it must never be treated as application source.
   { ignores: [".next/**"] },
@@ -21,9 +27,9 @@ export const nextJsConfig = [
   eslintConfigPrettier,
   ...tseslint.configs.recommended,
   {
-    ...pluginReact.configs.flat.recommended,
+    ...reactRecommended,
     languageOptions: {
-      ...pluginReact.configs.flat.recommended.languageOptions,
+      ...reactRecommended.languageOptions,
       globals: {
         ...globals.serviceworker,
       },
@@ -50,4 +56,4 @@ export const nextJsConfig = [
       "react/prop-types": "off",
     },
   },
-]
+];

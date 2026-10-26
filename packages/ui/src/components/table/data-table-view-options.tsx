@@ -16,15 +16,15 @@ import {
   PopoverTrigger,
 } from "@repo/ui/components/popover";
 import { cn } from "@repo/ui/lib/utils";
-import type { Table } from "@tanstack/react-table";
+import type { Table, RowData } from "@repo/ui/lib/data-table";
 import { Settings2 } from "lucide-react";
 import * as React from "react";
 
-interface DataTableViewOptionsProps<TData> {
+interface DataTableViewOptionsProps<TData extends RowData> {
   table: Table<TData>;
 }
 
-export function DataTableViewOptions<TData>({
+export function DataTableViewOptions<TData extends RowData>({
   table,
 }: DataTableViewOptionsProps<TData>) {
   const columns = React.useMemo(

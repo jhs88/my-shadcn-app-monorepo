@@ -8,20 +8,22 @@ import { X } from "lucide-react";
 import { Button } from "@repo/ui/components/button";
 import { Input } from "@repo/ui/components/input";
 import { cn } from "@repo/ui/lib/utils";
-import type { Column, Table } from "@tanstack/react-table";
+import type { Column, Table, RowData } from "@repo/ui/lib/data-table";
 import * as React from "react";
 
-interface DataTableToolbarProps<TData> extends React.ComponentProps<"div"> {
+interface DataTableToolbarProps<
+  TData extends RowData,
+> extends React.ComponentProps<"div"> {
   table: Table<TData>;
 }
 
-export function DataTableToolbar<TData>({
+export function DataTableToolbar<TData extends RowData>({
   table,
   children,
   className,
   ...props
 }: DataTableToolbarProps<TData>) {
-  const isFiltered = table.getState().columnFilters.length > 0;
+  const isFiltered = table.state.columnFilters.length > 0;
 
   const columns = React.useMemo(
     () => table.getAllColumns().filter((column) => column.getCanFilter()),
@@ -66,11 +68,11 @@ export function DataTableToolbar<TData>({
     </div>
   );
 }
-interface DataTableToolbarFilterProps<TData> {
+interface DataTableToolbarFilterProps<TData extends RowData> {
   column: Column<TData>;
 }
 
-function DataTableToolbarFilter<TData>({
+function DataTableToolbarFilter<TData extends RowData>({
   column,
 }: DataTableToolbarFilterProps<TData>) {
   {
@@ -102,7 +104,7 @@ function DataTableToolbarFilter<TData>({
                 className={cn("h-8 w-[120px]", columnMeta.unit && "pr-8")}
               />
               {columnMeta.unit && (
-                <span className="bg-accent text-muted-foreground absolute bottom-0 right-0 top-0 flex items-center rounded-r-md px-2 text-sm">
+                <span className="bg-accent text-muted-foreground absolute top-0 right-0 bottom-0 flex items-center rounded-r-md px-2 text-sm">
                   {columnMeta.unit}
                 </span>
               )}

@@ -3,11 +3,11 @@ name: Update Typescript Database Types
 on:
   schedule:
     # sets the action to run daily. You can modify this to run the action more or less frequently
-    - cron: '0 0 * * *'
+    - cron: "0 0 * * *"
 
 jobs:
   update:
-    runs-on: my-shadcn-app-monorepo 
+    runs-on: my-shadcn-app-monorepo
     permissions:
       contents: write
     env:
@@ -20,7 +20,7 @@ jobs:
 
       - uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version-file: .node-version
 
       - run: npm run update-types
 

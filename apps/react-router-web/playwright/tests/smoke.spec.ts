@@ -6,6 +6,15 @@ import { TestPage } from "../pages/test-page";
 test("login, inspect profile, logout, and block protected revisit", async ({
   page,
 }) => {
+  const hydrationErrors: string[] = [];
+  page.on("console", (message) => {
+    if (
+      message.type() === "error" &&
+      /hydrat|Base UI:.*native/i.test(message.text())
+    ) {
+      hydrationErrors.push(message.text().split("\n")[0] ?? "Hydration error");
+    }
+  });
   const loginPage = new LoginPage(page);
   const testPage = new TestPage(page);
 
@@ -32,4 +41,5 @@ test("login, inspect profile, logout, and block protected revisit", async ({
   await page.goto("/test");
   await page.waitForURL("**/login");
   await expect(page.getByRole("heading", { name: "Login" })).toBeVisible();
+  expect(hydrationErrors).toEqual([]);
 });

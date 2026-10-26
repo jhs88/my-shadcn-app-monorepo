@@ -22,7 +22,11 @@ function middlewareArgs(context: RouterContextProvider) {
 
 describe("protected route auth middleware", () => {
   it("redirects an unauthenticated request without running the route", async () => {
-    const headers = new Headers();
+    const headers = new Headers({
+      "Cache-Control": "private, no-store",
+      Pragma: "no-cache",
+      Expires: "0",
+    });
     headers.append("Set-Cookie", "expired-session=; Path=/; Max-Age=0");
     const getUser = vi.fn(async () => ({
       data: { user: null },
@@ -52,6 +56,9 @@ describe("protected route auth middleware", () => {
     expect(redirectResponse.headers.getSetCookie()).toEqual([
       "expired-session=; Path=/; Max-Age=0",
     ]);
+    expect(redirectResponse.headers.get("Cache-Control")).toBe(
+      "private, no-store",
+    );
     expect(createAuthClient).toHaveBeenCalledOnce();
     expect(createAuthClient).toHaveBeenCalledWith(request);
     expect(getUser).toHaveBeenCalledOnce();
@@ -64,7 +71,11 @@ describe("protected route auth middleware", () => {
       email: "person@example.com",
       user_metadata: {},
     } as User;
-    const headers = new Headers();
+    const headers = new Headers({
+      "Cache-Control": "private, no-store",
+      Pragma: "no-cache",
+      Expires: "0",
+    });
     headers.append("Set-Cookie", "refreshed-session=before; Path=/");
     const getUser = vi.fn(async () => ({
       data: { user },
@@ -98,6 +109,7 @@ describe("protected route auth middleware", () => {
       "refreshed-session=before; Path=/",
       "refreshed-session=after; Path=/",
     ]);
+    expect(response?.headers.get("Cache-Control")).toBe("private, no-store");
     expect(createAuthClient).toHaveBeenCalledOnce();
     expect(createAuthClient).toHaveBeenCalledWith(request);
     expect(getUser).toHaveBeenCalledOnce();

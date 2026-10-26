@@ -1,6 +1,6 @@
 "use client";
 
-import { formatDate } from "@/lib/format";
+import { format } from "date-fns";
 import { Button } from "@repo/ui/components/button";
 import { Calendar } from "@repo/ui/components/calendar";
 import {
@@ -9,10 +9,13 @@ import {
   PopoverTrigger,
 } from "@repo/ui/components/popover";
 import { Separator } from "@repo/ui/components/separator";
-import type { Column } from "@tanstack/react-table";
+import type { Column, RowData } from "@repo/ui/lib/data-table";
 import { CalendarIcon, XCircle } from "lucide-react";
 import * as React from "react";
 import type { DateRange } from "react-day-picker";
+
+const formatDate = (date: Date | undefined) =>
+  date ? format(date, "LLL dd, y") : "";
 
 type DateSelection = Date[] | DateRange;
 
@@ -49,13 +52,13 @@ function parseColumnFilterValue(value: unknown) {
   return [];
 }
 
-interface DataTableDateFilterProps<TData> {
+interface DataTableDateFilterProps<TData extends RowData> {
   column: Column<TData, unknown>;
   title?: string;
   multiple?: boolean;
 }
 
-export function DataTableDateFilter<TData>({
+export function DataTableDateFilter<TData extends RowData>({
   column,
   title,
   multiple,
@@ -184,7 +187,7 @@ export function DataTableDateFilter<TData>({
             aria-label={`Clear ${title} filter`}
             tabIndex={0}
             onClick={onReset}
-            className="focus-visible:ring-ring rounded-sm opacity-70 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-1"
+            className="focus-visible:ring-ring rounded-sm opacity-70 transition-opacity hover:opacity-100 focus-visible:ring-1 focus-visible:outline-none"
           >
             <XCircle />
           </div>

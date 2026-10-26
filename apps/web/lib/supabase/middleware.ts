@@ -6,6 +6,8 @@ export async function updateSession(request: NextRequest) {
     request,
   });
 
+  const refreshHeaders = new Headers();
+
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -14,13 +16,23 @@ export async function updateSession(request: NextRequest) {
         getAll() {
           return request.cookies.getAll();
         },
-        setAll(cookiesToSet) {
+        setAll(cookiesToSet, responseHeaders) {
           cookiesToSet.forEach(({ name, value }) =>
             request.cookies.set(name, value),
           );
+          const previousCookies = supabaseResponse.cookies.getAll();
           supabaseResponse = NextResponse.next({
             request,
           });
+          previousCookies.forEach((cookie) =>
+            supabaseResponse.cookies.set(cookie),
+          );
+          Object.entries(responseHeaders).forEach(([name, value]) =>
+            refreshHeaders.set(name, value),
+          );
+          refreshHeaders.forEach((value, name) =>
+            supabaseResponse.headers.set(name, value),
+          );
           cookiesToSet.forEach(({ name, value, options }) =>
             supabaseResponse.cookies.set(name, value, options),
           );
@@ -47,7 +59,12 @@ export async function updateSession(request: NextRequest) {
     // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone();
     url.pathname = "/auth/login";
-    return NextResponse.redirect(url);
+    const redirect = NextResponse.redirect(url);
+    supabaseResponse.cookies
+      .getAll()
+      .forEach((cookie) => redirect.cookies.set(cookie));
+    refreshHeaders.forEach((value, name) => redirect.headers.set(name, value));
+    return redirect;
   }
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is.

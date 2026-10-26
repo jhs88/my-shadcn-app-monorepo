@@ -29,6 +29,14 @@ const themes = readdirSync(themesDir)
 
 test("gallery renders under every theme", async ({ page }) => {
   const pageErrors: string[] = [];
+  page.on("console", (message) => {
+    if (
+      message.type() === "error" &&
+      /hydrat|Base UI:.*native/i.test(message.text())
+    ) {
+      pageErrors.push(message.text().split("\n")[0] ?? "Hydration error");
+    }
+  });
   page.on("pageerror", (error) => pageErrors.push(String(error)));
 
   await page.goto("/gallery");

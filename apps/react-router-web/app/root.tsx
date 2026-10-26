@@ -83,7 +83,7 @@ function App() {
         {!allowIndexing && <meta name="robots" content="noindex, nofollow" />}
         <Meta />
         <PreventFlashOnWrongTheme nonce={nonce} ssrTheme={Boolean(theme)} />
-        <Links />
+        <Links nonce={nonce} />
       </head>
       <body className="font-sans antialiased">
         <Outlet />

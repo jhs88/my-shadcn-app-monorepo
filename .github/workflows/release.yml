@@ -28,7 +28,9 @@ jobs:
     runs-on: my-shadcn-app-monorepo
     steps:
       - name: ⬇️ Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
       - name: 📚 Cache turbo build setup
         uses: actions/cache@v5
@@ -46,12 +48,12 @@ jobs:
           cache: maven
 
       - name: 📦 Setup pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6.1.0
 
       - name: ⎔ Setup node
         uses: actions/setup-node@v6
         with:
-          node-version: 24
+          node-version-file: .node-version
           cache: pnpm
 
       - name: 📥 Install deps
@@ -59,10 +61,10 @@ jobs:
 
       - name: 🚀 PR / Publish
         id: changesets
-        uses: changesets/action@v1
+        uses: changesets/action@v2.1.2
         with:
           # This expects you to have a script called release which does a build for your packages and calls changeset publish
-          publish: pnpm release
-          version: pnpm version-packages
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          publish-script: pnpm release
+          version-script: pnpm version-packages
+          push-with-git-cli: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
