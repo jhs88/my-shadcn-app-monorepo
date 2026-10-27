@@ -40,22 +40,28 @@ tasks:
   e2e-bootstrap:
     command: "pnpm run e2e:bootstrap"
     options:
+      cache: false
       runInCI: false
   e2e-server:
     command: "pnpm run e2e:server"
     options:
+      cache: false
+      persistent: true
       runInCI: false
   test-e2e:
     command: "pnpm run test:e2e"
     options:
+      cache: false
       runInCI: false
   test-e2e-smoke:
     command: "pnpm run test:e2e:smoke"
     options:
+      cache: false
       runInCI: false
   test-e2e-integration:
     command: "pnpm run test:e2e:integration"
     options:
+      cache: false
       runInCI: false
   typecheck:
     command: "pnpm run typecheck"

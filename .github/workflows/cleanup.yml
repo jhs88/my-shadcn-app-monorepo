@@ -2,8 +2,6 @@ name: Cleanup Containers
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "0 0 * * 0"
 
 permissions:
   contents: read 
@@ -11,6 +9,7 @@ permissions:
 
 jobs:
   cleanup:
+    if: vars.ENABLE_REMOTE_AUTOMATION == 'true'
     name: Cleanup old containers
     runs-on: my-shadcn-app-monorepo
     steps:

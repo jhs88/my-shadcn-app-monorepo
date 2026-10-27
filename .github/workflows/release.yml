@@ -24,6 +24,7 @@ env: # To use Turborepo Remote Caching, set the following environment variables 
 
 jobs:
   release:
+    if: vars.ENABLE_PACKAGE_PUBLISHING == 'true'
     name: 🦋 Changesets Release
     runs-on: my-shadcn-app-monorepo
     steps:

@@ -1,0 +1,79 @@
+name: Starter CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: starter-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Verify starter
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v6.1.0
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 2.122.0
+      - run: pnpm install --frozen-lockfile
+      - name: Set up the documented local starter
+        run: pnpm setup:local
+      - name: Check database ownership policies
+        run: supabase test db
+      - name: Check generated types
+        run: |
+          pnpm db:types
+          git diff --exit-code -- packages/types/database.types.ts
+      - name: Verify all workspaces
+        run: pnpm verify:local
+      - name: Verify the Moon migration graph
+        run: node scripts/with-local-env.mjs pnpm moon:verify
+      - name: Install browser
+        run:
+          pnpm --filter react-router-web exec playwright install --with-deps
+          chromium
+      - name: Verify authenticated browser journeys
+        run: pnpm test:react-router-web:e2e
+      - name: Upload browser failure evidence
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-failures
+          path: apps/react-router-web/test-results
+          retention-days: 7
+      - name: Stop local Supabase
+        if: always()
+        run: supabase stop
+
+  containers:
+    name: Verify containers
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .node-version
+      - uses: docker/setup-buildx-action@v3
+      - name: Build and check the four-service runtime
+        run: node scripts/check-compose.mjs

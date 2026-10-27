@@ -5,7 +5,7 @@
   "scripts": {
     "build": "./mvnw -B -ntp clean package -Dmaven.test.skip",
     "clean": "rm -rf target",
-    "dev": "mvn spring-boot:run",
+    "dev": "./mvnw -B -ntp spring-boot:run",
     "start": "java -jar target/demo*.jar",
     "test": "./mvnw -B -ntp clean verify"
   }

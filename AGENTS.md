@@ -20,6 +20,10 @@ Multi-context monorepo — `CONTEXT-MAP.md` at root points to per-app `CONTEXT.m
 
 ## Surprises / Confusion Points
 
+- React Router loader/action headers do not reach document or navigation responses automatically. Routes returning private data must export a `headers` handler such as `pipeHeaders`; the root handler cannot forward a child's headers by itself. The projects browser test checks the actual response headers.
+- Moon's `^:build` dependency does not hash shared UI source because `@repo/ui` has no build task. Keep shared-package and root-policy files in `.moon/tasks/all.yml#implicitInputs`; successful app-only cache checks do not prove shared-source invalidation.
+- React Router's browser examples share one demo account, and logout can revoke its other sessions. Keep the small Playwright suite serialized unless each test gets its own account. Exclude Playwright output directories from ESLint because the runner recreates them.
+- The former `db-preview.yml` selected production credentials for PRs targeting `main` and ran `supabase db reset`. It was removed. Future preview automation must obtain and verify a disposable preview database target, with no production or staging fallback.
 - TypeScript aliases retain their package `bin` names: `typescript7: npm:typescript@7.0.2` provides `tsc`, while `typescript: npm:@typescript/typescript6@6.0.2` provides `tsc6` and the legacy API. ESLint 10's React plugin peer exception requires wrapping the actual recommended config with `@eslint/compat`.
 - Frontend tooling requires Node `^24.15.0 || >=26.0.0` because jsdom 30 has a stricter minimum than the frameworks. Keep frontend engine declarations, Node types, CI, and Docker runtime lines aligned; the older Node 20 configuration was not sufficient.
 - When upgrading `@supabase/ssr` to 0.12.7, its `setAll(cookies, headers)` callback supplies cache headers that must accompany auth-cookie writes. Callbacks that accept only cookies remain type-compatible while silently dropping the headers. Preserve response/redirect propagation, including multiple writes where the headers arrive only on the first write.

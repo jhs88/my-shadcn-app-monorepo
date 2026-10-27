@@ -3,6 +3,13 @@ layer: "application"
 tags: ["node", "express"]
 
 tasks:
+  dev:
+    command: "pnpm run dev"
+    deps: ["^:build"]
+    options:
+      cache: false
+      persistent: true
+      runInCI: false
   build:
     command: "pnpm run build"
     deps: ["^:build"]

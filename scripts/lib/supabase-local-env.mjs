@@ -1,5 +1,20 @@
 import { execFileSync } from "node:child_process";
 
+export function assertLocalSupabaseUrl(value) {
+  const url = new URL(value);
+  if (
+    url.protocol !== "http:" ||
+    !["localhost", "127.0.0.1", "[::1]"].includes(url.hostname) ||
+    url.username ||
+    url.password
+  ) {
+    throw new Error(
+      "Local setup and tests require an HTTP Supabase URL on localhost.",
+    );
+  }
+  return value;
+}
+
 function parseEnvOutput(output) {
   return output
     .split("\n")
@@ -30,6 +45,7 @@ export function getLocalSupabaseEnv({ cwd = process.cwd() } = {}) {
     explicit.SUPABASE_ANON_KEY &&
     explicit.SUPABASE_SERVICE_ROLE_KEY
   ) {
+    assertLocalSupabaseUrl(explicit.SUPABASE_URL);
     return explicit;
   }
 
@@ -57,7 +73,7 @@ export function getLocalSupabaseEnv({ cwd = process.cwd() } = {}) {
   }
 
   return {
-    SUPABASE_URL: env.API_URL,
+    SUPABASE_URL: assertLocalSupabaseUrl(env.API_URL),
     SUPABASE_ANON_KEY: env.ANON_KEY,
     SUPABASE_SERVICE_ROLE_KEY: env.SERVICE_ROLE_KEY,
     SUPABASE_DB_URL: env.DB_URL,

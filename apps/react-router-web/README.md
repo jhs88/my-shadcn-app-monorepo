@@ -1,87 +1,31 @@
-# Welcome to React Router!
+# React Router starter
 
-A modern, production-ready template for building full-stack React applications using React Router.
-
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
-
-## Features
-
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
-
-## Getting Started
-
-### Installation
-
-Install the dependencies:
+Run commands from the repository root. Follow the
+[root quickstart](../../README.md) to install dependencies, start local
+Supabase, apply migrations, and create the local demo account.
 
 ```bash
-npm install
+pnpm setup:local
+pnpm dev:starter
 ```
 
-### Development
-
-Start the development server with HMR:
+Open http://127.0.0.1:5173. The `/projects` route demonstrates authenticated
+loading, validated mutations, and owner-scoped database access. `/test` shows
+the authenticated account, and `/items` demonstrates the separate Spring API
+contract.
 
 ```bash
-npm run dev
+pnpm --filter react-router-web check-types
+pnpm --filter react-router-web test
+pnpm test:react-router-web:e2e
 ```
 
-Your application will be available at `http://localhost:5173`.
+Browser tests discover local Supabase credentials and bootstrap their local
+account automatically. They run serially because sign-out revokes that shared
+account's sessions.
 
-## Building for Production
-
-Create a production build:
-
-```bash
-npm run build
-```
-
-## Deployment
-
-### Docker Deployment
-
-To build and run using Docker:
-
-```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
-```
-
-The containerized application can be deployed to any platform that supports Docker, including:
-
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
-
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
-```
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
-
----
-
-Built with ❤️ using React Router.
+Use `pnpm test:containers` at the root to verify the four-service Docker
+runtime. App images require the monorepo root as their build context. See
+[starter adaptation](../../docs/starter/adapting.md) and
+[Moon completion gates](../../docs/starter/moon-migration.md) before removing
+workspace packages or switching build orchestration.

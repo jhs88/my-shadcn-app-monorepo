@@ -33,7 +33,8 @@ app/routes/
 ├── action.set-theme.ts     # Theme switching action
 ├── items._index.tsx        # Item list (fetches from Java API)
 ├── items.$id.tsx           # Single item view
-├── instruments._index.tsx  # Instrument list (fetches from Supabase)
+├── projects.tsx           # Private project CRUD (Supabase + ownership policies)
+├── instruments._index.tsx  # Redirects the retired instrument example to projects
 ├── resources.healthcheck.ts # Health check endpoint
 ├── test.tsx                # Test page
 └── test-theme.tsx          # Theme testing page
@@ -45,7 +46,7 @@ app/routes/
 
 Data is fetched server-side via React Router loaders:
 - `items._index.tsx` — fetches from Java API (`JAVA_API_HOST/items`)
-- `instruments._index.tsx` — fetches from Supabase (`supabase.from("instruments").select()`)
+- `projects.tsx` — lists the authenticated user's projects and handles validated create, edit, and delete actions. Supabase row-level policies enforce ownership.
 
 Loaders run on the server, so they have access to cookies and server-side Supabase client.
 
@@ -107,3 +108,7 @@ script use the same production server path.
 | **Action route** | A file prefixed with `action.` that handles form submissions and mutations |
 | **Auth workflow** | The local module in `app/auth/workflows/` that owns auth validation, Supabase orchestration, and typed auth results |
 | **Framework adapter** | A route action or form that translates React Router request/response details around the auth workflow |
+
+## Starter example
+
+A **project** is a private named record with optional notes, owned by one user. Only its owner can read or change it. The `/projects` route demonstrates the full flow. Schema and policies live in versioned Supabase migrations; the browser example covers validation, persistence across reload, editing, and deletion.

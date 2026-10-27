@@ -1,13 +1,11 @@
 name: Supabase Release (Staging)
 
 on:
-  push:
-    branches:
-      - develop
   workflow_dispatch:
 
 jobs:
   migrate:
+    if: vars.ENABLE_REMOTE_AUTOMATION == 'true'
     runs-on: my-shadcn-app-monorepo
     env:
       SUPABASE_DB_URL: ${{ secrets.STAGING_DB_URL }}
@@ -21,6 +19,7 @@ jobs:
       - run: supabase db push --db-url "$SUPABASE_DB_URL"
 
   apply:
+    if: vars.ENABLE_REMOTE_AUTOMATION == 'true'
     runs-on: my-shadcn-app-monorepo
     env:
       TF_VAR_supabase_access_token: ${{ secrets.STAGING_SUPABASE_ACCESS_TOKEN }}

@@ -1,10 +1,8 @@
-import { execFileSync } from "node:child_process";
 import { getLocalSupabaseEnv } from "./lib/supabase-local-env.mjs";
 
 const TEST_USER = {
   email: process.env.PLAYWRIGHT_TEST_EMAIL ?? "playwright@example.com",
-  password:
-    process.env.PLAYWRIGHT_TEST_PASSWORD ?? "playwright-password-123",
+  password: process.env.PLAYWRIGHT_TEST_PASSWORD ?? "playwright-password-123",
   username: process.env.PLAYWRIGHT_TEST_USERNAME ?? "playwright-user",
   fullName: process.env.PLAYWRIGHT_TEST_FULL_NAME ?? "Playwright User",
   avatarUrl:
@@ -83,6 +81,7 @@ async function updateUser(url, serviceRoleKey, userId) {
     body: JSON.stringify({
       email: TEST_USER.email,
       password: TEST_USER.password,
+      email_confirm: true,
       user_metadata: {
         full_name: TEST_USER.fullName,
         email_verified: true,
@@ -100,51 +99,40 @@ async function updateUser(url, serviceRoleKey, userId) {
   return payload.user ?? payload;
 }
 
-function escapeSqlLiteral(value) {
-  return value.replaceAll("'", "''");
-}
-
-function upsertProfile(dbUrl, userId) {
-  const sql = `
-    grant select, insert, update on table public.profiles to authenticated;
-
-    insert into public.profiles (id, username, avatar_url, website, updated_at)
-    values (
-      '${escapeSqlLiteral(userId)}',
-      '${escapeSqlLiteral(TEST_USER.username)}',
-      '${escapeSqlLiteral(TEST_USER.avatarUrl)}',
-      'https://example.com/playwright',
-      now()
-    )
-    on conflict (id)
-    do update set
-      username = excluded.username,
-      avatar_url = excluded.avatar_url,
-      website = excluded.website,
-      updated_at = excluded.updated_at;
-  `;
-
-  execFileSync("psql", [dbUrl, "-v", "ON_ERROR_STOP=1", "-c", sql], {
-    stdio: ["ignore", "pipe", "pipe"],
-    encoding: "utf8",
+async function upsertProfile(url, serviceRoleKey, userId) {
+  const response = await fetch(`${url}/rest/v1/profiles?on_conflict=id`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      apikey: serviceRoleKey,
+      Authorization: `Bearer ${serviceRoleKey}`,
+      Prefer: "resolution=merge-duplicates",
+    },
+    body: JSON.stringify({
+      id: userId,
+      username: TEST_USER.username,
+      avatar_url: TEST_USER.avatarUrl,
+      website: "https://example.com/playwright",
+      updated_at: new Date().toISOString(),
+    }),
   });
+  if (!response.ok) {
+    throw new Error(
+      `Failed to prepare local profile: ${response.status}. Run pnpm setup:local to apply migrations.`,
+    );
+  }
 }
 
 async function main() {
-  const { SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, SUPABASE_DB_URL } =
-    getLocalSupabaseEnv();
+  const { SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY } = getLocalSupabaseEnv();
   const users = await listUsers(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
   const existingUser = users.find((user) => user.email === TEST_USER.email);
   const user = existingUser
-    ? await updateUser(
-        SUPABASE_URL,
-        SUPABASE_SERVICE_ROLE_KEY,
-        existingUser.id,
-      )
+    ? await updateUser(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, existingUser.id)
     : await createUser(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
-  upsertProfile(SUPABASE_DB_URL, user.id);
+  await upsertProfile(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, user.id);
 
   console.log(
     `Playwright Supabase user is ready: ${TEST_USER.email} (${user.id})`,

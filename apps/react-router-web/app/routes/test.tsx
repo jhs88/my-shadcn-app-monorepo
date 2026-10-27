@@ -27,6 +27,7 @@ import {
   protectedRouteAuthMiddleware,
 } from "~/auth/protected-route-auth.server";
 import Navbar from "~/components/navbar";
+import { Link } from "react-router";
 import type { Route } from "./+types/test";
 
 export const middleware: Route.MiddlewareFunction[] = [
@@ -72,7 +73,12 @@ export default function Test({ loaderData }: Route.ComponentProps) {
         ]}
       />
       <main className="container mx-auto min-h-screen w-full overflow-hidden">
-        <div className="flex w-full gap-6 pt-6">
+        <div className="flex w-full flex-wrap gap-6 pt-6">
+          <Button
+            nativeButton={false}
+            role="link"
+            render={<Link to="/projects">Your projects</Link>}
+          />
           <Dialog>
             <DialogTrigger
               render={
@@ -103,7 +109,7 @@ export default function Test({ loaderData }: Route.ComponentProps) {
                     <ItemHeader>
                       <ItemTitle>Email</ItemTitle>
                       <ItemDescription>
-                        <small className="float-right text-sm font-medium leading-none">
+                        <small className="float-right text-sm leading-none font-medium">
                           {email ?? "No User Logged In"}
                         </small>
                       </ItemDescription>
@@ -113,7 +119,7 @@ export default function Test({ loaderData }: Route.ComponentProps) {
                     <ItemHeader>
                       <ItemTitle>Is Verified</ItemTitle>
                       <ItemDescription>
-                        <small className="float-right text-sm font-medium leading-none">
+                        <small className="float-right text-sm leading-none font-medium">
                           {emailVerified ? "yes" : "no"}
                         </small>
                       </ItemDescription>
@@ -123,7 +129,7 @@ export default function Test({ loaderData }: Route.ComponentProps) {
                     <ItemHeader>
                       <ItemTitle>Username</ItemTitle>
                       <ItemDescription>
-                        <small className="float-right text-sm font-medium leading-none">
+                        <small className="float-right text-sm leading-none font-medium">
                           {profile?.username ?? "No Username Found"}
                         </small>
                       </ItemDescription>
