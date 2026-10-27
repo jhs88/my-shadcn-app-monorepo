@@ -1,139 +1,135 @@
-# turbo shadcn/ui monorepo template
+# React monorepo starter
 
-This template is for creating a turbo monorepo with shadcn/ui.
+A reusable starter with Next.js and React Router examples, shared shadcn/ui
+components, Supabase authentication, and optional Express and Spring Boot APIs.
 
-## Getting Started
+Start with the React Router private-project example. It includes login,
+server-side validation, create/edit/delete, and database ownership policies. The
+other apps are independent examples you can keep or remove.
 
-### Requirements
+## Start locally
 
-The following programs are required:
-
-- `node` 24.22.1 (pinned in `.node-version`)
-- `pnpm` 12.15.0 (pinned in `package.json#packageManager`)
-- `java` >= 21
-- `docker`
-- `git`
-
-The following programs are recommended:
-
-- [`nvm`](https://github.com/nvm-sh/nvm) ([Windows](https://github.com/coreybutler/nvm-windows)) for managing Node.js versions
-- [`sdkman`](https://sdkman.io/) for managing Java SDK versions
-- [`vscode`](https://code.visualstudio.com/) for a better development experience with plugin integration
-
-#### Installation
+Install Node **24.22.1**, pnpm **12.15.0**, Docker, and the
+[Supabase CLI](https://supabase.com/docs/guides/local-development/cli/getting-started).
+CI uses Supabase CLI **2.122.0**. Java is needed only for the Spring example and
+full workspace verification.
 
 ```bash
-# install node, pnpm, & java
-nvm install "$(cat .node-version)"
-nvm use "$(cat .node-version)"
-
-# enable corepack and pnpm
 corepack enable
 corepack install
-
-# change to current version
-sdkman install java 21.0.6-tem 
-
-# add dependencies & run the project
 pnpm install --frozen-lockfile
-pnpm run dev
+pnpm setup:local
+pnpm dev:starter
 ```
 
-### Verification
+Open <http://127.0.0.1:5173/login>. Sign in with the local demo account:
 
-Before opening a pull request or updating dependencies, run the full local verification suite:
+- Email: `playwright@example.com`
+- Password: `playwright-password-123`
+
+Choose **Your projects** to create, edit, and delete a private project. You can
+also register your own local account. The setup command starts local Supabase,
+applies pending migrations, and prepares the demo account. It preserves existing
+local database contents and does not overwrite environment files.
+
+`dev:starter` discovers credentials from the local Supabase CLI and injects them
+into the app process. You do not need cloud credentials, a root `.env`, or
+`psql`. Local setup and browser tests reject hosted Supabase URLs. The fixed
+demo password is for local development only.
+
+Stop the app with Ctrl+C. Stop its database with `supabase stop`, which
+preserves local data.
+
+## Choose your apps
+
+| App                | Purpose                                          | Development command          |
+| ------------------ | ------------------------------------------------ | ---------------------------- |
+| `react-router-web` | Canonical private-project example                | `pnpm dev:starter`           |
+| `web`              | Next.js auth, server actions, and TanStack Query | `pnpm dev:next`              |
+| `api`              | Minimal Express API                              | `pnpm --filter api dev`      |
+| `java-api`         | Spring Boot Item CRUD example                    | `pnpm --filter java-api dev` |
+
+The Next.js example runs at <http://localhost:3000>. Its greeting form calls
+Express at port 3001. Build `@repo/logger` before starting Express with
+`pnpm --filter @repo/logger build`. Install JDK 21 for the Spring example.
+
+Use `pnpm dev` only when you want every workspace development task. To adapt
+this starter, follow [Choose and trim a stack](docs/starter/adapting.md).
+[CONTEXT-MAP.md](CONTEXT-MAP.md) describes each app and shared package.
+
+## Verify a change
+
+After `pnpm setup:local`, run these commands with JDK 21 installed:
 
 ```bash
-pnpm verify
+pnpm verify:local
+supabase test db
+pnpm --filter react-router-web exec playwright install chromium
+pnpm test:react-router-web:e2e
 ```
 
-This runs participating workspace lint, type-check, test, and production build tasks without Docker image builds.
+`verify:local` supplies local Supabase configuration to workspace lint, types,
+unit tests, and production builds. Browser tests cover login/logout, the
+component gallery across six themes, and private-project CRUD. SQL tests
+exercise two-user isolation and avatar write policies.
 
-## What's inside?
+Generate database types from the local migrations with `pnpm db:types`. Commit
+migrations and the regenerated `packages/types/database.types.ts` together. Keep
+schema and policies in `supabase/migrations`; reserve `supabase/seed.sql` for
+optional sample data.
 
-This Turborepo includes the following:
+## Run containers
 
-### Apps and Packages
+Containers are optional. Build from the repository root with your own Supabase
+URL and public anon key. [.env.example](.env.example) lists the configuration
+names. A browser must reach the public URL, and the frontend containers must
+reach that same Supabase instance.
 
-- `web`: a [Next.js](https://nextjs.org/) app
-- `react-router-web`: a [React Router v8](https://reactrouter.com/) app
-- `api`: an [Express](https://expressjs.com/) server
-- `@repo/ui`: a React component library made from `shadcn/ui`.
-- `@repo/logger`: Isomorphic logger (a small wrapper around console.log)
-- `@repo/eslint-config`: ESLint presets
-- `@repo/typescript-config`: tsconfig.json's used throughout the monorepo
-- `@repo/jest-presets`: Jest configurations
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Docker
-
-This repo is configured to be built with Docker, and Docker compose. To build all apps in this repo:
-
-```
-# Install dependencies
-pnpm install
-
-# Create a network, which allows containers to communicate
-# with each other, by using their container name as a hostname
-docker network create app_network
-
-# Build prod using new BuildKit engine
-COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose -f docker-compose.yml build
-
-# Start prod in detached mode
-docker-compose -f docker-compose.yml up -d
+```bash
+docker compose up --build -d
+docker compose ps
+docker compose down
 ```
 
-Open http://localhost:3000.
+For local Supabase, use a hostname reachable from both the browser and
+containers, or configure separate server/browser endpoints before using auth.
+The native `dev:starter` path handles local auth automatically. The four-service
+Compose example demonstrates frontend/backend connectivity independently of
+hosted auth.
 
-To shutdown all running containers:
+Compose exposes Next.js on 3000, Express on 3001, React Router on 8080, and
+Spring on 8081. Run `pnpm test:containers` for an isolated four-service
+readiness and connectivity check that cleans up its own containers. Container
+builds use the Moon Dockerfiles. Root workspace commands still use Turbo while
+the migration proof is completed. See
+[Moon completion plan](docs/starter/moon-migration.md).
 
-```
-# Stop all running containers
-docker kill $(docker ps -q) && docker rm $(docker ps -a -q)
-```
+## Automation
 
-### Remote Caching
+[Starter CI](.github/workflows/ci.yml) runs on standard GitHub-hosted runners
+and needs no repository secrets or private cache. It checks database policies,
+generated types, Turbo and Moon workspace verification, browser journeys, and
+the four-service container runtime.
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+Remote deployment examples are manual and require
+`ENABLE_REMOTE_AUTOMATION=true` as a repository variable. Package publishing
+requires `ENABLE_PACKAGE_PUBLISHING=true`; Dependabot auto-merge requires
+`ENABLE_DEPENDABOT_AUTOMERGE=true`. These are optional integrations. The starter
+has no PR-triggered remote database reset and never commits database backups to
+Git.
 
-This example includes optional remote caching. In the Dockerfiles of the apps, uncomment the build arguments for `TURBO_TEAM` and `TURBO_TOKEN`. Then, pass these build arguments to your Docker build.
+See [Optional automation](docs/starter/automation.md) before enabling these
+workflows.
 
-You can test this behavior using a command like:
+## Shared UI
 
-`docker build -f apps/web/Dockerfile . --build-arg TURBO_TEAM=“your-team-name” --build-arg TURBO_TOKEN=“your-token“ --no-cache`
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Jest](https://jestjs.io) test runner for all things JavaScript
-- [Prettier](https://prettier.io) for code formatting
-
-### UI Library
-
-#### Adding components
-
-To add components to your app, run the following command at the root of your `web` app:
+Both frontends import components from `@repo/ui`. Run the shadcn CLI from the
+repository root:
 
 ```bash
 pnpm dlx shadcn@latest add button -c apps/web
 ```
 
-This will place the ui components in the `packages/ui/src/components` directory.
-
-#### Tailwind
-
-Your `globals.css` are already set up to use the components from the `ui` package.
-
-#### Using components
-
-To use the components in your app, import them from the `ui` package.
-
-```tsx
-import { Button } from "@repo/ui/components/button";
-```
+The shared configuration uses the Base UI flavor. Keep all three
+`components.json` style settings aligned. Import components with paths such as
+`@repo/ui/components/button`.

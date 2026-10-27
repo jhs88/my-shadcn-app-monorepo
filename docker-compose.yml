@@ -1,74 +1,108 @@
 services:
   web:
-    container_name: web
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000/').then(r => { if (!r.ok)
+          process.exit(1) }).catch(() => process.exit(1))",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
     build:
       context: .
       dockerfile: ./apps/web/Dockerfile.moon
-      args: 
-        - TURBO_API=${TURBO_API}
-        - TURBO_TEAM=${TURBO_TEAM}
-        - SUPABASE_URL=${SUPABASE_URL}
-        - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
-      secrets:
-        - turbo_token
+      args:
+        NEXT_PUBLIC_API_HOST: ${API_HOST:-http://localhost:3001}
+        SUPABASE_URL: ${SUPABASE_URL:-http://127.0.0.1:54321}
+        SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY:-local-compose-placeholder}
     environment:
-      - NEXT_PUBLIC_API_HOST=${API_HOST}
-      - NEXT_PUBLIC_SUPABASE_URL=${SUPABASE_URL}
-      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
-    restart: always
-    ports: [3000:3000]
-    networks: [app_network]
+      NEXT_PUBLIC_API_HOST: ${API_HOST:-http://localhost:3001}
+      NEXT_PUBLIC_SUPABASE_URL: ${SUPABASE_URL:-http://127.0.0.1:54321}
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY:-local-compose-placeholder}
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    networks:
+      - app_network
+
   api:
-    container_name: api
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3001/status').then(r => { if (!r.ok)
+          process.exit(1) }).catch(() => process.exit(1))",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
     build:
       context: .
       dockerfile: ./apps/api/Dockerfile.moon
-      args: 
-        - TURBO_API=${TURBO_API}
-        - TURBO_TEAM=${TURBO_TEAM}
-      secrets:
-        - turbo_token
-    restart: always
-    ports: [3001:3001]
-    networks: [app_network]
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    networks:
+      - app_network
+
   react-router-web:
-    container_name: react-router-web
+    depends_on:
+      java-api:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000/resources/healthcheck').then(r => { if
+          (!r.ok) process.exit(1) }).catch(() => process.exit(1))",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
     build:
       context: .
       dockerfile: ./apps/react-router-web/Dockerfile.moon
       args:
-        - TURBO_API=${TURBO_API}
-        - TURBO_TEAM=${TURBO_TEAM}
-        - SUPABASE_URL=${SUPABASE_URL}
-        - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
-      secrets:
-        - turbo_token
+        SUPABASE_URL: ${SUPABASE_URL:-http://127.0.0.1:54321}
+        SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY:-local-compose-placeholder}
     environment:
-      - JAVA_API_HOST=${JAVA_API_HOST}
-      - SUPABASE_URL=${SUPABASE_URL}
-      - VITE_SUPABASE_URL=${SUPABASE_URL}
-      - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
-      - VITE_SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
-    restart: always
-    ports: [8080:3000]
-    networks: [app_network]
+      JAVA_API_HOST: ${JAVA_API_HOST:-http://java-api:8080}
+      SUPABASE_URL: ${SUPABASE_URL:-http://127.0.0.1:54321}
+      VITE_SUPABASE_URL: ${SUPABASE_URL:-http://127.0.0.1:54321}
+      SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY:-local-compose-placeholder}
+      VITE_SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY:-local-compose-placeholder}
+    restart: unless-stopped
+    ports:
+      - "8080:3000"
+    networks:
+      - app_network
+
   java-api:
-    container_name: java-api 
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8080/actutaor/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
     build:
       context: .
       dockerfile: ./apps/java-api/Dockerfile.moon
-      args:
-        - TURBO_API=${TURBO_API}
-        - TURBO_TEAM=${TURBO_TEAM}
-      secrets:
-        - turbo_token
-    restart: always
-    ports: [8081:8080]
-    networks: [app_network]
+    restart: unless-stopped
+    ports:
+      - "8081:8080"
+    networks:
+      - app_network
 
 networks:
   app_network:
-
-secrets:
-  turbo_token:
-    environment: TURBO_TOKEN

@@ -12,6 +12,8 @@ const config = [
       "**/*.json",
       "**/dist/**",
       "**/coverage/**",
+      "test-results/**",
+      "playwright-report/**",
       "**/*.tsbuildinfo",
       ".react-router/**",
     ],

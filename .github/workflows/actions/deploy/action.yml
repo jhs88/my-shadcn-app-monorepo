@@ -5,6 +5,12 @@ inputs:
   image: 
     description: 'Name of Image'
     required: true 
+  supabase-url:
+    description: Public Supabase URL used by the frontend build
+    required: true
+  supabase-anon-key:
+    description: Public Supabase anon key used by the frontend build
+    required: true
   turbo-token:
     description: 'Turbo Cache Token'
   turbo-api:
@@ -50,8 +56,8 @@ runs:
           "TURBO_API=${{ inputs.turbo-api }}"
           "TURBO_TEAM=${{ inputs.turbo-team }}"
           "TURBO_TELEMETRY_DISABLED=${{ inputs.turbo-telemetry-disabled }}"
-          "SUPABASE_URL=${{ inputs.supabase_url }}"
-          "SUPABASE_ANON_KEY=${{ inputs.supabase_anon_key}}"
+          "SUPABASE_URL=${{ inputs.supabase-url }}"
+          "SUPABASE_ANON_KEY=${{ inputs.supabase-anon-key }}"
         secret-envs: |
           "turbo_token=TURBO_TOKEN"
         file: apps/${{ inputs.image }}/Dockerfile

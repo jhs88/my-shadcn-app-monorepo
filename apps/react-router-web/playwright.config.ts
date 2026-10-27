@@ -6,7 +6,9 @@ const baseURL =
 
 export default defineConfig({
   testDir: "./playwright/tests",
-  fullyParallel: true,
+  // These small examples share one demo account; logout revokes its sessions.
+  fullyParallel: false,
+  workers: 1,
   retries: process.env.CI ? 2 : 0,
   reporter: process.env.CI ? "github" : "list",
   use: {

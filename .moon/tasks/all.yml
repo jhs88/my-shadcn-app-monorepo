@@ -1,6 +1,15 @@
 # Match Turbo's workspace-wide environment hash inputs without defining tasks
 # that projects do not actually provide.
 implicitInputs:
+  # UI is consumed as source and has no build task to contribute a dependency hash.
+  - "/packages/*/src/**/*.{ts,tsx,css}"
+  - "/packages/*/*.{ts,js,mjs,json,css,yml}"
+  - "/packages/jest-presets/node/*.{ts,js}"
+  - "/package.json"
+  - "/pnpm-lock.yaml"
+  - "/pnpm-workspace.yaml"
+  - "/.node-version"
+  - "/scripts/**/*"
   - "$PLAYWRIGHT_PORT"
   - "$PLAYWRIGHT_TEST_BASE_URL"
   - "$PLAYWRIGHT_TEST_EMAIL"
