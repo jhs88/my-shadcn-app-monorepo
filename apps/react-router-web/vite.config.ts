@@ -1,7 +1,6 @@
 import { fileURLToPath } from "node:url";
 import { reactRouter } from "@react-router/dev/vite";
 import tailwindcss from "@tailwindcss/vite";
-import { reactRouterDevTools } from "react-router-devtools";
 import { envOnlyMacros } from "vite-env-only";
 import { configDefaults, defineConfig } from "vitest/config";
 import {
@@ -48,10 +47,6 @@ export default defineConfig((config) => ({
   plugins: [
     envOnlyMacros(),
     tailwindcss(),
-    reactRouterDevTools({
-      // Avoid feedback between Vite 8 console forwarding and the devtools event bus.
-      tanstackViteConfig: { consolePiping: { enabled: false } },
-    }),
     // it would be really nice to have this enabled in tests, but we'll have to
     // wait until https://github.com/remix-run/remix/issues/9871 is fixed
     MODE === "test" ? null : reactRouter(),
