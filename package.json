@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "prepare": "node .husky/install.mjs",
+    "prepare": "husky",
     "build": "turbo build",
     "clean": "turbo clean",
     "dev": "turbo dev",

@@ -22,6 +22,7 @@ permissions:
 # when this host is present. The service is reachable from the ARC runner
 # network and implements the Bazel Remote Execution v2 cache API.
 env:
+  HUSKY: "0"
   MOON_REMOTE_HOST: grpc://172.16.8.179:9092
   MOON_REMOTE_CACHE_PROOF_NONCE: ${{ github.run_id }}-${{ github.run_attempt }}
 

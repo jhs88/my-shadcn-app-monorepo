@@ -73,13 +73,11 @@ run `pnpm prepare`. pnpm can skip lifecycle scripts on an unchanged install.
 To run the push checks without pushing, run `sh .husky/pre-push` from the
 repository root. Fix reported errors and retry the commit or push.
 
-Hook installation skips CI, production installs, directories without `.git`,
-and installs with `HUSKY=0`. To bypass hooks for one command, use
-`HUSKY=0 git commit ...` or `HUSKY=0 git push ...`. CI still runs the full
-verification suite.
-
-Docker builds exclude `.husky` and disable pnpm installation lifecycle scripts.
-Explicit build tasks still run.
+Starter CI disables Husky with `HUSKY=0` and runs lint through its verification
+commands on pull requests and pushes to `main`. Application and Docker build
+commands do not invoke lint. Docker builds exclude `.git` and `.husky`; Husky
+skips hook installation without Git metadata. To bypass hooks for one command,
+use `HUSKY=0 git commit ...` or `HUSKY=0 git push ...`.
 
 ## Verify a change
 
