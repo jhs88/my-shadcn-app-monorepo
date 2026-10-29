@@ -78,6 +78,9 @@ and installs with `HUSKY=0`. To bypass hooks for one command, use
 `HUSKY=0 git commit ...` or `HUSKY=0 git push ...`. CI still runs the full
 verification suite.
 
+Docker builds exclude `.husky` and disable pnpm installation lifecycle scripts.
+Explicit build tasks still run.
+
 ## Verify a change
 
 After `pnpm setup:local`, run these commands with JDK 21 installed:

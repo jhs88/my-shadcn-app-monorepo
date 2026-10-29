@@ -1,4 +1,5 @@
 FROM node:24.22.1-alpine AS base
+ENV PNPM_CONFIG_IGNORE_SCRIPTS=true
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME/bin:$PNPM_HOME:$PATH"
@@ -7,7 +8,6 @@ ENV PATH="$JAVA_HOME/bin:$PATH"
 
 WORKDIR /app
 COPY package.json pnpm-workspace.yaml ./
-COPY .husky/install.mjs ./.husky/install.mjs
 RUN apk add --no-cache libc6-compat \
     && corepack enable \
     && corepack prepare "$(node -p 'require("./package.json").packageManager')" --activate \

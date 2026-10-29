@@ -1,4 +1,5 @@
 FROM node:24.22.1-alpine AS base
+ENV PNPM_CONFIG_IGNORE_SCRIPTS=true
 ARG TURBO_TELEMETRY_DISABLED=1
 ENV TURBO_TELEMETRY_DISABLED=$TURBO_TELEMETRY_DISABLED
 ENV PNPM_HOME="/pnpm" 
@@ -7,7 +8,6 @@ RUN apk update && apk add --no-cache libc6-compat
 RUN corepack enable
 WORKDIR /app
 COPY package.json pnpm-workspace.yaml ./
-COPY .husky/install.mjs ./.husky/install.mjs
 RUN corepack prepare "$(node -p 'require("./package.json").packageManager')" --activate
 
 
