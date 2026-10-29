@@ -5,6 +5,7 @@ ENV PATH="$PNPM_HOME/bin:$PNPM_HOME:$PATH"
 
 WORKDIR /app
 COPY package.json pnpm-workspace.yaml ./
+COPY .husky/install.mjs ./.husky/install.mjs
 RUN apk add --no-cache libc6-compat \
     && corepack enable \
     && corepack prepare "$(node -p 'require("./package.json").packageManager')" --activate \

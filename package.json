@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "prepare": "node -e \"if (!process.env.CI && process.env.HUSKY !== '0' && process.env.NODE_ENV !== 'production' && require('node:fs').existsSync('.git')) import('husky').then(({ default: husky }) => husky())\"",
+    "prepare": "node .husky/install.mjs",
     "build": "turbo build",
     "clean": "turbo clean",
     "dev": "turbo dev",

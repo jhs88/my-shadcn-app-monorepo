@@ -5,6 +5,7 @@ RUN corepack enable
 # Set working directory
 WORKDIR /app
 COPY package.json pnpm-workspace.yaml ./
+COPY .husky/install.mjs ./.husky/install.mjs
 RUN corepack prepare "$(node -p 'require("./package.json").packageManager')" --activate
 
 
