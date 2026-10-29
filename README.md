@@ -57,6 +57,28 @@ Use `pnpm dev` only when you want every workspace development task. To adapt
 this starter, follow [Choose and trim a stack](docs/starter/adapting.md).
 [CONTEXT-MAP.md](CONTEXT-MAP.md) describes each app and shared package.
 
+## Use Git hooks
+
+`pnpm install` configures Husky hooks for your local clone:
+
+- Before a commit, lint-staged formats staged `.ts` and `.tsx` files with
+  Prettier and stages the formatting changes. Unstaged edits stay unstaged.
+- Before a push, `pnpm lint` and `pnpm check-types` check all workspaces through
+  Turbo. A failed check stops the push. These tasks can build workspace
+  dependencies and reuse cached results.
+
+If hooks are missing after an install that reports everything is up to date,
+run `pnpm prepare`. pnpm can skip lifecycle scripts on an unchanged install.
+
+To run the push checks without pushing, run `sh .husky/pre-push` from the
+repository root. Fix reported errors and retry the commit or push.
+
+Starter CI disables Husky with `HUSKY=0` and runs lint through its verification
+commands on pull requests and pushes to `main`. Application and Docker build
+commands do not invoke lint. Docker builds exclude `.git` and `.husky`; Husky
+skips hook installation without Git metadata. To bypass hooks for one command,
+use `HUSKY=0 git commit ...` or `HUSKY=0 git push ...`.
+
 ## Verify a change
 
 After `pnpm setup:local`, run these commands with JDK 21 installed:

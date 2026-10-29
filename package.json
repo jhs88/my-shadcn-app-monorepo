@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "prepare": "husky",
     "build": "turbo build",
     "clean": "turbo clean",
     "dev": "turbo dev",
@@ -33,6 +34,9 @@
     "verify:local": "node scripts/with-local-env.mjs pnpm verify",
     "test:containers": "node scripts/check-compose.mjs"
   },
+  "lint-staged": {
+    "*.{ts,tsx}": "prettier --write"
+  },
   "devDependencies": {
     "@changesets/cli": "^3.0.3",
     "@moonrepo/cli": "2.6.4",
@@ -40,15 +44,17 @@
     "@repo/typescript-config": "workspace:*",
     "@types/node": "^24.19.2",
     "@vitest/coverage-v8": "5.0.5",
+    "husky": "9.1.7",
     "knip": "^6.43.0",
+    "lint-staged": "17.6.0",
     "prettier": "^3.9.10",
     "prettier-plugin-jsdoc": "^1.8.1",
     "prettier-plugin-tailwindcss": "^0.8.1",
     "turbo": "^2.11.10",
     "typescript": "npm:@typescript/typescript6@6.0.2",
+    "typescript7": "npm:typescript@7.0.2",
     "vite": "8.3.5",
-    "vitest": "5.0.5",
-    "typescript7": "npm:typescript@7.0.2"
+    "vitest": "5.0.5"
   },
   "packageManager": "pnpm@12.15.0",
   "engines": {

@@ -17,6 +17,7 @@ permissions:
   id-token: write
 
 env: # To use Turborepo Remote Caching, set the following environment variables for the job.
+  HUSKY: "0"
   TURBO_TELEMETRY_DISABLED: ${{ vars.TURBO_TELEMETRY_DISABLED }}
   TURBO_API: ${{ vars.TURBO_API }}
   TURBO_TEAM: ${{ vars.TURBO_TEAM }}
