@@ -1,12 +1,12 @@
 import { type EmailOtpType } from "@supabase/supabase-js";
 import { type LoaderFunctionArgs, redirect } from "react-router";
+import { safeNext } from "~/auth/safe-next";
 import { createClient } from "~/lib/supabase/server";
 
 export async function loader({ request, url }: LoaderFunctionArgs) {
   const token_hash = url.searchParams.get("token_hash");
   const type = url.searchParams.get("type") as EmailOtpType | null;
-  const _next = url.searchParams.get("next");
-  const next = _next?.startsWith("/") ? _next : "/";
+  const next = safeNext(url.searchParams.get("next"));
 
   if (token_hash && type) {
     const { supabase, headers } = createClient(request);
@@ -17,7 +17,10 @@ export async function loader({ request, url }: LoaderFunctionArgs) {
     if (!error) {
       return redirect(next, { headers });
     } else {
-      return redirect(`/auth/error?error=${error?.message}`);
+      return redirect(
+        `/auth/error?error=${encodeURIComponent(error.message)}`,
+        { headers },
+      );
     }
   }
 
