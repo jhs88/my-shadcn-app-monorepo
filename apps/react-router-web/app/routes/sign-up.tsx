@@ -10,12 +10,17 @@ import { Input } from "@repo/ui/components/input";
 import { Label } from "@repo/ui/components/label";
 import {
   type ActionFunctionArgs,
+  data,
   Link,
   redirect,
   useFetcher,
   useSearchParams,
 } from "react-router";
 import { signUp as signUpWorkflow } from "~/auth/workflows/server";
+
+import { pipeHeaders } from "~/utils/headers.server";
+
+export const headers = pipeHeaders;
 
 export const action = async ({ request, url }: ActionFunctionArgs) => {
   const origin = url.origin;
@@ -27,9 +32,9 @@ export const action = async ({ request, url }: ActionFunctionArgs) => {
     emailRedirectTo: `${origin}/protected`,
   });
 
-  if (!result.ok) return { error: result.message };
+  if (!result.ok) return data({ error: result.message }, { headers });
   if (result.status !== "signed-up")
-    return { error: "Unexpected sign-up result" };
+    return data({ error: "Unexpected sign-up result" }, { headers });
 
   return redirect(result.redirectTo, { headers });
 };

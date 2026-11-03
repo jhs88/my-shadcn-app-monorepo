@@ -10,6 +10,7 @@ import { Input } from "@repo/ui/components/input";
 import { Label } from "@repo/ui/components/label";
 import {
   type ActionFunctionArgs,
+  data,
   Link,
   redirect,
   useFetcher,
@@ -18,6 +19,10 @@ import {
   login as loginWorkflow,
   startOAuthLogin as startOAuthLoginWorkflow,
 } from "~/auth/workflows/server";
+
+import { pipeHeaders } from "~/utils/headers.server";
+
+export const headers = pipeHeaders;
 
 export const action = async ({ request, url }: ActionFunctionArgs) => {
   const formData = await request.formData();
@@ -29,10 +34,10 @@ export const action = async ({ request, url }: ActionFunctionArgs) => {
     });
 
     if (!result.ok) {
-      return { error: result.message };
+      return data({ error: result.message }, { headers });
     }
     if (result.status !== "oauth-redirect") {
-      return { error: "Unexpected OAuth result" };
+      return data({ error: "Unexpected OAuth result" }, { headers });
     }
 
     return redirect(result.externalUrl, { headers });
@@ -44,9 +49,9 @@ export const action = async ({ request, url }: ActionFunctionArgs) => {
       password: String(formData.get("password") ?? ""),
     });
 
-    if (!result.ok) return { error: result.message };
+    if (!result.ok) return data({ error: result.message }, { headers });
     if (result.status !== "signed-in") {
-      return { error: "Unexpected login result" };
+      return data({ error: "Unexpected login result" }, { headers });
     }
 
     return redirect(result.redirectTo, { headers });

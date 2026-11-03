@@ -18,6 +18,10 @@ import {
 } from "react-router";
 import { startPasswordReset as startPasswordResetWorkflow } from "~/auth/workflows/server";
 
+import { pipeHeaders } from "~/utils/headers.server";
+
+export const headers = pipeHeaders;
+
 export const action = async ({ request, url }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const origin = url.origin;

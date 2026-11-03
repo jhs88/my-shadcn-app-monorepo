@@ -21,14 +21,17 @@ import {
   ItemTitle,
 } from "@repo/ui/components/item";
 import { ScrollArea } from "@repo/ui/components/scroll-area";
+import { data, Link } from "react-router";
 import { toast } from "sonner";
 import {
   authenticatedRequestContext,
   protectedRouteAuthMiddleware,
 } from "~/auth/protected-route-auth.server";
 import Navbar from "~/components/navbar";
-import { Link } from "react-router";
+import { pipeHeaders } from "~/utils/headers.server";
 import type { Route } from "./+types/test";
+
+export const headers: Route.HeadersFunction = pipeHeaders;
 
 export const middleware: Route.MiddlewareFunction[] = [
   protectedRouteAuthMiddleware,
@@ -54,7 +57,10 @@ export const loader = async ({ context }: Route.LoaderArgs) => {
     ?.join("")
     ?.toUpperCase();
 
-  return { email, emailVerified, name, initials, profile, profileImage };
+  return data(
+    { email, emailVerified, name, initials, profile, profileImage },
+    { headers: { "Cache-Control": "private, no-store" } },
+  );
 };
 
 export default function Test({ loaderData }: Route.ComponentProps) {

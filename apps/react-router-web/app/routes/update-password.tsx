@@ -8,8 +8,17 @@ import {
 } from "@repo/ui/components/card";
 import { Input } from "@repo/ui/components/input";
 import { Label } from "@repo/ui/components/label";
-import { type ActionFunctionArgs, redirect, useFetcher } from "react-router";
+import {
+  type ActionFunctionArgs,
+  data,
+  redirect,
+  useFetcher,
+} from "react-router";
 import { updatePassword as updatePasswordWorkflow } from "~/auth/workflows/server";
+
+import { pipeHeaders } from "~/utils/headers.server";
+
+export const headers = pipeHeaders;
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
@@ -17,9 +26,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     password: String(formData.get("password") ?? ""),
   });
 
-  if (!result.ok) return { error: result.message };
+  if (!result.ok) return data({ error: result.message }, { headers });
   if (result.status !== "password-updated") {
-    return { error: "Unexpected password update result" };
+    return data({ error: "Unexpected password update result" }, { headers });
   }
 
   return redirect(result.redirectTo, { headers });
