@@ -23,9 +23,18 @@ tasks:
       - "$ALLOW_INDEXING"
       - "$PORT"
     outputs: ["build/**/*"]
+    options:
+      # `react-router build` regenerates .react-router/types near the end of the
+      # run, deleting it first. Nothing in the task graph says these two tasks
+      # share that directory, so without a mutex they run concurrently and the
+      # delete can land mid-`tsc`, which then reports every `./+types/*` import
+      # as TS2307.
+      mutex: "react-router-typegen"
   check-types:
     command: "pnpm run check-types"
     deps: ["^:build", "^:check-types"]
+    options:
+      mutex: "react-router-typegen"
   lint:
     command: "pnpm run lint"
     options:
@@ -67,3 +76,4 @@ tasks:
     command: "pnpm run typecheck"
     options:
       runInCI: false
+      mutex: "react-router-typegen"
