@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="Demo user avatar">
+  <defs>
+    <linearGradient
+      id="avatar-background"
+      x1="16"
+      y1="8"
+      x2="112"
+      y2="120"
+      gradientUnits="userSpaceOnUse"
+    >
+      <stop stop-color="#6366f1" />
+      <stop offset="1" stop-color="#0ea5e9" />
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" fill="url(#avatar-background)" />
+  <circle cx="64" cy="49" r="21" fill="#ffffff" fill-opacity="0.94" />
+  <path
+    d="M22 118c5.6-22.8 20.2-34 42-34s36.4 11.2 42 34z"
+    fill="#ffffff"
+    fill-opacity="0.94"
+  />
+</svg>

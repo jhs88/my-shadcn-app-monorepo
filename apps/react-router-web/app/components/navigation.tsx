@@ -50,69 +50,81 @@ export default function Navigation({
       title: "Components",
       content: "components",
     },
-    {
-      title: "Documentation",
-      isLink: true,
-      href: "/documentation",
-    },
   ],
   components = [
     {
-      title: "Alert Dialog",
-      href: "/docs/primitives/alert-dialog",
+      title: "Buttons & Badges",
+      href: "/gallery#buttons-badges",
       description:
-        "A modal dialog that interrupts the user with important content and expects a response.",
+        "Button variants and groups, badges, toggles, toggle groups and kbd.",
     },
     {
-      title: "Hover Card",
-      href: "/docs/primitives/hover-card",
+      title: "Forms & Inputs",
+      href: "/gallery#forms-inputs",
       description:
-        "For sighted users to preview content available behind a link.",
+        "Inputs, select, combobox, checkbox, radio, switch, slider, OTP and calendar.",
     },
     {
-      title: "Progress",
-      href: "/docs/primitives/progress",
+      title: "Overlays",
+      href: "/gallery#overlays",
       description:
-        "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
+        "Dialog, alert dialog, sheet, drawer, popover, hover card, tooltip and menus.",
     },
     {
-      title: "Scroll-area",
-      href: "/docs/primitives/scroll-area",
-      description: "Visually or semantically separates content.",
+      title: "Navigation",
+      href: "/gallery#navigation",
+      description:
+        "Breadcrumb, menubar, navigation menu, pagination, tabs, command and sidebar.",
     },
     {
-      title: "Tabs",
-      href: "/docs/primitives/tabs",
+      title: "Data Display",
+      href: "/gallery#data-display",
       description:
-        "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
+        "Table, card, avatar, chart, accordion, carousel, scroll area and resizable.",
     },
     {
-      title: "Tooltip",
-      href: "/docs/primitives/tooltip",
-      description:
-        "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+      title: "Feedback",
+      href: "/gallery#feedback",
+      description: "Alert, progress, spinner, skeleton and sonner toasts.",
     },
   ],
-  logo = <img src={"/images/vercel.svg"} width={200} height={200} alt="Logo" />,
-  logoTitle = "Vercel",
-  logoDescription = "Description.",
-  logoHref = "/",
+  logo = (
+    <>
+      <img
+        src="/logo-light.svg"
+        className="h-6 w-auto dark:hidden"
+        alt="React Router"
+        loading="lazy"
+      />
+      <img
+        src="/logo-dark.svg"
+        className="hidden h-6 w-auto dark:block"
+        alt="React Router"
+        loading="lazy"
+      />
+    </>
+  ),
+  logoTitle = "Component gallery",
+  logoDescription = "Every @repo/ui primitive on one page, switchable across six themes.",
+  logoHref = "/gallery",
   introItems = [
     {
-      title: "Introduction",
-      href: "/intro",
+      title: "Projects",
+      href: "/projects",
       description:
-        "Re-usable components built using Radix UI and Tailwind CSS.",
+        "Private CRUD on Supabase, scoped to the signed-in user by row-level security.",
     },
     {
-      title: "Installation",
-      href: "/installation",
-      description: "How to install dependencies and structure your app.",
+      title: "Component gallery",
+      href: "/gallery",
+      description:
+        "Every @repo/ui primitive rendered live, with a theme switcher.",
     },
     {
-      title: "Typography",
-      href: "/typography",
-      description: "Styles for headings, paragraphs, lists...etc",
+      title: "Theme switching",
+      href: "/test-theme",
+      description:
+        "Light, dark and system themes applied through the set-theme action.",
     },
   ],
 }: NavigationProps) {
@@ -138,11 +150,11 @@ export default function Navigation({
                         <NavigationMenuLink
                           render={
                             <a
-                              className="from-muted/30 to-muted/10 bg-linear-to-b outline-hidden flex h-full w-full select-none flex-col justify-end rounded-md p-6 no-underline focus:shadow-md"
+                              className="from-muted/30 to-muted/10 flex h-full w-full flex-col justify-end rounded-md bg-linear-to-b p-6 no-underline outline-hidden select-none focus:shadow-md"
                               href={logoHref}
                             >
                               {logo}
-                              <div className="mb-2 mt-4 text-lg font-medium">
+                              <div className="mt-4 mb-2 text-lg font-medium">
                                 {logoTitle}
                               </div>
                               <p className="text-muted-foreground text-sm leading-tight">
@@ -196,12 +208,12 @@ function ListItem({
           <a
             data-slot="list-item"
             className={cn(
-              "hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground outline-hidden block select-none space-y-1 rounded-md p-3 leading-none no-underline transition-colors",
+              "hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground block space-y-1 rounded-md p-3 leading-none no-underline outline-hidden transition-colors select-none",
               className,
             )}
             {...props}
           >
-            <div className="text-sm font-medium leading-none">{title}</div>
+            <div className="text-sm leading-none font-medium">{title}</div>
             <p className="text-muted-foreground line-clamp-2 text-sm leading-snug">
               {children}
             </p>
