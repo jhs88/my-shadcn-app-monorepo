@@ -9,6 +9,7 @@ import {
   updatePassword as updatePasswordWorkflow,
 } from "@/app/auth/workflows/server";
 import type { AuthActionState } from "@/app/auth/action-state";
+import { emailConfirmTarget } from "@/app/auth/callback-targets";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -22,7 +23,7 @@ export async function signup(
     email: String(formData.get("email") ?? ""),
     password: String(formData.get("password") ?? ""),
     repeatPassword: String(formData.get("repeat-password") ?? ""),
-    emailRedirectTo: `${origin}/protected`,
+    emailRedirectTo: emailConfirmTarget(origin, "/protected"),
   });
 
   if (!result.ok) return { error: result.message };
@@ -86,7 +87,7 @@ export async function requestPasswordReset(
 
   const result = await startPasswordResetWorkflow({
     email: String(formData.get("email") ?? ""),
-    redirectTo: `${origin}/auth/update-password`,
+    redirectTo: emailConfirmTarget(origin, "/auth/update-password"),
   });
 
   if (!result.ok) return { error: result.message };

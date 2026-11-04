@@ -17,6 +17,7 @@ import {
   useSearchParams,
 } from "react-router";
 import { startPasswordReset as startPasswordResetWorkflow } from "~/auth/workflows/server";
+import { emailConfirmTarget } from "~/auth/callback-targets";
 
 import { pipeHeaders } from "~/utils/headers.server";
 
@@ -27,7 +28,7 @@ export const action = async ({ request, url }: ActionFunctionArgs) => {
   const origin = url.origin;
   const { result, headers } = await startPasswordResetWorkflow(request, {
     email: String(formData.get("email") ?? ""),
-    redirectTo: `${origin}/auth/confirm?next=/update-password`,
+    redirectTo: emailConfirmTarget(origin, "/update-password"),
   });
 
   if (!result.ok) {

@@ -46,7 +46,11 @@ export function getLocalSupabaseEnv({ cwd = process.cwd() } = {}) {
     explicit.SUPABASE_SERVICE_ROLE_KEY
   ) {
     assertLocalSupabaseUrl(explicit.SUPABASE_URL);
-    return explicit;
+    return {
+      ...explicit,
+      MAILPIT_URL:
+        process.env.PLAYWRIGHT_MAILPIT_URL ?? "http://127.0.0.1:54324",
+    };
   }
 
   let output;
@@ -77,5 +81,6 @@ export function getLocalSupabaseEnv({ cwd = process.cwd() } = {}) {
     SUPABASE_ANON_KEY: env.ANON_KEY,
     SUPABASE_SERVICE_ROLE_KEY: env.SERVICE_ROLE_KEY,
     SUPABASE_DB_URL: env.DB_URL,
+    MAILPIT_URL: env.MAILPIT_URL ?? "http://127.0.0.1:54324",
   };
 }
