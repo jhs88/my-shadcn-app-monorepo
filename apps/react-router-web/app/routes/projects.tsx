@@ -123,12 +123,14 @@ export default function Projects({
           <ArrowLeft className="size-4" />
           Your account
         </Link>
-        <Link
-          to="/logout"
-          className="text-muted-foreground hover:text-foreground"
-        >
-          Sign out
-        </Link>
+        <Form method="post" action="/logout" className="contents">
+          <button
+            type="submit"
+            className="text-muted-foreground hover:text-foreground"
+          >
+            Sign out
+          </button>
+        </Form>
       </nav>
       <header className="mb-10 border-b pb-8">
         <p className="text-muted-foreground mb-3 font-mono text-xs tracking-widest uppercase">

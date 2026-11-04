@@ -13,7 +13,9 @@ export class TestPage {
   }
 
   async openProfileDialog() {
-    await this.page.getByRole("button", { name: "Open profile dialog" }).click();
+    await this.page
+      .getByRole("button", { name: "Open profile dialog" })
+      .click();
     await expect(
       this.page.getByRole("heading", { name: "My Profile Info" }),
     ).toBeVisible();
@@ -46,6 +48,7 @@ export class TestPage {
   }
 
   async logout() {
-    await this.page.getByRole("link", { name: "Logout" }).click();
+    // Signing out is a POST, so the control is a submit button rather than a link.
+    await this.page.getByRole("button", { name: "Logout" }).click();
   }
 }

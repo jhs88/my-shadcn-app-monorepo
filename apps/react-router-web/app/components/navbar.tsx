@@ -10,7 +10,7 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@repo/ui/components/sheet";
 import { cn } from "@repo/ui/lib/utils";
 import Navigation from "~/components/navigation";
-import { NavLink } from "react-router";
+import { Form, NavLink } from "react-router";
 
 interface NavbarLink {
   text: string;
@@ -24,6 +24,8 @@ interface NavbarActionProps {
   icon?: ReactNode;
   iconRight?: ReactNode;
   isButton?: boolean;
+  /** Use "post" for actions that change state, so a link cannot trigger them. */
+  method?: "get" | "post";
 }
 
 interface NavbarProps {
@@ -78,7 +80,24 @@ export default function Navbar({
           </NavbarLeft>
           <NavbarRight>
             {actions.map((action, index) =>
-              action.isButton ? (
+              action.method === "post" ? (
+                <Form
+                  key={index}
+                  method="post"
+                  action={action.href}
+                  className="contents"
+                >
+                  <Button
+                    type="submit"
+                    variant={action.variant ?? "default"}
+                    className={action.isButton ? undefined : "hidden md:block"}
+                  >
+                    {action.icon}
+                    {action.text}
+                    {action.iconRight}
+                  </Button>
+                </Form>
+              ) : action.isButton ? (
                 <Button
                   key={index}
                   variant={action.variant ?? "default"}

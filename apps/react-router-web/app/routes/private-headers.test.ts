@@ -209,22 +209,21 @@ for (const suffix of ["", ".data"]) {
   });
 }
 
-it("preserves logout loader auth headers during navigation on errors", async () => {
+it("preserves logout action auth headers during navigation on errors", async () => {
   authHeaders.set("Cache-Control", "private, no-store");
   authHeaders.append("Set-Cookie", "session=; Path=/; Max-Age=0");
   const response = await handleRequest(
-    new Request("http://localhost/logout.data"),
+    new Request("http://localhost/logout.data", { method: "post" }),
   );
   expectPrivate(response);
   expect(response.headers.getSetCookie()).toEqual(authHeaders.getSetCookie());
-  expect(response.headers.get("Server-Timing")).toContain("root;dur=1");
 });
 
-it("preserves logout resource-loader auth headers on errors", async () => {
+it("preserves logout action auth headers on errors", async () => {
   authHeaders.set("Cache-Control", "private, no-store");
   authHeaders.append("Set-Cookie", "session=; Path=/; Max-Age=0");
-  const request = new Request("http://localhost/logout");
-  const result = await logoutRoute.loader({
+  const request = new Request("http://localhost/logout", { method: "post" });
+  const result = await logoutRoute.action({
     request,
     url: new URL(request.url),
     context: new RouterContextProvider(),

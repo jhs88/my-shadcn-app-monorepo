@@ -4,7 +4,14 @@ import { pipeHeaders } from "~/utils/headers.server";
 
 export const headers = pipeHeaders;
 
-export async function loader({ request }: ActionFunctionArgs) {
+// Signing out changes state, so it is a POST. A plain link would let any page
+// end the session with a top-level navigation.
+export async function action({ request }: ActionFunctionArgs) {
+  const origin = request.headers.get("Origin");
+  if (origin && origin !== new URL(request.url).origin) {
+    throw new Response("Forbidden", { status: 403 });
+  }
+
   const { result, headers } = await logoutWorkflow(request);
 
   if (!result.ok)
