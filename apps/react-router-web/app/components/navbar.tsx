@@ -41,24 +41,31 @@ interface NavbarProps {
 
 export default function Navbar({
   logo = (
-    <img
-      src="/logo-dark.svg"
-      alt="Logo"
-      className="hover:bg-accent hover:text-accent-foreground block max-h-4 rounded-md leading-none no-underline transition-colors"
-    />
+    <>
+      <img
+        src="/logo-light.svg"
+        alt="Logo"
+        className="hover:bg-accent hover:text-accent-foreground max-h-4 w-auto rounded-md leading-none no-underline transition-colors dark:hidden"
+      />
+      <img
+        src="/logo-dark.svg"
+        alt="Logo"
+        className="hover:bg-accent hover:text-accent-foreground hidden max-h-4 w-auto rounded-md leading-none no-underline transition-colors dark:block"
+      />
+    </>
   ),
   name = "Company Name",
   homeUrl = "/",
   mobileLinks = [
-    { text: "Getting Started", href: "/getting-started" },
-    { text: "Components", href: "/components" },
-    { text: "Documentation", href: "/documentation" },
+    { text: "Component gallery", href: "/gallery" },
+    { text: "Projects", href: "/projects" },
+    { text: "Theme switching", href: "/test-theme" },
   ],
   actions = [
     { text: "Sign in", href: "/login", isButton: false },
     {
       text: "Get Started",
-      href: "/get-started",
+      href: "/sign-up",
       isButton: true,
       variant: "default",
     },
