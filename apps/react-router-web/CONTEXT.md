@@ -25,7 +25,7 @@ app/routes/
 ├── sign-up.tsx             # Registration form
 ├── forgot-password.tsx     # Password reset
 ├── update-password.tsx     # Password update
-├── logout.tsx              # Logout handler
+├── logout.tsx              # POST logout action
 ├── protected.tsx           # Authenticated page
 ├── auth.confirm.tsx        # Email confirmation
 ├── auth.error.tsx          # Auth error display
@@ -58,6 +58,12 @@ Auth mutations use route actions as thin framework adapters around `app/auth/wor
 - `types.ts` / `validation.ts` — define the auth workflow interface and invariants
 
 Routes such as `login.tsx`, `sign-up.tsx`, `forgot-password.tsx`, `update-password.tsx`, and `logout.tsx` translate `FormData` and redirects around the auth workflow module instead of owning the auth rules directly.
+
+Signing out changes state, so `logout.tsx` is a POST action that rejects cross-origin submissions. Callers submit a form rather than linking to it.
+
+### Email links
+
+Signup confirmation and password-reset links point at `auth.confirm.tsx`, not at the page the user should finally see. That loader exchanges the token hash for a session cookie and then redirects to the `next` destination. `app/auth/callback-targets.ts` builds those links; see `docs/starter/email-callbacks.md` for the template contract.
 
 ### Supabase integration
 

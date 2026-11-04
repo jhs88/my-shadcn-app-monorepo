@@ -17,6 +17,7 @@ import {
   useSearchParams,
 } from "react-router";
 import { signUp as signUpWorkflow } from "~/auth/workflows/server";
+import { emailConfirmTarget } from "~/auth/callback-targets";
 
 import { pipeHeaders } from "~/utils/headers.server";
 
@@ -29,7 +30,7 @@ export const action = async ({ request, url }: ActionFunctionArgs) => {
     email: String(formData.get("email") ?? ""),
     password: String(formData.get("password") ?? ""),
     repeatPassword: String(formData.get("repeat-password") ?? ""),
-    emailRedirectTo: `${origin}/protected`,
+    emailRedirectTo: emailConfirmTarget(origin, "/protected"),
   });
 
   if (!result.ok) return data({ error: result.message }, { headers });

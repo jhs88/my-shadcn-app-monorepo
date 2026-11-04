@@ -73,6 +73,7 @@ export default function Test({ loaderData }: Route.ComponentProps) {
           {
             text: "Logout",
             href: "/logout",
+            method: "post",
             isButton: true,
             variant: "outline",
           },

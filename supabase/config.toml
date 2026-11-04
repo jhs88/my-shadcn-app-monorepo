@@ -109,7 +109,7 @@ enabled = true
 # in emails.
 site_url = "http://127.0.0.1:3000"
 # A list of *exact* URLs that auth providers are permitted to redirect to post authentication.
-additional_redirect_urls = ["http://127.0.0.1:3000/**", "http://localhost:3000/**", "http://127.0.0.1:5173/**", "http://localhost:5173/**", "http://127.0.0.1:4173/**"]
+additional_redirect_urls = ["http://127.0.0.1:3000/**", "http://localhost:3000/**", "http://127.0.0.1:5173/**", "http://localhost:5173/**", "http://127.0.0.1:4173/**", "http://localhost:4173/**"]
 # How long tokens are valid for, in seconds. Defaults to 3600 (1 hour), maximum 604,800 (1 week).
 jwt_expiry = 3600
 # If disabled, the refresh token will never expire.
@@ -167,6 +167,22 @@ max_frequency = "1s"
 otp_length = 6
 # Number of seconds before the email OTP expires (defaults to 1 hour).
 otp_expiry = 3600
+
+# Server-side apps have to verify email links themselves. The default link
+# verifies on Supabase's own endpoint and hands the session back in a URL
+# fragment, which no server route can read, so no session cookie is ever set.
+# These templates link straight to each app's /auth/confirm callback instead.
+# Each app passes a redirectTo that already carries its own ?next= query, because
+# the template can only append with &.
+# Hosted projects need the same two templates pasted into the dashboard; see
+# docs/starter/email-callbacks.md.
+[auth.email.template.confirmation]
+subject = "Confirm your email address"
+content_path = "./supabase/templates/confirmation.html"
+
+[auth.email.template.recovery]
+subject = "Reset your password"
+content_path = "./supabase/templates/recovery.html"
 
 # Use a production-ready SMTP server
 # [auth.email.smtp]

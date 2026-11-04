@@ -1,5 +1,5 @@
 import { Button } from "@repo/ui/components/button";
-import { data } from "react-router";
+import { data, Form } from "react-router";
 import {
   authenticatedRequestContext,
   protectedRouteAuthMiddleware,
@@ -28,9 +28,9 @@ export default function ProtectedPage({ loaderData }: Route.ComponentProps) {
           {loaderData.user.email}
         </span>
       </p>
-      <a href="/logout">
-        <Button>Logout</Button>
-      </a>
+      <Form method="post" action="/logout">
+        <Button type="submit">Logout</Button>
+      </Form>
     </div>
   );
 }
