@@ -59,6 +59,10 @@ The server actions are thin framework adapters around the auth workflow module i
 
 The auth workflow module returns typed results; `app/auth/actions.ts` maps those results to `redirect()` and `revalidatePath("/", "layout")`.
 
+### Email links
+
+Signup confirmation and password-reset links point at `app/auth/confirm/route.ts`, not at the page the user should finally see. That route exchanges the token hash for a session cookie and then redirects to the `next` destination. `app/auth/callback-targets.ts` builds those links; see `docs/starter/email-callbacks.md` for the template contract.
+
 ### TanStack Query
 
 Configured via `app/get-query-client.ts`:
